@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -55,18 +57,20 @@ public class CambiarPerfil extends AppCompatActivity {
         btnCambiarPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (verificarCampos(nombreUsuario.getText().toString(), nuevoCorreo.getText().toString(), nuevaContra.getText().toString(), confirmContra.getText().toString())) {
                     UserProfileChangeRequest perfil = new UserProfileChangeRequest.Builder()
                             .setDisplayName(nombreUsuario.getText().toString())
                             .setPhotoUri(Uri.parse(String.valueOf(usuario.getPhotoUrl())))
                             .build();
 
-                    if (usuario.getDisplayName() != nombreUsuario.getText().toString()) {
+                    if (!usuario.getDisplayName().equals(nombreUsuario.getText().toString())) {
                         usuario.updateProfile(perfil);
+                        mensaje("Nombre de usuario actualizado");
                     }
-                    if (usuario.getEmail() != nuevoCorreo.getText().toString()) {
+
+                    if (!usuario.getEmail().equals(nuevoCorreo.getText().toString())) {
                         usuario.updateEmail(nuevoCorreo.getText().toString());
+                        mensaje("Correo electrónico actualizado " + usuario.getEmail() + " -> " + nuevoCorreo.getText().toString());
                     }
 
                     usuario.updatePassword(nuevaContra.getText().toString())
@@ -74,6 +78,7 @@ public class CambiarPerfil extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
+                                        mensaje("Contraseña actualizada");
                                         // Acción exitosa, redirigir a MainActivity
                                         Intent intent = new Intent(CambiarPerfil.this, MainActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -109,5 +114,9 @@ public class CambiarPerfil extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    private void mensaje(String mensaje) {
+        Snackbar.make((ViewGroup) findViewById(R.id.contenedor), mensaje, Snackbar.LENGTH_LONG).show();
     }
 }
