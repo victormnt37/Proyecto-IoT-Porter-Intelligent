@@ -55,15 +55,6 @@ public class Cuenta extends Fragment {
         TextView correo = view.findViewById(R.id.correo);
         correo.setText(usuario.getEmail());
 
-        // Inicializar el botón para cerrar sesión
-        Button btnCerrarSesion = view.findViewById(R.id.btn_cerrar_sesion);
-        btnCerrarSesion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cerrarSesion(v); // Llama al método cerrarSesion cuando se presiona el botón
-            }
-        });
-
 //        TextView proveedor = findViewById(R.id.proveedor);
 //        proveedor.setText(usuario.getProviderId());
 //
@@ -73,7 +64,7 @@ public class Cuenta extends Fragment {
 //        TextView uid = findViewById(R.id.uid);
 //        uid.setText(usuario.getUid());
 
-        // Inicialización Volley (Hacer solo una vez en Singleton o Applicaction)
+        // Inicialización Volley
         RequestQueue colaPeticiones = Volley.newRequestQueue(requireContext());
         ImageLoader lectorImagenes = new ImageLoader(colaPeticiones,
                 new ImageLoader.ImageCache() {
@@ -95,6 +86,27 @@ public class Cuenta extends Fragment {
             NetworkImageView foto = (NetworkImageView) view.findViewById(R.id.imagen);
             foto.setImageResource(R.drawable.ic_launcher_foreground);
         }
+
+        // Inicializar el botón para cerrar sesión
+        Button btnCerrarSesion = view.findViewById(R.id.btn_cerrar_sesion);
+        btnCerrarSesion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cerrarSesion(v);
+            }
+        });
+
+        Button btnCambiarPerfil = view.findViewById(R.id.btnCambiar);
+        btnCambiarPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(requireContext(), CambiarPerfil.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        | Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
+            }
+        });
 
         return view;
     }
