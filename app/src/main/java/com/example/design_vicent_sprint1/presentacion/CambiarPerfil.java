@@ -74,6 +74,7 @@ public class CambiarPerfil extends AppCompatActivity {
                         mensaje("Correo electrónico actualizado " + usuario.getEmail() + " -> " + nuevoCorreo.getText().toString());
                     }
 
+                    // TODO: eliminar y reestablecer contraseña en inicio de sesion
                     usuario.updatePassword(nuevaContra.getText().toString())
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
