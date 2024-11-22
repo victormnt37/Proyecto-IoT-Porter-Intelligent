@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FFFFFF"
     android:padding="16dp">
 
@@ -18,95 +18,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
         android:layout_marginTop="16dp" />
 
-    <!-- Contenedor de iconos -->
-    <GridLayout
-        android:id="@+id/accessGrid"
+    <!-- RecyclerView para los accesos -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewPuertas"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:columnCount="2"
-        android:rowCount="2"
-        android:layout_marginTop="24dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/accessTitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <!-- Ícono 1: Puerta portal -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_margin="8dp"
-            android:background="@drawable/icon_background"
-            android:padding="16dp">
-
-            <ImageView
-                android:id="@+id/portalDoorIcon"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:src="@drawable/ic_portal_door" /> <!-- Reemplaza con tu ícono -->
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Puerta portal"
-                android:textColor="#3B5D75"
-                android:textSize="14sp"
-                android:layout_marginTop="8dp" />
-        </LinearLayout>
-
-        <!-- Ícono 2: Puerta garaje -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_margin="8dp"
-            android:background="@drawable/icon_background"
-            android:padding="16dp">
-
-            <ImageView
-                android:id="@+id/garageDoorIcon"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:src="@drawable/ic_garage_door" /> <!-- Reemplaza con tu ícono -->
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Puerta garaje"
-                android:textColor="#3B5D75"
-                android:textSize="14sp"
-                android:layout_marginTop="8dp" />
-        </LinearLayout>
-
-        <!-- Ícono 3: Puerta azotea -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_margin="8dp"
-            android:background="@drawable/icon_background"
-            android:padding="16dp">
-
-            <ImageView
-                android:id="@+id/rooftopDoorIcon"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:src="@drawable/ic_rooftop_door" /> <!-- Reemplaza con tu ícono -->
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Puerta Azotea"
-                android:textColor="#3B5D75"
-                android:textSize="14sp"
-                android:layout_marginTop="8dp" />
-        </LinearLayout>
-    </GridLayout>
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
