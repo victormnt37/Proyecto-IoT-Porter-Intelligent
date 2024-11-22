@@ -25,19 +25,19 @@ public class TwitterActivity extends CustomLoginActivity {
 
         OAuthProvider.Builder provider = OAuthProvider.newBuilder("twitter.com");
 
-        // Localize to ESPAÑOLO.
+        // Localize to ESPAÑOLO
         provider.addCustomParameter("lang", "es");
 
         Task<AuthResult> pendingResultTask = firebaseAuth.getPendingAuthResult();
         if (pendingResultTask != null) {
-            // There's something already here! Finish the sign-in for your user.
             pendingResultTask
                     .addOnSuccessListener(
                             new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
-                                    startActivity(new Intent(TwitterActivity.this, Cuenta.class));
+                                    startActivity(new Intent(TwitterActivity.this, MainActivity.class));
                                     Toast.makeText(TwitterActivity.this, "Login Succesfull", Toast.LENGTH_LONG).show();
+                                    finish();
                                 }
                             })
                     .addOnFailureListener(
@@ -54,8 +54,9 @@ public class TwitterActivity extends CustomLoginActivity {
                             new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
-                                    startActivity(new Intent(TwitterActivity.this, Cuenta.class));
+                                    startActivity(new Intent(TwitterActivity.this, MainActivity.class));
                                     Toast.makeText(TwitterActivity.this, "Login Succesfull", Toast.LENGTH_LONG).show();
+                                    finish();
                                 }
                             })
                     .addOnFailureListener(
