@@ -26,7 +26,7 @@ public class Puertas extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.puertas, container, false);
+        View view = inflater.inflate(R.layout.activity_puertas, container, false);
         recyclerView = view.findViewById(R.id.recyclerViewPuertas);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
         //recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

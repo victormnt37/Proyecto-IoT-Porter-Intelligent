@@ -3,15 +3,19 @@ package com.example.design_vicent_sprint1.model;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.design_vicent_sprint1.R;
+
 import java.util.List;
 
-public class ContactosAdapter extends RecyclerView.Adapter<ContactosAdapter.ViewHolder> {
-    private List<Contacto> contactos;
+public class ContactosAdapter extends RecyclerView.Adapter<ContactosAdapter.ContactoViewHolder> {
+
+    private final List<Contacto> contactos;
 
     public ContactosAdapter(List<Contacto> contactos) {
         this.contactos = contactos;
@@ -19,16 +23,18 @@ public class ContactosAdapter extends RecyclerView.Adapter<ContactosAdapter.View
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_2, parent, false);
-        return new ViewHolder(view);
+    public ContactoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_contactos, parent, false);
+        return new ContactoViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ContactoViewHolder holder, int position) {
         Contacto contacto = contactos.get(position);
-        holder.textView1.setText(contacto.getNombre());
-        holder.textView2.setText(contacto.getTelefono());
+        holder.txtNombre.setText(contacto.getNombre());
+        holder.txtTelefono.setText(contacto.getTelefono());
+        // Si tienes una imagen asociada, usa un cargador como Glide o Picasso
+        // Glide.with(holder.imgContacto.getContext()).load(contacto.getFotoUrl()).into(holder.imgContacto);
     }
 
     @Override
@@ -36,14 +42,16 @@ public class ContactosAdapter extends RecyclerView.Adapter<ContactosAdapter.View
         return contactos.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textView1, textView2;
+    static class ContactoViewHolder extends RecyclerView.ViewHolder {
+        TextView txtNombre;
+        TextView txtTelefono;
+        TextView imgContacto;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ContactoViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView1 = itemView.findViewById(android.R.id.text1);
-            textView2 = itemView.findViewById(android.R.id.text2);
+            txtNombre = itemView.findViewById(R.id.contactName);
+            txtTelefono = itemView.findViewById(R.id.contactPhone);
+            imgContacto = itemView.findViewById(R.id.contactDescription);
         }
     }
 }
-

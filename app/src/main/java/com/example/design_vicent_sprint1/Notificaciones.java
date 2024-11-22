@@ -26,21 +26,33 @@ public class Notificaciones extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.notificaciones, container, false);
+
+        // Inicializar RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewNotificaciones);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        // Obtener argumento del edificio seleccionado
         if (getArguments() != null) {
-            edificioSeleccionado = getArguments().getInt("edificioSeleccionado");
+            edificioSeleccionado = getArguments().getInt("edificioSeleccionado", 0);
         }
 
+        // Cargar datos del repositorio
         repositorioNotificaciones = new RepositorioNotificaciones();
         cargarNotificaciones();
+
         return view;
     }
 
     private void cargarNotificaciones() {
         List<Notificacion> notificaciones = repositorioNotificaciones.getNotificacionesPorEdificio(edificioSeleccionado);
-        NotificacionesAdapter adapter = new NotificacionesAdapter(notificaciones);
-        recyclerView.setAdapter(adapter);
+
+        // Verificar si hay notificaciones antes de cargar el adaptador
+        if (notificaciones != null && !notificaciones.isEmpty()) {
+            NotificacionesAdapter adapter = new NotificacionesAdapter(notificaciones);
+            recyclerView.setAdapter(adapter);
+        } else {
+            // Puedes agregar lógica para mostrar un mensaje vacío si lo deseas
+            System.out.println("No hay notificaciones para este edificio.");
+        }
     }
 }

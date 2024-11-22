@@ -1,26 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingVertical="8dp"
-    android:gravity="center_vertical">
+    android:padding="8dp">
 
-    <!-- Icono -->
     <ImageView
+        android:id="@+id/iconoNotificacion"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/ic_launcher_background"
-        app:tint="#3B5D75" />
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/icon_notificaciones" />
 
-    <!-- Texto y Hora -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:layout_marginStart="8dp">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textoNotificacion"
@@ -34,15 +30,15 @@
             android:id="@+id/fechaNotificacion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="20:45"
-            android:textColor="#777777"
-            android:textSize="14sp" />
+            android:text="Fecha"
+            android:textSize="14sp"
+            android:textColor="#757575" />
+        <TextView
+            android:id="@+id/textoNotificacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Movimiento detectado en la entrada"
+            android:textColor="#3B5D75"
+            android:textSize="16sp" />
     </LinearLayout>
-
-    <!-- Botón de eliminar -->
-    <ImageView
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_launcher_background"
-        app:tint="#3B5D75" />
 </LinearLayout>
