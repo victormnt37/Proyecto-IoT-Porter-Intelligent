@@ -1,7 +1,8 @@
-package com.example.design_vicent_sprint1;
+package com.example.design_vicent_sprint1.presentacion;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,11 +25,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.design_vicent_sprint1.Cuenta;
+import com.example.design_vicent_sprint1.data.Aplicacion;
+import com.example.design_vicent_sprint1.data.EdificiosAsinc;
+import com.example.design_vicent_sprint1.model.Edificio;
+import com.example.design_vicent_sprint1.data.EdificiosFirestore;
+import com.example.design_vicent_sprint1.Notificaciones;
+import com.example.design_vicent_sprint1.PanelPrincipalEdificio;
+import com.example.design_vicent_sprint1.Puertas;
+import com.example.design_vicent_sprint1.R;
+import com.example.design_vicent_sprint1.data.RepositorioEdificios;
+import com.example.design_vicent_sprint1.model.EdificiosFirestoreAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -40,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.icon_cuenta
     };
 
+    public static EdificiosFirestoreAdapter adapter;
+    private EdificiosAsinc edificios;
     private Button btnEdificios;
     private RepositorioEdificios repositorioEdificios;
     private Edificio edificioSeleccionado;
@@ -61,11 +74,24 @@ public class MainActivity extends AppCompatActivity {
 
         //Boton Selector de Edificios
         btnEdificios = findViewById(R.id.edificio);
+        adapter = ((Aplicacion) getApplicationContext()).adapter;
+        edificios = ((Aplicacion) getApplicationContext()).edificios;
         repositorioEdificios = new RepositorioEdificios();
 
         //Edificio seleccionado por defecto
+        CollectionReference edificiosRef = FirebaseFirestore.getInstance()
+                .collection("edificios");
+        edificiosRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                String nombreEdificio = task.getResult().getDocuments().get(0).getString("nombre");
+                btnEdificios.setText(nombreEdificio);
+                Log.d("Firestore", "Nombre del primer edificio: " + nombreEdificio);
+            } else {
+                Log.e("Firestore", "Error o colección vacía", task.getException());
+            }
+        });
         edificioSeleccionado = repositorioEdificios.getEdificioById(1);
-        btnEdificios.setText(edificioSeleccionado.getNombre());
+
 
         //Contenedor de los layouts *** USAR SCROLLVIEW EN LAYOUT
         pagerAdapter = new MiPagerAdapter(this, edificioSeleccionado.getId());
@@ -85,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnMenu = findViewById(R.id.menu);
         btnMenu.setOnClickListener(view -> mostrarMenu(view));
+        adapter.startListening();
     }
 
     private void mostrarPopupEdificios(View view) {
@@ -93,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = popupView.findViewById(R.id.recyclerViewEdificios);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        EdificiosAdapter adapter = new EdificiosAdapter(repositorioEdificios.getEdificios(), edificio -> {
+        /*EdificiosAdapter adapter = new EdificiosAdapter(repositorioEdificios.getEdificios(), edificio -> {
             if (edificio.getNombre().equals("add")) {
                 popupWindow.dismiss();
                 mostrarPopupAddEdificio(view);
@@ -113,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
                 }).attach();
 
             }
-        });
+        });*/
 
         recyclerView.setAdapter(adapter);
         popupWindow.showAsDropDown(view, 0, 0);
@@ -216,6 +243,12 @@ public class MainActivity extends AppCompatActivity {
             this.edificioSeleccionadoId = nuevoEdificioId;
 
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        adapter.stopListening();// deja de escucha los cambios en la base de datos
     }
 }
 

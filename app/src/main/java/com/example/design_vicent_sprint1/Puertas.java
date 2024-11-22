@@ -11,6 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.design_vicent_sprint1.data.RepositorioPuertas;
+import com.example.design_vicent_sprint1.model.Puerta;
+import com.example.design_vicent_sprint1.model.PuertasAdapter;
+
 import java.util.List;
 
 public class Puertas extends Fragment {

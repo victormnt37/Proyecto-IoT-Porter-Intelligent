@@ -1,4 +1,4 @@
-package com.example.design_vicent_sprint1;
+package com.example.design_vicent_sprint1.model;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +10,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class ContactosAdapter extends RecyclerView.Adapter<ContactosAdapter.ViewHolder> {
-    private List<Contacto> contactos;
+public class VecinosAdapter extends RecyclerView.Adapter<VecinosAdapter.ViewHolder> {
+    private List<Vecino> vecinos;
 
-    public ContactosAdapter(List<Contacto> contactos) {
-        this.contactos = contactos;
+    public VecinosAdapter(List<Vecino> vecinos) {
+        this.vecinos = vecinos;
     }
 
     @NonNull
@@ -26,14 +26,14 @@ public class ContactosAdapter extends RecyclerView.Adapter<ContactosAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Contacto contacto = contactos.get(position);
-        holder.textView1.setText(contacto.getNombre());
-        holder.textView2.setText(contacto.getTelefono());
+        Vecino vecino = vecinos.get(position);
+        holder.textView1.setText("Piso " + vecino.getPiso() + ", Puerta " + vecino.getPuerta());
+        holder.textView2.setText(vecino.getCorreoElectronico());
     }
 
     @Override
     public int getItemCount() {
-        return contactos.size();
+        return vecinos.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

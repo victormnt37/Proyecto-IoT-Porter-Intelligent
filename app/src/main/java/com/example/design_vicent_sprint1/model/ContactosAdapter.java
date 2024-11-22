@@ -1,4 +1,4 @@
-package com.example.design_vicent_sprint1;
+package com.example.design_vicent_sprint1.model;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +10,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.ViewHolder> {
-    private List<Anuncio> anuncios;
+public class ContactosAdapter extends RecyclerView.Adapter<ContactosAdapter.ViewHolder> {
+    private List<Contacto> contactos;
 
-    public AnunciosAdapter(List<Anuncio> anuncios) {
-        this.anuncios = anuncios;
+    public ContactosAdapter(List<Contacto> contactos) {
+        this.contactos = contactos;
     }
 
     @NonNull
@@ -26,15 +26,14 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Anuncio anuncio = anuncios.get(position);
-        holder.textView1.setText(anuncio.getAsunto());
-        holder.textView2.setText(anuncio.getTexto());
-       // holder.textView3.setText(anuncio.getFecha());
+        Contacto contacto = contactos.get(position);
+        holder.textView1.setText(contacto.getNombre());
+        holder.textView2.setText(contacto.getTelefono());
     }
 
     @Override
     public int getItemCount() {
-        return anuncios.size();
+        return contactos.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -44,7 +43,6 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.ViewHo
             super(itemView);
             textView1 = itemView.findViewById(android.R.id.text1);
             textView2 = itemView.findViewById(android.R.id.text2);
-            //textView3 = itemView.findViewById(android.R.id.text3);
         }
     }
 }

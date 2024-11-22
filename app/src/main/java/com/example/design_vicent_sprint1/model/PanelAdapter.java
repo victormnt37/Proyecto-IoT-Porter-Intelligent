@@ -1,4 +1,4 @@
-package com.example.design_vicent_sprint1;
+package com.example.design_vicent_sprint1.model;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.design_vicent_sprint1.R;
+
 import java.util.List;
 
 public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHolder> {

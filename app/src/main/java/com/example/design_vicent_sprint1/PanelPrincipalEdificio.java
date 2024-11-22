@@ -10,6 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.design_vicent_sprint1.data.RepositorioPaneles;
+import com.example.design_vicent_sprint1.model.Panel;
+import com.example.design_vicent_sprint1.model.PanelAdapter;
+
 import java.util.List;
 
 public class PanelPrincipalEdificio extends Fragment {

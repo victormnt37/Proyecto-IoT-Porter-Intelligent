@@ -1,4 +1,7 @@
-package com.example.design_vicent_sprint1;
+package com.example.design_vicent_sprint1.data;
+
+import com.example.design_vicent_sprint1.model.Edificio;
+import com.example.design_vicent_sprint1.model.Puerta;
 
 import java.util.ArrayList;
 import java.util.List;

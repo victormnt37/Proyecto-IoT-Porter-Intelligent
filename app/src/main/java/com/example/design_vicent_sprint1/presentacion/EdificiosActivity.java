@@ -1,11 +1,15 @@
-package com.example.design_vicent_sprint1;
+package com.example.design_vicent_sprint1.presentacion;
 
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.design_vicent_sprint1.model.Edificio;
+import com.example.design_vicent_sprint1.model.EdificiosAdapter;
+import com.example.design_vicent_sprint1.R;
+import com.example.design_vicent_sprint1.data.RepositorioEdificios;
 
 import java.util.List;
 

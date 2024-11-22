@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".data.Aplicacion"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,35 +14,35 @@
         android:theme="@style/Theme.PruebasRecycler"
         tools:targetApi="31">
         <activity
-            android:name=".CustomLoginActivity"
+            android:name=".presentacion.CustomLoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EdificiosActivity"
+        <activity android:name=".presentacion.EdificiosActivity"
             android:label="Vista Lista Edificios">
         </activity>
-        <activity android:name=".VecinosActivity"
+        <activity android:name=".presentacion.VecinosActivity"
             android:label="Vista Lista Vecinos">
         </activity>
-        <activity android:name=".AnunciosActivity"
+        <activity android:name=".presentacion.AnunciosActivity"
             android:label="Vista Lista Anuncios">
         </activity>
-        <activity android:name=".ContactosActivity"
+        <activity android:name=".presentacion.ContactosActivity"
             android:label="Vista Lista Contactos">
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".presentacion.LoginActivity"
             android:exported="true">
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".presentacion.MainActivity"
             android:exported="true">
         </activity>
         <activity
-            android:name=".TwitterActivity"
+            android:name=".presentacion.TwitterActivity"
             android:exported="true">
         </activity>
         <activity

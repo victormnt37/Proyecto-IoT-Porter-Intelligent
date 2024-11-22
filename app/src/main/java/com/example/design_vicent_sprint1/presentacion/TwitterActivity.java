@@ -1,4 +1,4 @@
-package com.example.design_vicent_sprint1;
+package com.example.design_vicent_sprint1.presentacion;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.design_vicent_sprint1.Cuenta;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;

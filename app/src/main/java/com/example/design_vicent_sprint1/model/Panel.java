@@ -1,6 +1,4 @@
-package com.example.design_vicent_sprint1;
-
-import java.util.List;
+package com.example.design_vicent_sprint1.model;
 
 public class Panel {
     private Edificio edificio;

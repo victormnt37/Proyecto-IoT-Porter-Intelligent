@@ -1,4 +1,4 @@
-package com.example.design_vicent_sprint1;
+package com.example.design_vicent_sprint1.model;
 
 import android.view.LayoutInflater;
 import android.view.View;

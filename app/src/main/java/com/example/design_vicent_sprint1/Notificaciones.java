@@ -10,6 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.design_vicent_sprint1.data.RepositorioNotificaciones;
+import com.example.design_vicent_sprint1.model.Notificacion;
+import com.example.design_vicent_sprint1.model.NotificacionesAdapter;
+
 import java.util.List;
 
 public class Notificaciones extends Fragment {
