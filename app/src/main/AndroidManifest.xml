@@ -14,12 +14,15 @@
         android:theme="@style/Theme.PruebasRecycler"
         tools:targetApi="31">
         <activity
-            android:name=".presentacion.CustomLoginActivity"
+            android:name=".presentacion.AnimacionActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".presentacion.CustomLoginActivity"
+            android:label="Animacion Logo Vicent">
         </activity>
         <activity android:name=".presentacion.EdificiosActivity"
             android:label="Vista Lista Edificios">
