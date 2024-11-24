@@ -22,7 +22,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.example.design_vicent_sprint1.data.RepositorioEdificios;
 import com.example.design_vicent_sprint1.model.Edificio;
-import com.example.design_vicent_sprint1.presentacion.CambiarPerfil;
+import com.example.design_vicent_sprint1.presentacion.CambiarPerfilActivity;
 import com.example.design_vicent_sprint1.presentacion.CustomLoginActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -97,7 +97,7 @@ public class Cuenta extends Fragment {
         btnCambiarPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(requireContext(), CambiarPerfil.class);
+                Intent i = new Intent(requireContext(), CambiarPerfilActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                         | Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_CLEAR_TASK);

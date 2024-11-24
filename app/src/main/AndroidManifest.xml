@@ -50,7 +50,7 @@
             android:exported="true">
         </activity>
         <activity
-            android:name=".presentacion.CambiarPerfil"
+            android:name=".presentacion.CambiarPerfilActivity"
             android:exported="true">
         </activity>
     </application>
