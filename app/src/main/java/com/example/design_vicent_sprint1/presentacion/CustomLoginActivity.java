@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,7 +35,8 @@ public class CustomLoginActivity extends AppCompatActivity {
     private EditText etCorreo, etContraseña;
     private TextInputLayout tilCorreo, tilContraseña;
     private ProgressDialog dialogo;
-    private Button btnTwitter, recuperarContraseña;
+    private Button btnTwitter;
+    private TextView recuperarContraseña;
     private static final int RC_GOOGLE_SIGN_IN = 123;
     GoogleSignInClient googleSignInClient;
 
@@ -71,13 +73,13 @@ public class CustomLoginActivity extends AppCompatActivity {
         });
 
         // TODO: poner boton en activity_custom_login y descomentar cosas
-//        recuperarContraseña = (Button) findViewById(R.id.recuperarContraseña);
-//        recuperarContraseña.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                reestablecerContraseña(view);
-//            }
-//        });
+        recuperarContraseña = findViewById(R.id.recuperarContraseña);
+        recuperarContraseña.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reestablecerContraseña(view);
+            }
+        });
     }
 
     private void verificaSiUsuarioValidado() {
@@ -184,26 +186,26 @@ public class CustomLoginActivity extends AppCompatActivity {
                 });
     }
 
-//    public void reestablecerContraseña(View v) {
-//        correo = etCorreo.getText().toString();
-//        tilCorreo.setError("");
-//        if (correo.isEmpty()) {
-//            tilCorreo.setError("Introduce un correo");
-//        } else if (!correo.matches(".+@.+[.].+")) {
-//            tilCorreo.setError("Correo no válido");
-//        } else {
-//            dialogo.show();
-//            auth.sendPasswordResetEmail(correo)
-//                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                        @Override public void onComplete(@NonNull Task<Void> task) {
-//                            dialogo.dismiss();
-//                            if (task.isSuccessful()) {
-//                                mensaje("Verifica tu correo para cambiar contraseña.");
-//                            } else {
-//                                mensaje("ERROR al mandar correo para cambiar contraseña");
-//                            }
-//                        }
-//                    });
-//        }
-//    }
+    public void reestablecerContraseña(View v) {
+        correo = etCorreo.getText().toString();
+        tilCorreo.setError("");
+        if (correo.isEmpty()) {
+            tilCorreo.setError("Introduce un correo");
+        } else if (!correo.matches(".+@.+[.].+")) {
+            tilCorreo.setError("Correo no válido");
+        } else {
+            dialogo.show();
+            auth.sendPasswordResetEmail(correo)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override public void onComplete(@NonNull Task<Void> task) {
+                            dialogo.dismiss();
+                            if (task.isSuccessful()) {
+                                mensaje("Verifica tu correo para cambiar contraseña.");
+                            } else {
+                                mensaje("ERROR al mandar correo para cambiar contraseña");
+                            }
+                        }
+                    });
+        }
+    }
 }
