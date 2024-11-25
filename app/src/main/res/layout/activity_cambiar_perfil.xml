@@ -10,7 +10,7 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
         android:text="Edita tus datos personales"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,8 +45,22 @@
         android:textColor="#255A7B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/cancelarCambiar"
+        app:strokeColor="#255A7B"
+        app:strokeWidth="3dp" />
+
+    <Button
+        android:id="@+id/cancelarCambiar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#C0D7E9"
+        android:text="Cancelar"
+        android:textColor="#255A7B"
+        app:layout_constraintEnd_toStartOf="@+id/cambiarPerfil"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cambiarPerfil"
         app:strokeColor="#255A7B"
         app:strokeWidth="3dp" />
 
