@@ -45,5 +45,7 @@ public class Puertas extends Fragment {
         PuertasAdapter adapter = new PuertasAdapter(puertas);
         recyclerView.setAdapter(adapter);
     }
+
+
 }
 

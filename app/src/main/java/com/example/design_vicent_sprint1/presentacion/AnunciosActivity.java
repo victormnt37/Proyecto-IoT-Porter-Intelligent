@@ -4,6 +4,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 //import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.design_vicent_sprint1.model.Anuncio;
@@ -33,8 +34,8 @@ public class AnunciosActivity extends AppCompatActivity {
 
     private void cargarAnuncios() {
         List<Anuncio> anuncios = repositorioAnuncios.getAnunciosPorEdificio(edificioSeleccionado);
-        //recyclerViewAnuncios.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewAnuncios.setLayoutManager(new GridLayoutManager(this,2));
+        recyclerViewAnuncios.setLayoutManager(new LinearLayoutManager(this));
+        //recyclerViewAnuncios.setLayoutManager(new GridLayoutManager(this,2));
         AnunciosAdapter adapter = new AnunciosAdapter(anuncios);
         recyclerViewAnuncios.setAdapter(adapter);
     }

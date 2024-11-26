@@ -17,7 +17,7 @@ public class RepositorioPuertas {
         puertas = new ArrayList<>();
 
         puertas.add(new Puerta(edificios.get(0), "Puerta Principal", "P008"));
-        puertas.add(new Puerta(edificios.get(0), "Puerta de Acceso a la Terraza", "P009"));
+        puertas.add(new Puerta(edificios.get(0), "Puerta Terraza", "P009"));
 
         puertas.add(new Puerta(edificios.get(1), "Puerta Principal", "P001"));
         puertas.add(new Puerta(edificios.get(1), "Puerta del Garaje", "P002"));

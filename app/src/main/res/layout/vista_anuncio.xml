@@ -1,6 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="@android:color/white">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Contenedor del título y hora -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Hora del anuncio -->
+
+        <TextView
+            android:id="@+id/horaAnuncio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20:45"
+            android:textSize="16sp"
+            android:textColor="#3B5D75"
+            android:layout_marginEnd="16dp" />
+
+        <!-- Título del anuncio -->
+        <TextView
+            android:id="@+id/tituloAnuncio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Título del anuncio"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#3B5D75" />
+
+        <!-- Menú de opciones -->
+        <ImageView
+            android:id="@+id/menuOpciones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_puerta"
+            android:contentDescription="Opciones"
+            android:padding="8dp" />
+    </LinearLayout>
+
+    <!-- Descripción del anuncio -->
+    <TextView
+        android:id="@+id/descripcionAnuncio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Descripción del anuncio"
+        android:textSize="14sp"
+        android:textColor="#4A4A4A"
+        android:layout_marginTop="4dp"
+        android:lineSpacingExtra="2dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/blue"
+            android:backgroundTint="#3B5D75" />
+    </LinearLayout>
+
+</LinearLayout>

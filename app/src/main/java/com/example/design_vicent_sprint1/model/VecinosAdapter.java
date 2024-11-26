@@ -3,14 +3,16 @@ package com.example.design_vicent_sprint1.model;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.example.design_vicent_sprint1.R;
 import java.util.List;
 
-public class VecinosAdapter extends RecyclerView.Adapter<VecinosAdapter.ViewHolder> {
+public class VecinosAdapter extends RecyclerView.Adapter<VecinosAdapter.VecinoViewHolder> {
+
     private List<Vecino> vecinos;
 
     public VecinosAdapter(List<Vecino> vecinos) {
@@ -19,16 +21,22 @@ public class VecinosAdapter extends RecyclerView.Adapter<VecinosAdapter.ViewHold
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_2, parent, false);
-        return new ViewHolder(view);
+    public VecinoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.vista_vecino, parent, false);
+        return new VecinoViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull VecinoViewHolder holder, int position) {
         Vecino vecino = vecinos.get(position);
-        holder.textView1.setText("Piso " + vecino.getPiso() + ", Puerta " + vecino.getPuerta());
-        holder.textView2.setText(vecino.getCorreoElectronico());
+
+        holder.nombre.setText(vecino.getPiso());
+        holder.correo.setText(vecino.getCorreoElectronico());
+        //holder.imagen.setImageResource(vecino.getImagenResId());
+
+        holder.menuOpciones.setOnClickListener(v -> {
+            Toast.makeText(holder.itemView.getContext(), "Opciones para: " + vecino.getPiso(), Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override
@@ -36,14 +44,18 @@ public class VecinosAdapter extends RecyclerView.Adapter<VecinosAdapter.ViewHold
         return vecinos.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textView1, textView2;
+    static class VecinoViewHolder extends RecyclerView.ViewHolder {
 
-        public ViewHolder(@NonNull View itemView) {
+        TextView nombre, correo;
+        ImageView imagen, menuOpciones;
+
+        public VecinoViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView1 = itemView.findViewById(android.R.id.text1);
-            textView2 = itemView.findViewById(android.R.id.text2);
+
+            nombre = itemView.findViewById(R.id.nombreVecino);
+            correo = itemView.findViewById(R.id.correoVecino);
+            imagen = itemView.findViewById(R.id.imagenVecino);
+            menuOpciones = itemView.findViewById(R.id.menuOpciones);
         }
     }
 }
-

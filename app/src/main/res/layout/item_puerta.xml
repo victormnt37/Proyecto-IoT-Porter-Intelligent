@@ -1,21 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="8dp">
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    android:clickable="true"
+    android:focusable="true">
 
+    <!-- Icono del acceso -->
     <ImageView
-        android:id="@+id/iconoNotificacion"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/icon_puerta"
-        android:layout_gravity="center_vertical" />
+        android:id="@+id/icon_acceso"
+        android:layout_width="123dp"
+        android:layout_height="117dp"
+        android:layout_gravity="center"
+        android:background="@drawable/icon_background"
+        android:src="@drawable/icon_puerta" />
 
+    <!-- Nombre del acceso -->
     <TextView
         android:id="@+id/nombrePuerta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-</LinearLayout>
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="Puerta portal"
+        android:textColor="#3B5D75"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+    </LinearLayout>
