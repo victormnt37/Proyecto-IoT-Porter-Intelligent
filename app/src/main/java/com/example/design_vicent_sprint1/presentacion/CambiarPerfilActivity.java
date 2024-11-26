@@ -23,7 +23,7 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class CambiarPerfilActivity extends AppCompatActivity {
 
-    private Button btnCambiarPerfil;
+    private Button btnCambiarPerfil, btnCancelarCambiar;
     private TextInputLayout tilNombre, tilCorreo;
 
     @Override
@@ -49,6 +49,18 @@ public class CambiarPerfilActivity extends AppCompatActivity {
 
         nombreUsuario.setText(usuario.getDisplayName());
         nuevoCorreo.setText(usuario.getEmail());
+
+        btnCancelarCambiar = findViewById(R.id.cancelarCambiar);
+        btnCancelarCambiar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Redirigir a main
+                Intent intent = new Intent(CambiarPerfilActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         btnCambiarPerfil = findViewById(R.id.cambiarPerfil);
         btnCambiarPerfil.setOnClickListener(new View.OnClickListener() {
@@ -78,24 +90,10 @@ public class CambiarPerfilActivity extends AppCompatActivity {
                         Intent intent = new Intent(CambiarPerfilActivity.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
-                        finish(); // Finaliza la actividad actual para que no vuelva con el botón "Atrás"
+                        finish();
                     } else {
                         mensaje("No has editado ningún campo");
                     }
-
-//                    usuario.updatePassword(nuevaContra.getText().toString())
-//                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<Void> task) {
-//                                    if (task.isSuccessful()) {
-//                                        mensaje("Contraseña actualizada");
-//
-//
-//                                    } else if (!task.isSuccessful()) {
-//                                        Log.e("VicentPorterIntelligent", "Acción incorrecta");
-//                                    }
-//                                }
-//                            });
                 }
             }
         });
