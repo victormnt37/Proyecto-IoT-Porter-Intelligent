@@ -86,10 +86,13 @@ public class CustomLoginActivity extends AppCompatActivity {
 
     private void verificaSiUsuarioValidado() {
         if (auth.getCurrentUser() != null) {
+            //obtener user id y pasar como extra a MainActivity
+            String user_id = auth.getCurrentUser().getUid();
             Intent i = new Intent(this, MainActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                     | Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            i.putExtra("userId", user_id);
             startActivity(i);
             finish();
         }

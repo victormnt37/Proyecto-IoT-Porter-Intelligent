@@ -32,12 +32,14 @@ public class LoginActivity extends AppCompatActivity {
         if (usuario != null) {
             if (usuario.isEmailVerified()) {
                 // El correo está verificado, redirige a MainActivity
+                String user_id = usuario.getUid();
                 Toast.makeText(this, "Inicio de sesión exitoso: " + usuario.getDisplayName() +
                         " - " + usuario.getEmail(), Toast.LENGTH_LONG).show();
                 Intent i = new Intent(this, MainActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                         | Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                i.putExtra("userId", user_id);
                 startActivity(i);
             } else {
                 // Si el correo no está verificado, enviamos una solicitud de verificación

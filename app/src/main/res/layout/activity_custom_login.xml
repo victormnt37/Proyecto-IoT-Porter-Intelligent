@@ -5,6 +5,7 @@
     android:id="@+id/contenedor"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -14,8 +15,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp">
+            android:layout_height="match_parent">
             <!-- Título -->
             <ImageView
                 android:id="@+id/logoImageView"

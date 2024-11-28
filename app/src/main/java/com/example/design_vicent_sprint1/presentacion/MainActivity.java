@@ -39,7 +39,12 @@ import com.example.design_vicent_sprint1.model.EdificiosFirestoreAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -59,11 +64,45 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton btnMenu;
     private ViewPager2 contenedor_vista;
     private MiPagerAdapter pagerAdapter;
+    private String userId;
+    private Map<String,String> lista_edificios; // key -> edificio_id     value -> rol (vecino/admin)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Bundle extras = getIntent().getExtras();
+        userId = extras.getString("userId");
+        CollectionReference UsuariosRef = FirebaseFirestore.getInstance()
+                .collection("usuarios").document(userId).collection("edificios");
+        UsuariosRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                lista_edificios = new HashMap<>();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    lista_edificios.put(document.getId(), document.getString("rol"));
+                }
+                /*String prueba = lista_edificios.toString();
+                Log.d("Firestore", prueba + "prueba hecha");*/
+                if(!lista_edificios.isEmpty()){
+                    Map.Entry<String, String> primerEntry = lista_edificios.entrySet().iterator().next();
+                    String id_edificio = primerEntry.getKey();
+                    DocumentReference edificioRef = FirebaseFirestore.getInstance()
+                            .collection("edificios").document(id_edificio);
+                    edificioRef.get().addOnCompleteListener(task2 -> {
+                        if (task2.isSuccessful()) {
+                            String nombreEdificio = task2.getResult().getString("nombre");
+                            btnEdificios.setText(nombreEdificio);
+                            Log.d("Firestore", "Nombre del primer edificio: " + nombreEdificio);
+                        } else {
+                            Log.e("Firestore", "Error o colección vacía", task.getException());
+                        }
+                    });
+                }
+            } else {
+                Log.e("Firestore", "Error o colección vacía", task.getException());
+            }
+        });
 
         //Header
         Toolbar toolbar = (Toolbar) findViewById(R.id.header);
@@ -79,17 +118,8 @@ public class MainActivity extends AppCompatActivity {
         repositorioEdificios = new RepositorioEdificios();
 
         //Edificio seleccionado por defecto
-        CollectionReference edificiosRef = FirebaseFirestore.getInstance()
-                .collection("edificios");
-        edificiosRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                String nombreEdificio = task.getResult().getDocuments().get(0).getString("nombre");
-                btnEdificios.setText(nombreEdificio);
-                Log.d("Firestore", "Nombre del primer edificio: " + nombreEdificio);
-            } else {
-                Log.e("Firestore", "Error o colección vacía", task.getException());
-            }
-        });
+
+
         edificioSeleccionado = repositorioEdificios.getEdificioById(1);
 
 
