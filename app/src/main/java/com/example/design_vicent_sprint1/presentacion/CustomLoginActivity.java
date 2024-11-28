@@ -183,6 +183,19 @@ public class CustomLoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
+                            // comprobar si es la primera vez que inicia sesion con Google
+                            AuthResult authResult = task.getResult();
+                            if (authResult != null && authResult.getAdditionalUserInfo() != null) {
+                                boolean esNuevoUsuario = authResult.getAdditionalUserInfo().isNewUser();
+
+                                if (esNuevoUsuario) {
+                                    // es nuevo
+                                } else {
+                                    // no
+                                }
+                            }
+
                             verificaSiUsuarioValidado();
                         }else{
                             mensaje(task.getException().getLocalizedMessage());
