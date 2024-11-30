@@ -14,6 +14,23 @@ public class RepositorioWeather {
         api = RetrofitClient.getInstance().create(MetaWeatherService.class);
     }
 
+    /*
+    Este es un ejemplo de como se puede gastar el api:
+
+    WeatherRepository weatherRepository = new WeatherRepository();
+    Edificio edificio = new Edificio(1, "Edificio Central", "Calle Principal", "Madrid");
+
+    Weather weather = weatherRepository.getWeatherForEdificio(edificio);
+
+    if (weather != null) {
+        System.out.println("Estado del clima: " + weather.getWeatherStateName());
+        System.out.println("Temperatura actual: " + weather.getTheTemp() + "°C");
+    } else {
+        System.out.println("No se pudo obtener el clima.");
+    }
+
+     */
+
     public Weather getWeatherForEdificio(Edificio edificio) {
         try {
             String ciudad = edificio.getCiudad();
