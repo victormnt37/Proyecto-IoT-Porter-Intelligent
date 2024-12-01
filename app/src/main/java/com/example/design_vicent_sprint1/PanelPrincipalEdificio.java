@@ -20,7 +20,7 @@ public class PanelPrincipalEdificio extends Fragment {
 
     private RecyclerView recyclerView;
     private RepositorioPaneles repositorioPaneles;
-    private int edificioSeleccionado;
+    private String edificioSeleccionado;
 
     @Nullable
     @Override
@@ -30,7 +30,7 @@ public class PanelPrincipalEdificio extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         if (getArguments() != null) {
-            edificioSeleccionado = getArguments().getInt("edificioSeleccionado");
+            edificioSeleccionado = getArguments().getString("edificioSeleccionado");
         }
 
         repositorioPaneles = new RepositorioPaneles();

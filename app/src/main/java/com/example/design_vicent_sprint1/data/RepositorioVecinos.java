@@ -18,10 +18,10 @@ public class RepositorioVecinos {
         return vecinos;
     }
 
-    public List<Vecino> getVecinosPorEdificio(int id_edificio) {
+    public List<Vecino> getVecinosPorEdificio(String id_edificio) {
         List<Vecino> resultado = new ArrayList<>();
         for (Vecino vecino : vecinos) {
-            if (vecino.getEdificio().getId() == id_edificio) {
+            if (vecino.getEdificio().getId().equals(id_edificio)) {
                 resultado.add(vecino);
             }
         }

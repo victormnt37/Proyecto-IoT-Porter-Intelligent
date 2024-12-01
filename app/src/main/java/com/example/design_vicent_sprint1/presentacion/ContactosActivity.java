@@ -16,7 +16,7 @@ public class ContactosActivity extends AppCompatActivity {
 
     private RepositorioContactos repositorioContactos;
     private RecyclerView recyclerViewContactos;
-    private int edificioSeleccionado;
+    private String edificioSeleccionado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,7 @@ public class ContactosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contactos);
 
         recyclerViewContactos = findViewById(R.id.recyclerViewContactos);
-        edificioSeleccionado = getIntent().getIntExtra("edificio", 0);
+        edificioSeleccionado = getIntent().getStringExtra("edificio");
 
         repositorioContactos = new RepositorioContactos();
         cargarContactos();

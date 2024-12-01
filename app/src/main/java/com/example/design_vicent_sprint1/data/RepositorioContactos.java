@@ -14,10 +14,10 @@ public class RepositorioContactos {
         cargarContactosEjemplo();
     }
 
-    public List<Contacto> getContactosPorEdificio(int id_edificio) {
+    public List<Contacto> getContactosPorEdificio(String id_edificio) {
         List<Contacto> resultado = new ArrayList<>();
         for (Contacto contacto : contactos) {
-            if (contacto.getEdificio().getId() == id_edificio) {
+            if (contacto.getEdificio().getId().equals(id_edificio)) {
                 resultado.add(contacto);
             }
         }
