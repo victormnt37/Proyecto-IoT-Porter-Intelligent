@@ -12,4 +12,7 @@
     <item
         android:id="@+id/menu_contactos"
         android:title="Contactos" />
+    <item
+        android:id="@+id/menu_administradores"
+        android:title="Administradores" />
 </menu>

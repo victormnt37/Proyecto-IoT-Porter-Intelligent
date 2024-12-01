@@ -109,6 +109,26 @@ public class MainActivity extends AppCompatActivity {
                     Map.Entry<String, String> primerEdificio = lista_edificios_y_roles.entrySet().iterator().next();
                     //seleccionar un edificio por defecto
                     id_edificioSeleccionado = primerEdificio.getKey();
+                    String rol = lista_edificios_y_roles.get(id_edificioSeleccionado);
+                    if(rol.equals("vecino")){
+                        btnMenu.setOnClickListener(view -> mostrarMenuVecino(view));
+                    }
+                    if(rol.equals("admin")){
+                        btnMenu.setOnClickListener(view -> mostrarMenuAdmin(view));
+                    }
+                    //Contenedor de los layouts *** USAR SCROLLVIEW EN LAYOUT
+                    pagerAdapter = new MiPagerAdapter(this, id_edificioSeleccionado);
+                    contenedor_vista = findViewById(R.id.vista);
+                    contenedor_vista.setAdapter(pagerAdapter);
+                    //Barra de herramientas
+                    TabLayout barra_herramientas = findViewById(R.id.barra_de_herramientas);
+                    new TabLayoutMediator(barra_herramientas, contenedor_vista, new TabLayoutMediator.TabConfigurationStrategy() {
+                        @Override
+                        public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                            tab.setIcon(iconos[position]);
+                        }
+                    }).attach();
+
                     DocumentReference datos_edificio_seleccionado = FirebaseFirestore.getInstance()
                             .collection("edificios").document(id_edificioSeleccionado);
                     datos_edificio_seleccionado.get().addOnCompleteListener(task2 -> {
@@ -134,35 +154,18 @@ public class MainActivity extends AppCompatActivity {
         adapter = ((Aplicacion) getApplicationContext()).adapter;
         edificios = ((Aplicacion) getApplicationContext()).edificios;
 
-        //Contenedor de los layouts *** USAR SCROLLVIEW EN LAYOUT
-        pagerAdapter = new MiPagerAdapter(this, id_edificioSeleccionado);
-        contenedor_vista = findViewById(R.id.vista);
-        contenedor_vista.setAdapter(pagerAdapter);
-
-        //Barra de herramientas
-        TabLayout barra_herramientas = findViewById(R.id.barra_de_herramientas);
-        new TabLayoutMediator(barra_herramientas, contenedor_vista, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                tab.setIcon(iconos[position]);
-            }
-        }).attach();
-
         btnEdificios.setOnClickListener(view -> mostrarPopupEdificios(view));
-        btnMenu.setOnClickListener(view -> mostrarMenu(view));
         adapter.startListening();
     }
 
     private void mostrarPopupEdificios(View view) {
         View popupView = LayoutInflater.from(this).inflate(R.layout.popup_selector_edificios, null);
         PopupWindow popupWindow = new PopupWindow(popupView, 800, 600, true);
-
         Set<String> lista_id_edificios = lista_edificios_y_roles.keySet();
         Log.d("Firestore", "ids" + lista_id_edificios);
         CollectionReference edificios = FirebaseFirestore.getInstance()
                 .collection("edificios");
         List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
-
         for (String id : lista_id_edificios) {
             Task<DocumentSnapshot> task = edificios.document(id).get();
             tasks.add(task);
@@ -171,13 +174,11 @@ public class MainActivity extends AppCompatActivity {
                     DocumentSnapshot documentSnapshot = t.getResult();
                     Edificio edificio = documentSnapshot.toObject(Edificio.class);
                     lista_edificios.cargarEdificio(edificio);
-
                 }else {
                     Log.e("FirestoreError", "Error al obtener el documento con ID: " + id, t.getException());
                 }
             });
         }
-
         Tasks.whenAllComplete(tasks).addOnCompleteListener(task -> {
             RecyclerView recyclerView = popupView.findViewById(R.id.recyclerViewEdificios);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -200,7 +201,13 @@ public class MainActivity extends AppCompatActivity {
                             tab.setIcon(iconos[position]);
                         }
                     }).attach();
-
+                    String rol = lista_edificios_y_roles.get(id_edificioSeleccionado);
+                    if(rol.equals("vecino")){
+                        btnMenu.setOnClickListener(btnMenu -> mostrarMenuVecino(btnMenu));
+                    }
+                    if(rol.equals("admin")){
+                        btnMenu.setOnClickListener(btnMenu -> mostrarMenuAdmin(btnMenu));
+                    }
                 }
             });
             recyclerView.setAdapter(adapter);
@@ -208,10 +215,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void mostrarMenu(View view) {
+    private void mostrarMenuVecino(View view) {
         PopupMenu popup = new PopupMenu(this, view);
-        popup.getMenuInflater().inflate(R.menu.menu_main, popup.getMenu());
-
+        popup.getMenuInflater().inflate(R.menu.menu_vecino, popup.getMenu());
         popup.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.menu_tus_edificios) {
                 lanzarActividad(EdificiosActivity.class);
@@ -229,7 +235,33 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+        popup.show();
+    }
 
+    //FALTA CREAR ACTIVIDAD ESPECIFICA SEGUN EL ROL
+    private  void  mostrarMenuAdmin(View view){
+        PopupMenu popup = new PopupMenu(this, view);
+        popup.getMenuInflater().inflate(R.menu.menu_main, popup.getMenu());
+        popup.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.menu_tus_edificios) {
+                lanzarActividad(EdificiosActivity.class);
+                return true;
+            } else if (item.getItemId() == R.id.menu_vecinos) {
+                lanzarActividad(VecinosActivity.class);
+                return true;
+            } else if (item.getItemId() == R.id.menu_anuncios) {
+                lanzarActividad(AnunciosActivity.class);
+                return true;
+            } else if (item.getItemId() == R.id.menu_contactos) {
+                lanzarActividad(ContactosActivity.class);
+                return true;
+            } else if (item.getItemId() == R.id.menu_administradores) {
+                lanzarActividad(ContactosActivity.class);
+                return true;
+            } else {
+                return false;
+            }
+        });
         popup.show();
     }
 
@@ -303,7 +335,6 @@ public class MainActivity extends AppCompatActivity {
 
         public void actualizarEdificioSeleccionado(String nuevoEdificioId) {
             this.edificioSeleccionadoId = nuevoEdificioId;
-
         }
     }
 

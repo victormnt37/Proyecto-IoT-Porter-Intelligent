@@ -20,8 +20,7 @@ public class Edificio {
 
     public Edificio(){}
 
-    public Edificio(String id) {
-        this.id = id;
+    public Edificio(int btn_anyadir) {
         this.nombre = "add";
     }
 
