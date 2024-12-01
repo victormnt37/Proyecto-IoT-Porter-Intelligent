@@ -30,7 +30,7 @@ public class RepositorioEdificios {
         edificios.add(new Edificio(1, "Edificio A", "Calle 123", "Ciudad A"));
         edificios.add(new Edificio(2, "Edificio B", "Avenida 456", "Ciudad B"));
         edificios.add(new Edificio(3, "Edificio C", "Boulevard 789", "Ciudad C"));
-        edificios.add(new Edificio(edificios.size()));
+        edificios.add(new Edificio(4, "Edificio C", "Boulevard 789", "Ciudad C"));
     }
 }
 

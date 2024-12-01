@@ -44,6 +44,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -145,36 +146,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void mostrarPopupEdificios(View view) {
-        View popupView = LayoutInflater.from(this).inflate(R.layout.popup_selector_edificios, null);
-        PopupWindow popupWindow = new PopupWindow(popupView, 800, 600, true);
+        // Crear el PopupMenu
+        PopupMenu popupMenu = new PopupMenu(this, view);
 
-        RecyclerView recyclerView = popupView.findViewById(R.id.recyclerViewEdificios);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        /*EdificiosAdapter adapter = new EdificiosAdapter(repositorioEdificios.getEdificios(), edificio -> {
-            if (edificio.getNombre().equals("add")) {
-                popupWindow.dismiss();
-                mostrarPopupAddEdificio(view);
-            } else {
-                edificioSeleccionado = edificio;
-                btnEdificios.setText(edificio.getNombre());
-                popupWindow.dismiss();
+        // Añadir los edificios al menú
+        List<Edificio> edificios = repositorioEdificios.getEdificios();
+        for (int i = 0; i < edificios.size(); i++) {
+            Edificio edificio = edificios.get(i);
+            popupMenu.getMenu().add(0, i, 0, edificio.getNombre()); // Usar el índice como ID
+        }
 
-                pagerAdapter = new MiPagerAdapter(this, edificioSeleccionado.getId());
-                contenedor_vista.setAdapter(pagerAdapter);
-                TabLayout barra_herramientas = findViewById(R.id.barra_de_herramientas);
-                new TabLayoutMediator(barra_herramientas, contenedor_vista, new TabLayoutMediator.TabConfigurationStrategy() {
-                    @Override
-                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                        tab.setIcon(iconos[position]);
-                    }
-                }).attach();
+        // Manejar clics en los elementos del menú
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int position = item.getItemId(); // ID del elemento seleccionado
+            Edificio edificioSeleccionado = edificios.get(position);
 
-            }
-        });*/
+            // Actualizar el botón con el nombre del edificio seleccionado
+            btnEdificios.setText(edificioSeleccionado.getNombre());
 
-        recyclerView.setAdapter(adapter);
-        popupWindow.showAsDropDown(view, 0, 0);
+            // Actualizar el ViewPager con el edificio seleccionado
+            pagerAdapter = new MiPagerAdapter(MainActivity.this, edificioSeleccionado.getId());
+            contenedor_vista.setAdapter(pagerAdapter);
+
+            // Actualizar la barra de herramientas
+            TabLayout barra_herramientas = findViewById(R.id.barra_de_herramientas);
+            new TabLayoutMediator(barra_herramientas, contenedor_vista, (tab, position1) -> tab.setIcon(iconos[position1])).attach();
+
+            return true;
+        });
+
+        // Mostrar el menú
+        popupMenu.show();
     }
+
 
     private void mostrarMenu(View view) {
         PopupMenu popup = new PopupMenu(this, view);
@@ -280,6 +284,8 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         adapter.stopListening();// deja de escucha los cambios en la base de datos
     }
+
+
 }
 
 

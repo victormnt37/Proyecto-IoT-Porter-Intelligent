@@ -3,19 +3,25 @@ package com.example.design_vicent_sprint1.model;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.design_vicent_sprint1.R;
+
 import java.util.List;
 
 public class EdificiosAdapter extends RecyclerView.Adapter<EdificiosAdapter.ViewHolder> {
+
     private List<Edificio> edificios;
     private OnItemClickListener listener;
 
+    // Interfaz para manejar clics en elementos
     public interface OnItemClickListener {
-        void onItemClick(Edificio edificio);
+        void onItemClick(Edificio edificio); // Clic en el item
+        void onDeleteClick(int position);   // Clic en el botón de eliminar
     }
 
     public EdificiosAdapter(List<Edificio> edificios, OnItemClickListener listener) {
@@ -27,15 +33,24 @@ public class EdificiosAdapter extends RecyclerView.Adapter<EdificiosAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(android.R.layout.simple_list_item_1, parent, false);
+                .inflate(R.layout.item_edificios, parent, false); // Usamos el nuevo diseño personalizado
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Edificio edificio = edificios.get(position);
-        holder.textView.setText(edificio.getNombre());
+
+        // Asignar datos al item
+        holder.nombreEdificio.setText(edificio.getNombre());
+        holder.ciudadEdificio.setText(edificio.getCiudad());
+        holder.calleEdificio.setText(edificio.getCalle());
+
+        // Manejar clic en el item completo
         holder.itemView.setOnClickListener(v -> listener.onItemClick(edificio));
+
+        // Manejar clic en el botón de eliminar
+        holder.iconoEliminar.setOnClickListener(v -> listener.onDeleteClick(position));
     }
 
     @Override
@@ -44,12 +59,17 @@ public class EdificiosAdapter extends RecyclerView.Adapter<EdificiosAdapter.View
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textView;
+        TextView nombreEdificio, calleEdificio, ciudadEdificio;
+        ImageView iconoEliminar;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(android.R.id.text1);
+            nombreEdificio = itemView.findViewById(R.id.nombreEdificio);
+            ciudadEdificio = itemView.findViewById(R.id.ciudadEdificio);
+            calleEdificio = itemView.findViewById(R.id.calleEdificio);
+            iconoEliminar = itemView.findViewById(R.id.iconoEliminar);
         }
     }
-}
 
+
+}
