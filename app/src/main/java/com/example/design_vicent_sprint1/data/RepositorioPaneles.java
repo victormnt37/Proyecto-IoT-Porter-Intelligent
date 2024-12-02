@@ -13,7 +13,7 @@ public class RepositorioPaneles {
     public RepositorioPaneles() {
         RepositorioEdificios repositorioEdificios = new RepositorioEdificios();
         List<Edificio> edificios = repositorioEdificios.getEdificios();
-        edificios.remove(edificios.size()-1);
+        //edificios.remove(edificios.size()-1);
         paneles = new ArrayList<>();
 
         paneles.add(new Panel(edificios.get(0), "Actividad Reciente"));
@@ -47,10 +47,10 @@ public class RepositorioPaneles {
         paneles.add(new Panel(edificios.get(2), "Humo y Gas"));
     }
 
-    public List<Panel> getPanelesPorEdificio(int id_edificio) {
+    public List<Panel> getPanelesPorEdificio(String id_edificio) {
         List<Panel> resultado = new ArrayList<>();
         for (Panel panel : paneles) {
-            if (panel.getEdificio().getId() == id_edificio) {
+            if (panel.getEdificio().getId().equals(id_edificio)) {
                 resultado.add(panel);
             }
         }

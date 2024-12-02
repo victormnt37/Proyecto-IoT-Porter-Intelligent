@@ -14,10 +14,10 @@ public class RepositorioAnuncios {
         cargarAnunciosEjemplo();
     }
 
-    public List<Anuncio> getAnunciosPorEdificio(int id_edificio) {
+    public List<Anuncio> getAnunciosPorEdificio(String id_edificio) {
         List<Anuncio> resultado = new ArrayList<>();
         for (Anuncio anuncio : anuncios) {
-            if (anuncio.getEdificio().getId() == id_edificio) {
+            if (anuncio.getEdificio().getId().equals(id_edificio)) {
                 resultado.add(anuncio);
             }
         }

@@ -20,7 +20,7 @@ public class Notificaciones extends Fragment {
 
     private RecyclerView recyclerView;
     private RepositorioNotificaciones repositorioNotificaciones;
-    private int edificioSeleccionado;
+    private String edificioSeleccionado;
 
     @Nullable
     @Override
@@ -33,7 +33,7 @@ public class Notificaciones extends Fragment {
 
         // Obtener argumento del edificio seleccionado
         if (getArguments() != null) {
-            edificioSeleccionado = getArguments().getInt("edificioSeleccionado", 0);
+            edificioSeleccionado = getArguments().getString("edificioSeleccionado");
         }
 
         // Cargar datos del repositorio

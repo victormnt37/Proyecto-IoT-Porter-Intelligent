@@ -29,10 +29,10 @@ public class RepositorioPuertas {
         puertas.add(new Puerta(edificios.get(2), "Puerta de Emergencia", "P007"));
     }
 
-    public List<Puerta> getPuertasPorEdificio(int id_edificio) {
+    public List<Puerta> getPuertasPorEdificio(String id_edificio) {
         List<Puerta> resultado = new ArrayList<>();
         for (Puerta puerta : puertas) {
-            if (puerta.getEdificio().getId() == id_edificio) {
+            if (puerta.getEdificio().getId().equals(id_edificio)) {
                 resultado.add(puerta);
             }
         }

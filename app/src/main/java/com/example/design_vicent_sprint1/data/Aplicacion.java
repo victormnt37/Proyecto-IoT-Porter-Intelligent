@@ -5,8 +5,6 @@ import android.app.Application;
 import com.example.design_vicent_sprint1.model.Edificio;
 import com.example.design_vicent_sprint1.model.EdificiosFirestoreAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 

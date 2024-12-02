@@ -17,7 +17,7 @@ public class VecinosActivity extends AppCompatActivity {
 
     private RepositorioVecinos repositorioVecinos;
     private RecyclerView recyclerViewVecinos;
-    private int edificioSeleccionado;
+    private String edificioSeleccionado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class VecinosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_vecinos);
 
         recyclerViewVecinos = findViewById(R.id.recyclerViewVecinos);
-        edificioSeleccionado = getIntent().getIntExtra("edificio", 0);
+        edificioSeleccionado = getIntent().getStringExtra("edificio");
 
         repositorioVecinos = new RepositorioVecinos();
 

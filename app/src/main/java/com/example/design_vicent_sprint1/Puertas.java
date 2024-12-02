@@ -21,7 +21,7 @@ public class Puertas extends Fragment {
 
     private RecyclerView recyclerView;
     private RepositorioPuertas repositorioPuertas;
-    private int edificioSeleccionado;
+    private String edificioSeleccionado;
 
     @Nullable
     @Override
@@ -32,7 +32,7 @@ public class Puertas extends Fragment {
         //recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         if (getArguments() != null) {
-            edificioSeleccionado = getArguments().getInt("edificioSeleccionado");
+            edificioSeleccionado = getArguments().getString("edificioSeleccionado");
         }
 
         repositorioPuertas = new RepositorioPuertas();

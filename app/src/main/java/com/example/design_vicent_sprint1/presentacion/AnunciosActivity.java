@@ -18,7 +18,7 @@ public class AnunciosActivity extends AppCompatActivity {
 
     private RepositorioAnuncios repositorioAnuncios;
     private RecyclerView recyclerViewAnuncios;
-    private int edificioSeleccionado;
+    private String edificioSeleccionado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,7 @@ public class AnunciosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_anuncios);
 
         recyclerViewAnuncios = findViewById(R.id.recyclerViewAnuncios);
-        edificioSeleccionado = getIntent().getIntExtra("edificio", 0);
+        edificioSeleccionado = getIntent().getStringExtra("edificio");
 
         repositorioAnuncios = new RepositorioAnuncios();
         cargarAnuncios();

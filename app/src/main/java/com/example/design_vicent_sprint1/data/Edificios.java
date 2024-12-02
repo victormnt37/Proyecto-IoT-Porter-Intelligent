@@ -5,16 +5,20 @@ import com.example.design_vicent_sprint1.model.Edificio;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RepositorioEdificios {
+public class Edificios extends ArrayList{
+
     private List<Edificio> edificios;
 
-    public RepositorioEdificios() {
+    public Edificios() {
         edificios = new ArrayList<>();
-        cargarEdificiosEjemplo();
+        edificios.add(new Edificio(0));
+        //cargarEdificiosEjemplo();
     }
 
     public void cargarEdificio(Edificio edificio){
-        edificios.add(edificio);
+        if (!edificios.contains(edificio)) {
+            edificios.add(edificio);
+        }
     }
 
     public List<Edificio> getEdificios() {
@@ -29,12 +33,4 @@ public class RepositorioEdificios {
         }
         return null;
     }
-
-    private void cargarEdificiosEjemplo() {
-        edificios.add(new Edificio("1", "Edificio A", "Calle 123", "Ciudad A"));
-        edificios.add(new Edificio("2", "Edificio B", "Avenida 456", "Ciudad B"));
-        edificios.add(new Edificio("3", "Edificio C", "Boulevard 789", "Ciudad C"));
-        edificios.add(new Edificio("4", "Edificio C", "Boulevard 789", "Ciudad C"));
-    }
 }
-

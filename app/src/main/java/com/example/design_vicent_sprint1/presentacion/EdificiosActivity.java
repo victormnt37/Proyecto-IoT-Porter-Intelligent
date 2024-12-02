@@ -1,22 +1,22 @@
 package com.example.design_vicent_sprint1.presentacion;
 
-
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.design_vicent_sprint1.model.Edificio;
-import com.example.design_vicent_sprint1.model.EdificiosAdapter;
 import com.example.design_vicent_sprint1.R;
 import com.example.design_vicent_sprint1.data.RepositorioEdificios;
+import com.example.design_vicent_sprint1.model.Edificio;
+import com.example.design_vicent_sprint1.model.EdificiosAdapter;
 
 import java.util.List;
 
 public class EdificiosActivity extends AppCompatActivity {
 
-    private RepositorioEdificios repositorioEdificios;
     private RecyclerView recyclerViewEdificios;
+    private List<Edificio> listaEdificios;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,23 +25,37 @@ public class EdificiosActivity extends AppCompatActivity {
 
         recyclerViewEdificios = findViewById(R.id.recyclerViewEdificios);
 
-        repositorioEdificios = new RepositorioEdificios();
-        cargarEdificios();
+        RepositorioEdificios repositorioEdificios = new RepositorioEdificios();
+        listaEdificios = repositorioEdificios.getEdificios(); // Obtener edificios
+
+        configurarRecyclerView();
     }
 
-    private void cargarEdificios() {
-        List<Edificio> edificios = repositorioEdificios.getEdificios();
-        edificios.remove(edificios.size()-1);
-        //recyclerViewEdificios.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewEdificios.setLayoutManager(new GridLayoutManager(this,2));
-        EdificiosAdapter adapter = new EdificiosAdapter(edificios, this::onEdificioSeleccionado);
+    private void configurarRecyclerView() {
+        recyclerViewEdificios.setLayoutManager(new GridLayoutManager(this, 1));
+
+        EdificiosAdapter adapter = new EdificiosAdapter(listaEdificios, new EdificiosAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Edificio edificio) {
+                onEdificioSeleccionado(edificio); // Manejar selección
+            }
+
+            @Override
+            public void onDeleteClick(int position) {
+                // Eliminar el edificio de la lista
+                listaEdificios.remove(position);
+                recyclerViewEdificios.getAdapter().notifyItemRemoved(position);
+            }
+        });
+
         recyclerViewEdificios.setAdapter(adapter);
     }
 
     private void onEdificioSeleccionado(Edificio edificio) {
-        // Cuando un edificio es seleccionado, podrías lanzar otra actividad o hacer algo con el edificio seleccionado.
-       /* Intent intent = new Intent(this, VecinosActivity.class); // Ejemplo: abrir VecinosActivity
-        intent.putExtra("edificio", edificio.getId()); // Pasar el edificio seleccionado
+        // Aquí puedes manejar la acción al seleccionar un edificio.
+        // Ejemplo: abrir otra actividad.
+        /*Intent intent = new Intent(this, VecinosActivity.class);
+        intent.putExtra("edificio", edificio.getId());
         startActivity(intent);*/
     }
 }

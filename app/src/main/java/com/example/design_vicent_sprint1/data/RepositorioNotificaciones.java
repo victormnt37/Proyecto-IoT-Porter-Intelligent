@@ -37,10 +37,10 @@ public class RepositorioNotificaciones {
         notificaciones.add(new Notificacion(edificios.get(2), "Alerta de robo: intento de acceso forzado en el piso 1", "Alerta"));
     }
 
-    public List<Notificacion> getNotificacionesPorEdificio(int id_edificio) {
+    public List<Notificacion> getNotificacionesPorEdificio(String id_edificio) {
         List<Notificacion> resultado = new ArrayList<>();
         for (Notificacion notificacion : notificaciones) {
-            if (notificacion.getEdificio().getId() == id_edificio) {
+            if (notificacion.getEdificio().getId().equals(id_edificio)) {
                 resultado.add(notificacion);
             }
         }
