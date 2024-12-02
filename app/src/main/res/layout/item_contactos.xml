@@ -11,9 +11,9 @@
     <!-- Icono de teléfono -->
     <ImageView
         android:id="@+id/iconPhone"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:src="@drawable/ic_launcher_background"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/icon_phone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -31,7 +31,7 @@
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/iconPhone"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/optionsMenu" />
+        app:layout_constraintEnd_toStartOf="@id/menuOpciones" />
 
     <!-- Descripción -->
     <TextView
@@ -43,7 +43,7 @@
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@id/iconPhone"
         app:layout_constraintTop_toBottomOf="@id/contactName"
-        app:layout_constraintEnd_toStartOf="@id/optionsMenu" />
+        app:layout_constraintEnd_toStartOf="@id/menuOpciones" />
 
     <!-- Número de teléfono -->
     <TextView
@@ -55,17 +55,17 @@
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@id/iconPhone"
         app:layout_constraintTop_toBottomOf="@id/contactDescription"
-        app:layout_constraintEnd_toStartOf="@id/optionsMenu" />
+        app:layout_constraintEnd_toStartOf="@id/menuOpciones" />
 
     <!-- Menú de opciones -->
     <ImageView
-        android:id="@+id/optionsMenu"
+        android:id="@+id/menuOpciones"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher_background"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:tint="#3B5D75" />
+        android:contentDescription="Opciones"
+        android:padding="8dp"
+        android:src="@drawable/icon_menudot"
+        tools:layout_editor_absoluteX="365dp"
+        tools:layout_editor_absoluteY="-10dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
