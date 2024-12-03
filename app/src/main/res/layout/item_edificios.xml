@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -7,9 +8,10 @@
 
     <ImageView
         android:id="@+id/iconEdificio"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/icon_casa" /> <!-- Icono de edificio -->
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/icon_edificio"
+        app:tint="@color/blue" /> <!-- Icono de edificio -->
 
     <LinearLayout
         android:layout_width="0dp"

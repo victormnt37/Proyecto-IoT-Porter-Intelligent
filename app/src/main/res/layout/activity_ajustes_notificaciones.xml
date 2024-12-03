@@ -17,6 +17,7 @@
             android:gravity="center"
             android:padding="16dp"
             android:text="Configuración de notificaciones"
+            android:fontFamily="@font/poppinsbold"
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
 

@@ -25,6 +25,7 @@
             android:layout_gravity="start"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Menu desplegable edificios"
+            android:fontFamily="@font/poppinsbold"
             android:text="Edificio" />
 
         <ImageButton
