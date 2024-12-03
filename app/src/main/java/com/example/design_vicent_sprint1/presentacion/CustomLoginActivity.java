@@ -188,14 +188,10 @@ public class CustomLoginActivity extends AppCompatActivity {
                             AuthResult authResult = task.getResult();
                             if (authResult != null && authResult.getAdditionalUserInfo() != null) {
                                 boolean esNuevoUsuario = authResult.getAdditionalUserInfo().isNewUser();
-
                                 if (esNuevoUsuario) {
                                     // es nuevo
-                                } else {
-                                    // no
                                 }
                             }
-
                             verificaSiUsuarioValidado();
                         }else{
                             mensaje(task.getException().getLocalizedMessage());

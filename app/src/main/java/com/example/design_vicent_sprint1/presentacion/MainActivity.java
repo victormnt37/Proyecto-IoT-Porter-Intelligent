@@ -74,10 +74,17 @@ public class MainActivity extends AppCompatActivity {
     private String userId;
     private Map<String,String> lista_edificios_y_roles; // key -> edificio_id     value -> rol (vecino/admin)
 
+    //FALTA SEGUN ROL CARGAR INTERFAZ DISTINTA
+    //--------- BTN EMERGENTE DE AÑADIR
+    //--------- BTN EMERGENTE DE EMERGENCIA
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //recuperar el id de firebase del usuario
+        Bundle extras = getIntent().getExtras();
+        userId = extras.getString("userId");
 
         lista_edificios = new Edificios();
 
@@ -90,36 +97,36 @@ public class MainActivity extends AppCompatActivity {
         btnEdificios = findViewById(R.id.edificio);//Boton selector edificio
         btnMenu = findViewById(R.id.menu);//Boton menu
 
-        //recuperar el id de firebase del usuario
-        Bundle extras = getIntent().getExtras();
-        userId = extras.getString("userId");
-
         //buscar los edificios a los que esta vinculado el usuario
         CollectionReference edificios_del_usuario = FirebaseFirestore.getInstance()
                 .collection("usuarios").document(userId).collection("edificios");
         edificios_del_usuario.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && !task.getResult().isEmpty()) {
+
                 lista_edificios_y_roles = new HashMap<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     lista_edificios_y_roles.put(document.getId(), document.getString("rol"));
                 }
-                /*String prueba = lista_edificios.toString();
-                Log.d("Firestore", prueba + "prueba hecha");*/
+
                 if(!lista_edificios_y_roles.isEmpty()){
+
                     Map.Entry<String, String> primerEdificio = lista_edificios_y_roles.entrySet().iterator().next();
                     //seleccionar un edificio por defecto
                     id_edificioSeleccionado = primerEdificio.getKey();
+
                     String rol = lista_edificios_y_roles.get(id_edificioSeleccionado);
+
                     if(rol.equals("vecino")){
                         btnMenu.setOnClickListener(view -> mostrarMenuVecino(view));
                     }
                     if(rol.equals("admin")){
                         btnMenu.setOnClickListener(view -> mostrarMenuAdmin(view));
                     }
-                    //Contenedor de los layouts *** USAR SCROLLVIEW EN LAYOUT
+
                     pagerAdapter = new MiPagerAdapter(this, id_edificioSeleccionado);
                     contenedor_vista = findViewById(R.id.vista);
                     contenedor_vista.setAdapter(pagerAdapter);
+
                     //Barra de herramientas
                     TabLayout barra_herramientas = findViewById(R.id.barra_de_herramientas);
                     new TabLayoutMediator(barra_herramientas, contenedor_vista, new TabLayoutMediator.TabConfigurationStrategy() {
@@ -151,20 +158,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        adapter = ((Aplicacion) getApplicationContext()).adapter;
-        edificios = ((Aplicacion) getApplicationContext()).edificios;
+        //adapter = ((Aplicacion) getApplicationContext()).adapter;
+        //edificios = ((Aplicacion) getApplicationContext()).edificios;
 
         btnEdificios.setOnClickListener(view -> mostrarPopupEdificios(view));
-        adapter.startListening();
+        //adapter.startListening();
     }
 
     private void mostrarPopupEdificios(View view) {
+
         View popupView = LayoutInflater.from(this).inflate(R.layout.popup_selector_edificios, null);
         PopupWindow popupWindow = new PopupWindow(popupView, 800, 600, true);
         Set<String> lista_id_edificios = lista_edificios_y_roles.keySet();
-        Log.d("Firestore", "ids" + lista_id_edificios);
-        CollectionReference edificios = FirebaseFirestore.getInstance()
-                .collection("edificios");
+        CollectionReference edificios = FirebaseFirestore.getInstance().collection("edificios");
         List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
         for (String id : lista_id_edificios) {
             Task<DocumentSnapshot> task = edificios.document(id).get();
@@ -180,9 +186,11 @@ public class MainActivity extends AppCompatActivity {
             });
         }
         Tasks.whenAllComplete(tasks).addOnCompleteListener(task -> {
+
             RecyclerView recyclerView = popupView.findViewById(R.id.recyclerViewEdificios);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             SelectorEdificiosAdaptar adapter = new SelectorEdificiosAdaptar(lista_edificios.getEdificios(), edificio -> {
+
                 if (edificio.getNombre().equals("add")) {
                     popupWindow.dismiss();
                     mostrarPopupAddEdificio(view);
@@ -332,19 +340,13 @@ public class MainActivity extends AppCompatActivity {
 
             return fragment;
         }
-
-        public void actualizarEdificioSeleccionado(String nuevoEdificioId) {
-            this.edificioSeleccionadoId = nuevoEdificioId;
-        }
     }
 
-    @Override
+    /*@Override
     protected void onDestroy() {
         super.onDestroy();
         adapter.stopListening();// deja de escucha los cambios en la base de datos
-    }
-
-
+    }*/
 }
 
 

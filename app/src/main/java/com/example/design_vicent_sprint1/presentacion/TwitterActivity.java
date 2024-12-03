@@ -36,13 +36,10 @@ public class TwitterActivity extends CustomLoginActivity {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
                                     boolean esNuevoUsuario = authResult.getAdditionalUserInfo().isNewUser();
-
                                     if (esNuevoUsuario) {
+
                                         // nuevo usuario
-                                    } else {
-                                        // no
                                     }
-                                    
                                     startActivity(new Intent(TwitterActivity.this, MainActivity.class));
                                     Toast.makeText(TwitterActivity.this, "Login Succesfull", Toast.LENGTH_LONG).show();
                                     finish();
