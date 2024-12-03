@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
     android:background="@android:color/white"
     android:orientation="vertical">
@@ -26,5 +26,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Añadir"
-        android:layout_gravity="end"/>
+        android:fontFamily="@font/poppinsmedium"
+        android:layout_gravity="end"
+        android:backgroundTint="@color/blue"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:strokeColor="#6BA8CA"
+        app:strokeWidth="3dp"/>
 </LinearLayout>

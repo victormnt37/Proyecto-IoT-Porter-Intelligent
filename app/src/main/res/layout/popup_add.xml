@@ -23,7 +23,7 @@
         android:layout_gravity="end"
         android:fontFamily="@font/poppinsmedium"
         android:text="Cerrar Sesion"
-        android:backgroundTint="#255A7B"
+        android:backgroundTint="@color/blue"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
