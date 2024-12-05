@@ -185,7 +185,6 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="30dp"
                 android:backgroundTint="#FFFFFF"
-                android:onClick="firebaseUI"
                 android:src="@drawable/icon_twitter"
                 android:text="X"
                 android:textSize="16sp"
