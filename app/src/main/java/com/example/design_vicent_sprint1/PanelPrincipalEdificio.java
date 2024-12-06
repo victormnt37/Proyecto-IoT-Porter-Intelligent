@@ -74,7 +74,7 @@ public class PanelPrincipalEdificio extends Fragment {
 
     private void cargarPaneles() {
         List<Panel> paneles = repositorioPaneles.getPanelesPorEdificio(edificioSeleccionado);
-        PanelAdapter adapter = new PanelAdapter(paneles);
+        PanelAdapter adapter = new PanelAdapter(paneles, edificioSeleccionado);
         recyclerView.setAdapter(adapter);
     }
 }
