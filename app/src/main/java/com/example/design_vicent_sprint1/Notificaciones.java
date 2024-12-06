@@ -1,5 +1,6 @@
 package com.example.design_vicent_sprint1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,9 @@ import android.widget.ImageView;
 import com.example.design_vicent_sprint1.data.RepositorioNotificaciones;
 import com.example.design_vicent_sprint1.model.Notificacion;
 import com.example.design_vicent_sprint1.model.NotificacionesAdapter;
+import com.example.design_vicent_sprint1.presentacion.AjustesNotificacionesActivity;
+import com.example.design_vicent_sprint1.presentacion.CambiarPerfilActivity;
+import com.example.design_vicent_sprint1.presentacion.MainActivity;
 
 import java.util.List;
 
@@ -40,7 +44,11 @@ public class Notificaciones extends Fragment {
         btnAjustesNotificaciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+            Intent i = new Intent(getContext(), AjustesNotificacionesActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
             }
         });
 
