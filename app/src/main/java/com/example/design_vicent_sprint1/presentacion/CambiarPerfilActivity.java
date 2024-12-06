@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class CambiarPerfilActivity extends AppCompatActivity {
-
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
     private Button btnCambiarPerfil, btnCancelarCambiar;
     private TextInputLayout tilNombre, tilCorreo;
 
@@ -55,9 +55,13 @@ public class CambiarPerfilActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Redirigir a main
-                Intent intent = new Intent(CambiarPerfilActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                String user_id = auth.getCurrentUser().getUid();
+                Intent i = new Intent(CambiarPerfilActivity.this, MainActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        | Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                i.putExtra("userId", user_id);
+                startActivity(i);
                 finish();
             }
         });
@@ -87,9 +91,13 @@ public class CambiarPerfilActivity extends AppCompatActivity {
 
                     if (hayCambio) {
                         // Acción exitosa, redirigir a MainActivity
-                        Intent intent = new Intent(CambiarPerfilActivity.this, MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+                        String user_id = auth.getCurrentUser().getUid();
+                        Intent i = new Intent(CambiarPerfilActivity.this, MainActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                | Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        i.putExtra("userId", user_id);
+                        startActivity(i);
                         finish();
                     } else {
                         mensaje("No has editado ningún campo");

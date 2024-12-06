@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.design_vicent_sprint1.data.RepositorioNotificaciones;
 import com.example.design_vicent_sprint1.model.Notificacion;
@@ -21,22 +22,28 @@ public class Notificaciones extends Fragment {
     private RecyclerView recyclerView;
     private RepositorioNotificaciones repositorioNotificaciones;
     private String edificioSeleccionado;
+    private ImageView btnAjustesNotificaciones;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.notificaciones, container, false);
 
-        // Inicializar RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewNotificaciones);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Obtener argumento del edificio seleccionado
         if (getArguments() != null) {
             edificioSeleccionado = getArguments().getString("edificioSeleccionado");
         }
 
-        // Cargar datos del repositorio
+        btnAjustesNotificaciones = view.findViewById(R.id.imageView);
+        btnAjustesNotificaciones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         repositorioNotificaciones = new RepositorioNotificaciones();
         cargarNotificaciones();
 

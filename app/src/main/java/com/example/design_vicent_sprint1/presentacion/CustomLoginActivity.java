@@ -74,7 +74,6 @@ public class CustomLoginActivity extends AppCompatActivity {
             }
         });
 
-        // TODO: poner boton en activity_custom_login y descomentar cosas
         recuperarContraseña = findViewById(R.id.recuperarContraseña);
         recuperarContraseña.setOnClickListener(new View.OnClickListener() {
             @Override
