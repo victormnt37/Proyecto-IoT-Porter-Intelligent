@@ -63,8 +63,8 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
     public void llenarTiempo(PanelViewHolder holder, Panel panel) {
         RepositorioWeather RepositorioWeather = new RepositorioWeather();
         // pedir el edificio con el edificioSeleccionado
-        //Edificio edificio = new Edificio("", "Edificio Central", "Calle Principal", "Madrid");
-        Edificio edificio = panel.getEdificio();
+        Edificio edificio = new Edificio("", "Edificio Central", "Calle Principal", "Madrid");
+        //Edificio edificio = panel.getEdificio();
 
         Weather weather = RepositorioWeather.getWeatherForEdificio(edificio);
 
@@ -72,7 +72,7 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
 
         // ahora mismo weather siempre es nulo
         if (weather != null) {
-            elTiempo.setText("Estado del clima: " + weather.getWeatherStateName() + "Temperatura actual: " + weather.getTheTemp() + "°C");
+            elTiempo.setText("Estado del clima: " + weather.getWeatherStateName() + ", Temperatura actual: " + weather.getTheTemp() + "°C");
         } else {
             elTiempo.setText("No se pudo obtener el clima.");
         }

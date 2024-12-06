@@ -155,9 +155,6 @@ public class CustomLoginActivity extends AppCompatActivity {
         }
         return false;
     }
-    public void firebaseUI(View v) {
-        startActivity(new Intent(this, LoginActivity.class));
-    }
     public void autentificarGoogle(View v) {
         Intent i = googleSignInClient.getSignInIntent();
         startActivityForResult(i, RC_GOOGLE_SIGN_IN);

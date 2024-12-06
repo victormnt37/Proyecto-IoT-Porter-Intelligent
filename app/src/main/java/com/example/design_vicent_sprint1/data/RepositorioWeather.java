@@ -1,5 +1,7 @@
 package com.example.design_vicent_sprint1.data;
 
+import android.util.Log;
+
 import com.example.design_vicent_sprint1.model.Edificio;
 import com.example.design_vicent_sprint1.model.Weather;
 
@@ -34,8 +36,9 @@ public class RepositorioWeather {
     public Weather getWeatherForEdificio(Edificio edificio) {
         try {
             String ciudad = edificio.getCiudad();
-            Call<List<Weather>> call = api.getWeatherByCity(ciudad);
+            Call<List<Weather>> call = api.getWeatherByCity("new york");
             Response<List<Weather>> response = call.execute();
+            Log.d("api", response.body().toString());
 
             return response.body() != null && !response.body().isEmpty()
                     ? response.body().get(0)
