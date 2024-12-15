@@ -1,22 +1,31 @@
 package com.example.design_vicent_sprint1.model;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.example.design_vicent_sprint1.R;
+
 import java.util.List;
 
 public class VecinosAdapter extends RecyclerView.Adapter<VecinosAdapter.VecinoViewHolder> {
 
     private List<Vecino> vecinos;
+    private ImageLoader lectorImagenes;
 
+    // Constructor que recibe la lista de vecinos y el lector de imágenes
     public VecinosAdapter(List<Vecino> vecinos) {
         this.vecinos = vecinos;
+        this.lectorImagenes = lectorImagenes;
     }
 
     @NonNull
@@ -30,10 +39,19 @@ public class VecinosAdapter extends RecyclerView.Adapter<VecinosAdapter.VecinoVi
     public void onBindViewHolder(@NonNull VecinoViewHolder holder, int position) {
         Vecino vecino = vecinos.get(position);
 
+        // Asignar el nombre y correo
         holder.nombre.setText(vecino.getPiso());
         holder.correo.setText(vecino.getCorreoElectronico());
-        //holder.imagen.setImageResource(vecino.getImagenResId());
 
+        // Cargar la imagen usando NetworkImageView
+        Uri urlImagen = vecino.getPhotoUrl();
+        if (urlImagen != null) {
+            holder.imagen.setImageUrl(urlImagen.toString(), lectorImagenes);
+        } else {
+            holder.imagen.setDefaultImageResId(R.drawable.ic_launcher_foreground); // Imagen predeterminada
+        }
+
+        // Evento de clic para el menú de opciones
         holder.menuOpciones.setOnClickListener(v -> {
             Toast.makeText(holder.itemView.getContext(), "Opciones para: " + vecino.getPiso(), Toast.LENGTH_SHORT).show();
         });
@@ -44,17 +62,19 @@ public class VecinosAdapter extends RecyclerView.Adapter<VecinosAdapter.VecinoVi
         return vecinos.size();
     }
 
+    // Clase ViewHolder para los elementos del RecyclerView
     static class VecinoViewHolder extends RecyclerView.ViewHolder {
 
         TextView nombre, correo;
-        ImageView imagen, menuOpciones;
+        NetworkImageView imagen; // NetworkImageView para cargar imágenes desde URL
+        ImageView menuOpciones;
 
         public VecinoViewHolder(@NonNull View itemView) {
             super(itemView);
 
             nombre = itemView.findViewById(R.id.nombreVecino);
             correo = itemView.findViewById(R.id.correoVecino);
-            imagen = itemView.findViewById(R.id.imagenVecino);
+            imagen = itemView.findViewById(R.id.imagen);
             menuOpciones = itemView.findViewById(R.id.menuOpciones);
         }
     }
