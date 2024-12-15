@@ -72,7 +72,7 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
 
         // ahora mismo weather siempre es nulo
         if (weather != null) {
-            elTiempo.setText("Estado del clima: " + weather.getWeatherStateName() + ", Temperatura actual: " + weather.getTheTemp() + "°C");
+            elTiempo.setText("Estado del clima: " + weather.getCondition() + ", Temperatura actual: " + weather.getTemperature() + "°C");
         } else {
             elTiempo.setText("No se pudo obtener el clima.");
         }

@@ -10,10 +10,11 @@ import retrofit2.Response;
 import java.util.List;
 
 public class RepositorioWeather {
-    private final MetaWeatherService api;
+    private final WeatherApi api;
+    private final String API_KEY = "5ed7c78738bf49c5b2e92050241512";
 
     public RepositorioWeather() {
-        api = RetrofitClient.getInstance().create(MetaWeatherService.class);
+        api = RetrofitClient.getInstance().create(WeatherApi.class);
     }
 
     /*
@@ -36,13 +37,10 @@ public class RepositorioWeather {
     public Weather getWeatherForEdificio(Edificio edificio) {
         try {
             String ciudad = edificio.getCiudad();
-            Call<List<Weather>> call = api.getWeatherByCity("new york");
-            Response<List<Weather>> response = call.execute();
-            Log.d("api", response.body().toString());
+            Call<WeatherResponse> call = api.getCurrentWeather(API_KEY, ciudad);
+            Response<WeatherResponse> response = call.execute();
 
-            return response.body() != null && !response.body().isEmpty()
-                    ? response.body().get(0)
-                    : null;
+            return response.isSuccessful() ? response.body().toWeather() : null;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
