@@ -33,7 +33,7 @@ public class ContactosActivity extends AppCompatActivity {
     private void cargarContactos() {
         List<Contacto> contactos = repositorioContactos.getContactosPorEdificio(edificioSeleccionado);
         recyclerViewContactos.setLayoutManager(new LinearLayoutManager(this));
-        ContactosAdapter adapter = new ContactosAdapter(contactos);
+        ContactosAdapter adapter = new ContactosAdapter(contactos, this);
         recyclerViewContactos.setAdapter(adapter);
     }
 }
