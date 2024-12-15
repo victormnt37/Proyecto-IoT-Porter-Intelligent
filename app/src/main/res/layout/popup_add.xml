@@ -1,36 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:background="@color/blue_CLARITO"
+    android:orientation="vertical"
     android:padding="16dp"
-    android:background="@android:color/white"
-    android:orientation="vertical">
+    app:layout_constraintCircleRadius="10dp">
 
+    <!-- Título -->
     <TextView
-        android:id="@+id/Titulo"
+        android:id="@+id/textTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Añadir"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:gravity="center"
+        android:text="¿Quieres enviar una alerta a tus vecinos?"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_conversion_absoluteHeight="62dp"
+        tools:layout_conversion_absoluteWidth="379dp" />
 
+    <!-- Botón Robo -->
+    <Button
+        android:id="@+id/btnRobo"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#000000"
+        android:text="Robo"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:layout_constraintEnd_toStartOf="@+id/btnFuego"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textTitulo"
+        tools:layout_conversion_absoluteHeight="100dp"
+        tools:layout_conversion_absoluteWidth="100dp" />
+
+    <!-- Botón Fuego -->
+    <Button
+        android:id="@+id/btnFuego"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:backgroundTint="#FFA500"
+        android:text="Fuego"
+        android:textColor="#FFD700"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:layout_constraintEnd_toStartOf="@+id/btnSOS"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnRobo"
+        app:layout_constraintTop_toTopOf="@id/btnRobo"
+        tools:layout_conversion_absoluteHeight="100dp"
+        tools:layout_conversion_absoluteWidth="100dp" />
+
+    <!-- Botón SOS -->
+    <Button
+        android:id="@+id/btnSOS"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:backgroundTint="#FF0000"
+        android:text="SOS"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnFuego"
+        app:layout_constraintTop_toTopOf="@id/btnRobo"
+        tools:layout_conversion_absoluteHeight="100dp"
+        tools:layout_conversion_absoluteWidth="100dp" />
+
+    <!-- Botón Enviar -->
     <Button
         android:id="@+id/btnAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:fontFamily="@font/poppinsmedium"
-        android:text="Cerrar Sesion"
-        android:backgroundTint="@color/blue"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#255A7B"
+        android:text="Enviar"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView"
-        app:strokeColor="#6BA8CA"
-        app:strokeWidth="3dp"/>
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/btnSOS"
+        app:layout_constraintTop_toBottomOf="@+id/btnFuego"
+        tools:layout_conversion_absoluteHeight="48dp"
+        tools:layout_conversion_absoluteWidth="150dp" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
