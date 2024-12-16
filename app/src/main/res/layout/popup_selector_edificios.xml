@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="16dp"
-    android:gravity="center">
+    android:background="@color/blue_CLARITO"
+    android:orientation="vertical"> <!-- Asegúrate de que el fondo coincida -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewEdificios"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="horizontal" />
+        android:background="@color/blue_CLARITO"
+        android:clipToPadding="false"
+        android:padding="0dp" />
 </LinearLayout>
