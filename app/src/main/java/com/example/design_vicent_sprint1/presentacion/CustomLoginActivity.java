@@ -112,6 +112,7 @@ public class CustomLoginActivity extends AppCompatActivity {
             finish();
         }
     }
+
     public void inicioSesiónCorreo(View v) {
         if (verificaCampos()) {
             dialogo.show();
@@ -186,6 +187,8 @@ public class CustomLoginActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    //on click btn google en activity_custom_login
     public void autentificarGoogle(View v) {
         Intent i = googleSignInClient.getSignInIntent();
         startActivityForResult(i, RC_GOOGLE_SIGN_IN);
