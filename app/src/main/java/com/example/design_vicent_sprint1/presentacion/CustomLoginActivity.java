@@ -97,7 +97,7 @@ public class CustomLoginActivity extends AppCompatActivity {
         });
     }
 
-    private void verificaSiUsuarioValidado() {
+    private void verificaSiUsuarioValidado(ProgressDialog dialog) {
 
         if (auth.getCurrentUser() != null) {
 
@@ -107,6 +107,43 @@ public class CustomLoginActivity extends AppCompatActivity {
            }
 
            //combrobar si usuario autorizado (tiene edificios vinculados)
+            DocumentReference usuario = FirebaseFirestore.getInstance()
+                    .collection("usuarios").document(cuenta_usuario);
+            String cuenta = cuenta_usuario;
+            usuario.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot userId = task.getResult();
+                    if (userId.exists()) {
+                        dialogo.dismiss();
+                        Intent i = new Intent(this, MainActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                | Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        i.putExtra("userId", cuenta);
+                        startActivity(i);
+                        finish();
+                    } else {
+                        dialogo.dismiss();
+                        auth.signOut();
+                        mensaje("No estás asociado a ningún edificio. Pide al administrador que permita acceso a tu cuenta.");
+                    }
+                } else {
+                    Log.e("Firestore", "Error al obtener el documento", task.getException()); // task1, no task
+                }
+            });
+        }
+    }
+
+    private void verificaSiUsuarioValidado() {
+
+        if (auth.getCurrentUser() != null) {
+
+            String cuenta_usuario = auth.getCurrentUser().getEmail();
+            if(cuenta_usuario == null || cuenta_usuario.isEmpty()){
+                cuenta_usuario = auth.getCurrentUser().getDisplayName(); ;
+            }
+
+            //combrobar si usuario autorizado (tiene edificios vinculados)
             DocumentReference usuario = FirebaseFirestore.getInstance()
                     .collection("usuarios").document(cuenta_usuario);
             String cuenta = cuenta_usuario;
@@ -140,7 +177,7 @@ public class CustomLoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                verificaSiUsuarioValidado();
+                                verificaSiUsuarioValidado(dialogo);
                             } else {
                                 dialogo.dismiss();
                                 mensaje(task.getException().getLocalizedMessage());
