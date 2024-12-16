@@ -34,6 +34,7 @@ import com.example.design_vicent_sprint1.PanelPrincipalEdificio;
 import com.example.design_vicent_sprint1.Puertas;
 import com.example.design_vicent_sprint1.R;
 import com.example.design_vicent_sprint1.data.RepositorioEdificios;
+import com.example.design_vicent_sprint1.model.EdificioMenuAdapter;
 import com.example.design_vicent_sprint1.model.EdificiosFirestoreAdapter;
 import com.example.design_vicent_sprint1.model.Edificio;
 import com.example.design_vicent_sprint1.model.SelectorEdificiosAdaptar;
@@ -166,31 +167,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void mostrarPopupEdificios(View view) {
-
         View popupView = LayoutInflater.from(this).inflate(R.layout.popup_selector_edificios, null);
-        PopupWindow popupWindow = new PopupWindow(popupView, 800, 600, true);
+        PopupWindow popupWindow = new PopupWindow(popupView, 1500, 440, true);
+
         Set<String> lista_id_edificios = lista_edificios_y_roles.keySet();
         CollectionReference edificios = FirebaseFirestore.getInstance().collection("edificios");
         List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
+
         for (String id : lista_id_edificios) {
             Task<DocumentSnapshot> task = edificios.document(id).get();
             tasks.add(task);
+
             task.addOnCompleteListener(t -> {
                 if (t.isSuccessful() && t.getResult() != null) {
                     DocumentSnapshot documentSnapshot = t.getResult();
                     Edificio edificio = documentSnapshot.toObject(Edificio.class);
                     lista_edificios.cargarEdificio(edificio);
-                }else {
+                } else {
                     Log.e("FirestoreError", "Error al obtener el documento con ID: " + id, t.getException());
                 }
             });
         }
+
         Tasks.whenAllComplete(tasks).addOnCompleteListener(task -> {
-
             RecyclerView recyclerView = popupView.findViewById(R.id.recyclerViewEdificios);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            SelectorEdificiosAdaptar adapter = new SelectorEdificiosAdaptar(lista_edificios.getEdificios(), edificio -> {
 
+            // Configurar LayoutManager para scroll horizontal
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+            recyclerView.setLayoutManager(layoutManager);
+
+            // Cambiar a EdificioMenuAdapter
+            EdificioMenuAdapter adapter = new EdificioMenuAdapter(lista_edificios.getEdificios(), edificio -> {
                 if (edificio.getNombre().equals("add")) {
                     popupWindow.dismiss();
                     mostrarPopupAddEdificio(view);
@@ -199,29 +206,32 @@ public class MainActivity extends AppCompatActivity {
                     String texto = edificio.getNombre().toUpperCase() + "\n" +
                             edificio.getCalle() + "\n" + edificio.getCiudad();
                     btnEdificios.setText(texto);
+
                     popupWindow.dismiss();
                     pagerAdapter = new MiPagerAdapter(this, id_edificioSeleccionado);
                     contenedor_vista.setAdapter(pagerAdapter);
+
                     TabLayout barra_herramientas = findViewById(R.id.barra_de_herramientas);
-                    new TabLayoutMediator(barra_herramientas, contenedor_vista, new TabLayoutMediator.TabConfigurationStrategy() {
-                        @Override
-                        public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                            tab.setIcon(iconos[position]);
-                        }
+                    new TabLayoutMediator(barra_herramientas, contenedor_vista, (tab, position) -> {
+                        tab.setIcon(iconos[position]);
                     }).attach();
+
                     String rol = lista_edificios_y_roles.get(id_edificioSeleccionado);
-                    if(rol.equals("vecino")){
+                    if (rol.equals("vecino")) {
                         btnMenu.setOnClickListener(btnMenu -> mostrarMenuVecino(btnMenu));
                     }
-                    if(rol.equals("admin")){
+                    if (rol.equals("admin")) {
                         btnMenu.setOnClickListener(btnMenu -> mostrarMenuAdmin(btnMenu));
                     }
                 }
             });
+
+
             recyclerView.setAdapter(adapter);
             popupWindow.showAsDropDown(view, 0, 0);
         });
     }
+
 
     private void mostrarMenuVecino(View view) {
         PopupMenu popup = new PopupMenu(this, view);
@@ -283,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void mostrarPopupAddEdificio(View view) {
         View popupView = LayoutInflater.from(this).inflate(R.layout.popup_add_edificio, null);
-        PopupWindow popupWindowAdd = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        PopupWindow popupWindowAdd = new PopupWindow(popupView, 1500, 400, true);
 
         EditText idEdificio = popupView.findViewById(R.id.idEdificio);
         Button btnAdd = popupView.findViewById(R.id.btnAddEdificio);

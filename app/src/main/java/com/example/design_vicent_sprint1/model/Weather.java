@@ -1,30 +1,27 @@
 package com.example.design_vicent_sprint1.model;
 
 public class Weather {
-    private String weather_state_name;  // Estado del clima (nublado, soleado, etc.)
-    private String applicable_date;     // Fecha para la que aplica el clima
-    private float min_temp;             // Temperatura mínima
-    private float max_temp;             // Temperatura máxima
-    private float the_temp;             // Temperatura actual
+    private double temperature;  // Temperatura actual     // Fecha (opcional)
+    private String condition;    // Estado del clima (ej. "Soleado", "Lluvia")
+    private String iconUrl;      // URL del icono del clima
 
-    // Getters para acceder a los datos
-    public String getWeatherStateName() {
-        return weather_state_name;
+    public Weather(double temperature, String condition, String iconUrl) {
+        this.condition = condition;
+        this.iconUrl = iconUrl;
+        this.temperature = temperature;
     }
 
-    public String getApplicableDate() {
-        return applicable_date;
+    // Getters
+    public String getCondition() {
+        return condition;
     }
 
-    public float getMinTemp() {
-        return min_temp;
+    public String getIconUrl() {
+        return iconUrl;
     }
 
-    public float getMaxTemp() {
-        return max_temp;
-    }
-
-    public float getTheTemp() {
-        return the_temp;
+    public double getTemperature() {
+        return temperature;
     }
 }
+

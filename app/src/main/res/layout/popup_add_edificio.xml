@@ -1,40 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout2"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp"
-    android:background="@android:color/white"
-    android:orientation="vertical">
+    android:background="@color/blue_CLARITO"
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <TextView
         android:id="@+id/Titulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Añadir un nuevo edificio"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:text=" Añadir  Introduce el codigo de tu edificio"
+        android:textColor="@color/blue"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/idEdificio"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="58dp"
+        android:hint="Código del edificio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Titulo" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Código del edificio"/>
+        android:text="!Este código te lo debe proporcionar el presidente de la comunidad  o el administrador de tu finca!"
+        android:textColor="#FFFFFF"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="@+id/idEdificio"
+        app:layout_constraintStart_toStartOf="@+id/idEdificio"
+        app:layout_constraintTop_toBottomOf="@+id/idEdificio" />
 
     <Button
         android:id="@+id/btnAddEdificio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Añadir"
-        android:fontFamily="@font/poppinsmedium"
-        android:layout_gravity="end"
         android:backgroundTint="@color/blue"
+        android:fontFamily="@font/poppinsmedium"
+        android:text="Añadir"
         android:textColor="@color/white"
+        android:textSize="20sp"
+        app:cornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
         app:strokeColor="#6BA8CA"
-        app:strokeWidth="3dp"/>
-</LinearLayout>
+        app:strokeWidth="3dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

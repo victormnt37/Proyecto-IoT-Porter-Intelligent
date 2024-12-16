@@ -33,7 +33,6 @@ android {
 }
 
 dependencies {
-    implementation("com.google.firebase:firebase-firestore:25.1.1")
     implementation(platform("com.google.firebase:firebase-bom:33.3.0"))
     implementation("com.google.firebase:firebase-firestore:25.1.1")
     implementation("com.firebaseui:firebase-ui-firestore:8.0.2")
