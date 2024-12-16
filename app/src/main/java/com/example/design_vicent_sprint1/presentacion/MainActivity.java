@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -168,7 +169,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void mostrarPopupEdificios(View view) {
         View popupView = LayoutInflater.from(this).inflate(R.layout.popup_selector_edificios, null);
-        PopupWindow popupWindow = new PopupWindow(popupView, 1500, 440, true);
+        PopupWindow popupWindow = new PopupWindow(popupView,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true);
 
         Set<String> lista_id_edificios = lista_edificios_y_roles.keySet();
         CollectionReference edificios = FirebaseFirestore.getInstance().collection("edificios");
