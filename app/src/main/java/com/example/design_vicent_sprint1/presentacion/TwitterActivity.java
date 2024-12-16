@@ -35,12 +35,13 @@ public class TwitterActivity extends CustomLoginActivity {
                             new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
-                                    boolean esNuevoUsuario = authResult.getAdditionalUserInfo().isNewUser();
-                                    if (esNuevoUsuario) {
+                                    if (authResult.getAdditionalUserInfo().isNewUser()) {
 
-                                        // nuevo usuario
                                     }
-                                    startActivity(new Intent(TwitterActivity.this, MainActivity.class));
+                                    String cuenta_usuario = authResult.getUser().getDisplayName();
+                                    Intent i = new Intent(TwitterActivity.this, MainActivity.class);
+                                    i.putExtra("userId", cuenta_usuario);
+                                    startActivity(i);
                                     Toast.makeText(TwitterActivity.this, "Login Succesfull", Toast.LENGTH_LONG).show();
                                     finish();
                                 }
@@ -59,7 +60,13 @@ public class TwitterActivity extends CustomLoginActivity {
                             new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
-                                    startActivity(new Intent(TwitterActivity.this, MainActivity.class));
+                                    if (authResult.getAdditionalUserInfo().isNewUser()) {
+
+                                    }
+                                    String cuenta_usuario = authResult.getUser().getDisplayName();
+                                    Intent i = new Intent(TwitterActivity.this, MainActivity.class);
+                                    i.putExtra("userId", cuenta_usuario);
+                                    startActivity(i);
                                     Toast.makeText(TwitterActivity.this, "Login Succesfull", Toast.LENGTH_LONG).show();
                                     finish();
                                 }
