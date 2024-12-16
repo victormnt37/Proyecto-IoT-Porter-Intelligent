@@ -38,6 +38,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class CustomLoginActivity extends AppCompatActivity {
+
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private String correo = "";
     private String contraseña = "";
@@ -97,19 +98,37 @@ public class CustomLoginActivity extends AppCompatActivity {
     }
 
     private void verificaSiUsuarioValidado() {
+
         if (auth.getCurrentUser() != null) {
-            String cuenta_usuario = auth.getCurrentUser().getDisplayName();
-            //obtener user id y pasar como extra a MainActivity
-            if( cuenta_usuario == null || cuenta_usuario.isEmpty() ){
-                cuenta_usuario = auth.getCurrentUser().getEmail();
-            }
-            Intent i = new Intent(this, MainActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    | Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            i.putExtra("userId", cuenta_usuario);
-            startActivity(i);
-            finish();
+
+            String cuenta_usuario = auth.getCurrentUser().getEmail();
+           if(cuenta_usuario == null || cuenta_usuario.isEmpty()){
+               cuenta_usuario = auth.getCurrentUser().getDisplayName(); ;
+           }
+
+           //combrobar si usuario autorizado (tiene edificios vinculados)
+            DocumentReference usuario = FirebaseFirestore.getInstance()
+                    .collection("usuarios").document(cuenta_usuario);
+            String cuenta = cuenta_usuario;
+            usuario.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot userId = task.getResult();
+                    if (userId.exists()) {
+                        Intent i = new Intent(this, MainActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                | Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        i.putExtra("userId", cuenta);
+                        startActivity(i);
+                        finish();
+                    } else {
+                        auth.signOut();
+                        mensaje("No estás asociado a ningún edificio. Pide al administrador que permita acceso a tu cuenta.");
+                    }
+                } else {
+                    Log.e("Firestore", "Error al obtener el documento", task.getException()); // task1, no task
+                }
+            });
         }
     }
 
@@ -130,6 +149,7 @@ public class CustomLoginActivity extends AppCompatActivity {
                     });
         }
     }
+
     public void registroCorreo(View v) {
         if (verificaCampos()) {
             dialogo.show();
@@ -138,23 +158,7 @@ public class CustomLoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                //combrobar si usuario autorizado (tiene edificios vinculados)
-                                DocumentReference usuario = FirebaseFirestore.getInstance()
-                                        .collection("usuarios").document(correo);
-
-                                usuario.get().addOnCompleteListener(task1 -> {
-                                    if (task1.isSuccessful()) {
-                                        DocumentSnapshot userId = task1.getResult();
-                                        if (userId.exists()) {
-                                            verificaSiUsuarioValidado();
-                                        } else {
-                                            
-                                            mensaje("No estás asociado a ningún edificio. Pide al administrador que permita acceso a tu cuenta.");
-                                        }
-                                    } else {
-                                        Log.e("Firestore", "Error al obtener el documento", task1.getException()); // task1, no task
-                                    }
-                                });
+                               verificaSiUsuarioValidado();
                             } else {
                                 dialogo.dismiss();
                                 mensaje(task.getException().getLocalizedMessage());
@@ -214,35 +218,8 @@ public class CustomLoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            verificaSiUsuarioValidado();
 
-                            // comprobar si es la primera vez que inicia sesion con Google
-                            AuthResult authResult = task.getResult();
-                            String correo = authResult.getUser().getEmail();
-
-                            if (authResult != null && authResult.getAdditionalUserInfo() != null) {
-                                boolean esNuevoUsuario = authResult.getAdditionalUserInfo().isNewUser();
-                                if (esNuevoUsuario) {
-
-                                    //combrobar si usuario autorizado (tiene edificios vinculados)
-                                    DocumentReference usuario = FirebaseFirestore.getInstance()
-                                            .collection("usuarios").document(correo);
-
-                                    usuario.get().addOnCompleteListener(task1 -> {
-                                        if (task1.isSuccessful()) {
-                                            DocumentSnapshot userId = task1.getResult();
-                                            if (userId.exists()) {
-                                                verificaSiUsuarioValidado();
-                                            } else {
-                                                mensaje("No estás asociado a ningún edificio. Pide al administrador que permita acceso a tu cuenta.");
-                                            }
-                                        } else {
-                                            Log.e("Firestore", "Error al obtener el documento", task1.getException()); // task1, no task
-                                        }
-                                    });
-                                } else {
-                                    verificaSiUsuarioValidado();
-                                }
-                            }
                         }else{
                             mensaje(task.getException().getLocalizedMessage());
                         }

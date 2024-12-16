@@ -2,6 +2,7 @@ package com.example.design_vicent_sprint1.presentacion;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.OAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class TwitterActivity extends CustomLoginActivity {
     FirebaseAuth firebaseAuth;
@@ -35,15 +39,22 @@ public class TwitterActivity extends CustomLoginActivity {
                             new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
-                                    if (authResult.getAdditionalUserInfo().isNewUser()) {
-
-                                    }
-                                    String cuenta_usuario = authResult.getUser().getDisplayName();
-                                    Intent i = new Intent(TwitterActivity.this, MainActivity.class);
-                                    i.putExtra("userId", cuenta_usuario);
-                                    startActivity(i);
-                                    Toast.makeText(TwitterActivity.this, "Login Succesfull", Toast.LENGTH_LONG).show();
-                                    finish();
+                                        String username = authResult.getUser().getDisplayName();
+                                        //combrobar si usuario autorizado (tiene edificios vinculados)
+                                        DocumentReference usuario = FirebaseFirestore.getInstance()
+                                                .collection("usuarios").document(username);
+                                        usuario.get().addOnCompleteListener(task1 -> {
+                                            if (task1.isSuccessful()) {
+                                                DocumentSnapshot userId = task1.getResult();
+                                                if (userId.exists()) {
+                                                   lanzarMainActivity(username);
+                                                } else {
+                                                    Log.e("Usuario no autorizado", "Pide al administrador que conceda permiso a tu cuenta.");
+                                                }
+                                            } else {
+                                                Log.e("Firestore", "Error al obtener el documento", task1.getException()); // task1, no task
+                                            }
+                                        });
                                 }
                             })
                     .addOnFailureListener(
@@ -60,15 +71,22 @@ public class TwitterActivity extends CustomLoginActivity {
                             new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
-                                    if (authResult.getAdditionalUserInfo().isNewUser()) {
-
-                                    }
-                                    String cuenta_usuario = authResult.getUser().getDisplayName();
-                                    Intent i = new Intent(TwitterActivity.this, MainActivity.class);
-                                    i.putExtra("userId", cuenta_usuario);
-                                    startActivity(i);
-                                    Toast.makeText(TwitterActivity.this, "Login Succesfull", Toast.LENGTH_LONG).show();
-                                    finish();
+                                 String username = authResult.getUser().getDisplayName();
+                                        //combrobar si usuario autorizado (tiene edificios vinculados)
+                                        DocumentReference usuario = FirebaseFirestore.getInstance()
+                                                .collection("usuarios").document(username);
+                                        usuario.get().addOnCompleteListener(task1 -> {
+                                            if (task1.isSuccessful()) {
+                                                DocumentSnapshot userId = task1.getResult();
+                                                if (userId.exists()) {
+                                                    lanzarMainActivity(username);
+                                                } else {
+                                                    Log.e("Usuario no autorizado", "Pide al administrador que conceda permiso a tu cuenta.");
+                                                }
+                                            } else {
+                                                Log.e("Firestore", "Error al obtener el documento", task1.getException()); // task1, no task
+                                            }
+                                        });
                                 }
                             })
                     .addOnFailureListener(
@@ -80,4 +98,21 @@ public class TwitterActivity extends CustomLoginActivity {
                             });
         }
     }
+
+    private void lanzarVincularEdificioActivity(String username) {
+        Intent i = new Intent(TwitterActivity.this, MainActivity.class);
+        i.putExtra("userId", username);
+        startActivity(i);
+        Toast.makeText(TwitterActivity.this, "Login Succesfull", Toast.LENGTH_LONG).show();
+        finish();
+    }
+
+    private void lanzarMainActivity(String username) {
+        Intent i = new Intent(TwitterActivity.this, MainActivity.class);
+        i.putExtra("userId", username);
+        startActivity(i);
+        Toast.makeText(TwitterActivity.this, "Login Succesfull", Toast.LENGTH_LONG).show();
+        finish();
+    }
+
 }
