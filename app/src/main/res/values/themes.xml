@@ -6,6 +6,8 @@
         <item name="android:fontFamily">@font/poppinsregular</item>
     </style>
 
-    <style name="Theme.PruebasRecycler" parent="Base.Theme.PruebasRecycler" />
+    <style name="Theme.PruebasRecycler" parent="Base.Theme.PruebasRecycler">
+        <item name="colorPrimary">@color/blue_CLARITO</item>
+    </style>
 
 </resources>
