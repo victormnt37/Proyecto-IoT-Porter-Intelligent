@@ -1,5 +1,6 @@
 package com.example.design_vicent_sprint1.model;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,12 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
 
     private List<Panel> paneles;
     private String edificioSeleccionado;
+    private SensorData datosSensor;
 
-    public PanelAdapter(List<Panel> paneles, String edificioSeleccionado) {
+    public PanelAdapter(List<Panel> paneles, String edificioSeleccionado, SensorData datosSensor) {
         this.paneles = paneles;
         this.edificioSeleccionado = edificioSeleccionado;
+        this.datosSensor = datosSensor;
     }
 
     @NonNull
@@ -40,7 +43,23 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
 
         switch (panel.getTipo()) {
             case "Tiempo":
-                llenarTiempo(holder, panel);
+                llenarTiempo(holder);
+                break;
+            case "Movimiento":
+                // recibe la distancia
+                break;
+            case "Ruido":
+                // valor
+                break;
+            case "Luz":
+                // valor
+                break;
+            case "Vibraciones":
+                // valor
+                break;
+            case "Humo y Gas":
+                //
+                break;
         }
     }
 
@@ -60,7 +79,7 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
         }
     }
 
-    public void llenarTiempo(PanelViewHolder holder, Panel panel) {
+    public void llenarTiempo(PanelViewHolder holder) {
         RepositorioWeather RepositorioWeather = new RepositorioWeather();
         // pedir el edificio con el edificioSeleccionado
         Edificio edificio = new Edificio("", "Edificio Central", "Calle Principal", "Madrid");
@@ -69,15 +88,25 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
         Weather weather = RepositorioWeather.getWeatherForEdificio(edificio);
 
         TextView elTiempo = new TextView(holder.itemView.getContext());
+        TextView temperaturaActual = new TextView(holder.itemView.getContext());
 
         // ahora mismo weather siempre es nulo
         if (weather != null) {
-            elTiempo.setText("Estado del clima: " + weather.getCondition() + ", Temperatura actual: " + weather.getTemperature() + "°C");
+            elTiempo.setText("Estado del clima: " + weather.getCondition() + ", Temperatura en " + edificio.getCiudad() + ": " + weather.getTemperature() + "°C");
         } else {
             elTiempo.setText("No se pudo obtener el clima.");
         }
 
+        if (datosSensor != null) {
+            temperaturaActual.setText("Temperatura actual: " + datosSensor.getTemperatura());
+        }
+
         holder.panelVacio.addView(elTiempo);
     }
-}
 
+    public void actualizarDatos( SensorData nuevosDatosSensor) {
+        this.datosSensor = nuevosDatosSensor;
+        Log.i("Datos actualizados", datosSensor.toString());
+        notifyDataSetChanged(); // notifica al RecyclerView que los datos han cambiado
+    }
+}
