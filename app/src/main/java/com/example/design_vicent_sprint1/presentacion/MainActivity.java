@@ -139,10 +139,10 @@ public class MainActivity extends AppCompatActivity {
                 //rellenar el boton selector de edificio con edificio seleccionado por defecto
                 String nombre_edificio_seleccionado = task.getResult().getString("nombre");
                 String calle_edificio_seleccionado = task.getResult().getString("calle");
-                String ciudad_edificio_seleccionado = task.getResult().getString("ciudad");
+                //String ciudad_edificio_seleccionado = task.getResult().getString("ciudad");
 
                 String texto_boton = nombre_edificio_seleccionado.toUpperCase()+"\n"+
-                        calle_edificio_seleccionado+"\n"+ciudad_edificio_seleccionado;
+                        calle_edificio_seleccionado;//+"\n"+ciudad_edificio_seleccionado;
 
                 btnEdificios.setText(texto_boton);
 
@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         id_edificioSeleccionado = edificio.getId();
                         String texto = edificio.getNombre().toUpperCase() + "\n" +
-                                edificio.getCalle() + "\n" + edificio.getCiudad();
+                                edificio.getCalle();// + "\n" + edificio.getCiudad();
                         btnEdificios.setText(texto);
                         popupWindow.dismiss();
                         cargarPantalla(id_edificioSeleccionado);
