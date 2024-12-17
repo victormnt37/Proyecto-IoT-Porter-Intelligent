@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.icon_casa,
             R.drawable.icon_llave,
             R.drawable.icon_notificaciones,
-            R.drawable.icon_cuenta
+            R.drawable.icon_perfil
     };
 
     public static EdificiosFirestoreAdapter adapter;
