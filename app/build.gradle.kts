@@ -42,6 +42,7 @@ dependencies {
     implementation("com.airbnb.android:lottie:6.0.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.1")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
