@@ -285,14 +285,19 @@ public class MainActivity extends AppCompatActivity {
         TextView mensaje = popupView.findViewById(R.id.mensaje);
 
         btnAdd.setOnClickListener(v -> {
-            String edificio_nuevo = idEdificio.getText().toString();
+            /*String edificio_nuevo = idEdificio.getText().toString();
 
             //Vincularse a nuevo edificio con permiso
             DocumentReference edificio_por_vincular =  FirebaseFirestore.getInstance()
                     .collection("usuarios").document(userId).collection("edificios").document(edificio_nuevo);
             edificio_por_vincular.get().addOnCompleteListener(task -> {
-                if(task.isSuccessful()){
-/*
+                if(task.isSuccessful() && task.getResult().exists()){
+                    String nombre_edificio_seleccionado = task.getResult().getString("nombre");
+                    String calle_edificio_seleccionado = task.getResult().getString("calle");
+                    String ciudad_edificio_seleccionado = task.getResult().getString("ciudad");
+                    String texto_boton = nombre_edificio_seleccionado.toUpperCase()+"\n"+
+                            calle_edificio_seleccionado+"\n"+ciudad_edificio_seleccionado;
+                    btnEdificios.setText(texto_boton);
                     CollectionReference edificios_con_permiso = FirebaseFirestore.getInstance()
                             .collection("usuarios").document(userId).collection("edificios");
                     edificios_con_permiso.get().addOnCompleteListener(task2 -> {
@@ -301,16 +306,17 @@ public class MainActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task2.getResult()) {
                                 lista_edificios_y_roles.put(document.getId(), document.getString("rol"));
                             }
+                            cargarPantalla(edificio_nuevo);
                         }});
                     //comprobar que esta el edificio introducido
                     //no esta -> mensaje
                     //esta -> recargar lista de edificios y roles, seleccionar nuevo edificio y cargar pantalla con sus datos
-*/
                     popupWindowAdd.dismiss();
                 }else{
-                    mensaje.setText("El código no es valido. Comprueba que sea correcto y que tienes permiso para acceder.");
+                   // mensaje.setText("El código no es valido. Comprueba que sea correcto y que tienes permiso para acceder.");
+                    mensaje.setText(" "+ userId + "   " + edificio_nuevo);
                 }
-            });
+            });*/
         });
         popupWindowAdd.setOutsideTouchable(true);
         popupWindowAdd.setFocusable(true);
