@@ -18,6 +18,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/*
+    DECIDIR SI CREAR ACTIVITY PARA USUARIOS SIN EDIFICIOS
+*/
+
 public class TwitterActivity extends CustomLoginActivity {
     FirebaseAuth firebaseAuth;
 
