@@ -71,7 +71,6 @@ public class CustomLoginActivity extends AppCompatActivity {
         dialogo.setTitle("Verificando usuario");
         dialogo.setMessage("Por favor espere...");
         verificaSiUsuarioValidado();
-
         //Google
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(
                 GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -99,6 +98,7 @@ public class CustomLoginActivity extends AppCompatActivity {
                 reestablecerContraseña(view);
             }
         });
+
     }
 
     private void verificaSiUsuarioValidado(ProgressDialog dialog) {
