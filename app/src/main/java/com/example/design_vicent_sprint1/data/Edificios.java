@@ -11,7 +11,8 @@ public class Edificios extends ArrayList{
 
     public Edificios() {
         edificios = new ArrayList<>();
-        edificios.add(new Edificio(0));
+        //edificios.add(new Edificio(0)); EDIFICIO ADD
+        //NO HACE FALTA LA VINCULACION SE HACE AUTOMATICAMENTE
         //cargarEdificiosEjemplo();
     }
 

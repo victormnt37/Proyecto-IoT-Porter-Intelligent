@@ -86,8 +86,6 @@ public class MainActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         userId = extras.getString("userId");
 
-        lista_edificios = new Edificios();
-
         //Header
         Toolbar toolbar = (Toolbar) findViewById(R.id.header);
         setSupportActionBar(toolbar);
@@ -114,6 +112,20 @@ public class MainActivity extends AppCompatActivity {
 
         btnEdificios.setOnClickListener(view -> mostrarPopupEdificios(view));
         //adapter.startListening();
+    }
+
+    private void comprobarPermisoEdificio(String edificio_nuevo, Runnable callback){
+        //PROXIMO SPRINT -> EJ: EDIFICIOS VISIBLES Y OCULTOS
+        //YA DESDE POPUP SELECTOR DE EDIFICIOS SE CARGAR TODOS TUS EDIFICIOS
+        /*DocumentReference edificio_por_vincular =  FirebaseFirestore.getInstance()
+                .collection("usuarios").document(userId).collection("edificios").document(edificio_nuevo);
+        edificio_por_vincular.get().addOnCompleteListener(task -> {
+            if(task.isSuccessful() && task.getResult().exists()){
+
+            }else{
+
+            }
+        });*/
     }
 
     private void cargarDatosBotonEdificio(String edificioSeleccionado){
@@ -152,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
             CollectionReference edificios = FirebaseFirestore.getInstance().collection("edificios");
             List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
-
+            lista_edificios = new Edificios();
             for (String id : lista_id_edificios) {
                 Task<DocumentSnapshot> task = edificios.document(id).get();
                 tasks.add(task);
@@ -281,38 +293,13 @@ public class MainActivity extends AppCompatActivity {
 
         btnAdd.setOnClickListener(v -> {
             String edificio_nuevo = idEdificio.getText().toString();
-
-            //Vincularse a nuevo edificio con permiso
-            DocumentReference edificio_por_vincular =  FirebaseFirestore.getInstance()
-                    .collection("usuarios").document(userId).collection("edificios").document(edificio_nuevo);
-            edificio_por_vincular.get().addOnCompleteListener(task -> {
-                if(task.isSuccessful() && task.getResult().exists()){
-                    String nombre_edificio_seleccionado = task.getResult().getString("nombre");
-                    String calle_edificio_seleccionado = task.getResult().getString("calle");
-                    String ciudad_edificio_seleccionado = task.getResult().getString("ciudad");
-                    String texto_boton = nombre_edificio_seleccionado.toUpperCase()+"\n"+
-                            calle_edificio_seleccionado+"\n"+ciudad_edificio_seleccionado;
-                    btnEdificios.setText(texto_boton);
-                    CollectionReference edificios_con_permiso = FirebaseFirestore.getInstance()
-                            .collection("usuarios").document(userId).collection("edificios");
-                    edificios_con_permiso.get().addOnCompleteListener(task2 -> {
-                        if (task2.isSuccessful()) {
-                            lista_edificios_y_roles = new HashMap<>();
-                            for (QueryDocumentSnapshot document : task2.getResult()) {
-                                lista_edificios_y_roles.put(document.getId(), document.getString("rol"));
-                            }
-                            cargarPantalla(edificio_nuevo);
-                        }});
-                    //comprobar que esta el edificio introducido
-                    //no esta -> mensaje
-                    //esta -> recargar lista de edificios y roles, seleccionar nuevo edificio y cargar pantalla con sus datos
-                    popupWindowAdd.dismiss();
-                }else{
-                   // mensaje.setText("El código no es valido. Comprueba que sea correcto y que tienes permiso para acceder.");
-                    mensaje.setText(" "+ userId + "   " + edificio_nuevo);
-                }
-            });
+            //PROXIMO SPRINT -> PROCESO DE VINCULACION DE EDIFICIO
+            //YA DESDE POPUP SELECTOR DE EDIFICIOS SE CARGAR TODOS TUS EDIFICIOS
+            //DECIDIR SI IMPLEMENTAR Y EN QUE CASOS
+            //¿MODO VISTA/INVITADO?
+            popupWindowAdd.dismiss();
         });
+
         popupWindowAdd.setOutsideTouchable(true);
         popupWindowAdd.setFocusable(true);
         popupWindowAdd.showAtLocation(view, Gravity.CENTER, 0, 0);
