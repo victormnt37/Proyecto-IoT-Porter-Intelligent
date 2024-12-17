@@ -18,6 +18,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/*
+    DECIDIR SI CREAR ACTIVITY PARA USUARIOS SIN EDIFICIOS
+*/
+
 public class TwitterActivity extends CustomLoginActivity {
     FirebaseAuth firebaseAuth;
 
@@ -39,8 +43,9 @@ public class TwitterActivity extends CustomLoginActivity {
                             new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
-                                        String username = authResult.getUser().getDisplayName();
-                                        //combrobar si usuario autorizado (tiene edificios vinculados)
+                                    String username = (String) authResult.getAdditionalUserInfo().getProfile().get("screen_name");
+                                    //combrobar si usuario autorizado (tiene edificios vinculados)
+
                                         DocumentReference usuario = FirebaseFirestore.getInstance()
                                                 .collection("usuarios").document(username);
                                         usuario.get().addOnCompleteListener(task1 -> {
@@ -49,7 +54,8 @@ public class TwitterActivity extends CustomLoginActivity {
                                                 if (userId.exists()) {
                                                    lanzarMainActivity(username);
                                                 } else {
-                                                    Log.e("Usuario no autorizado", "Pide al administrador que conceda permiso a tu cuenta.");
+                                                    firebaseAuth.signOut();
+                                                    Toast.makeText(TwitterActivity.this,"Usuario no autorizado.Pide al administrador que conceda permiso a tu cuenta.", Toast.LENGTH_SHORT).show();
                                                 }
                                             } else {
                                                 Log.e("Firestore", "Error al obtener el documento", task1.getException()); // task1, no task
@@ -71,7 +77,8 @@ public class TwitterActivity extends CustomLoginActivity {
                             new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
-                                 String username = authResult.getUser().getDisplayName();
+                                 String username = (String) authResult.getAdditionalUserInfo().getProfile().get("screen_name");
+
                                         //combrobar si usuario autorizado (tiene edificios vinculados)
                                         DocumentReference usuario = FirebaseFirestore.getInstance()
                                                 .collection("usuarios").document(username);
@@ -81,7 +88,8 @@ public class TwitterActivity extends CustomLoginActivity {
                                                 if (userId.exists()) {
                                                     lanzarMainActivity(username);
                                                 } else {
-                                                    Log.e("Usuario no autorizado", "Pide al administrador que conceda permiso a tu cuenta.");
+                                                    firebaseAuth.signOut();
+                                                    Toast.makeText(TwitterActivity.this,"Usuario no autorizado.Pide al administrador que conceda permiso a tu cuenta.", Toast.LENGTH_SHORT).show();
                                                 }
                                             } else {
                                                 Log.e("Firestore", "Error al obtener el documento", task1.getException()); // task1, no task
@@ -97,14 +105,6 @@ public class TwitterActivity extends CustomLoginActivity {
                                 }
                             });
         }
-    }
-
-    private void lanzarVincularEdificioActivity(String username) {
-        Intent i = new Intent(TwitterActivity.this, MainActivity.class);
-        i.putExtra("userId", username);
-        startActivity(i);
-        Toast.makeText(TwitterActivity.this, "Login Succesfull", Toast.LENGTH_LONG).show();
-        finish();
     }
 
     private void lanzarMainActivity(String username) {

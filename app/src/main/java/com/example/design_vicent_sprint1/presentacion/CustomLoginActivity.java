@@ -37,6 +37,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/*
+    DECIDIR SI CREAR ACTIVITY PARA USUARIOS SIN EDIFICIOS
+*/
+
 public class CustomLoginActivity extends AppCompatActivity {
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -106,7 +110,7 @@ public class CustomLoginActivity extends AppCompatActivity {
                cuenta_usuario = auth.getCurrentUser().getDisplayName(); ;
            }
 
-           //combrobar si usuario autorizado (tiene edificios vinculados)
+           //comprobar si usuario autorizado (tiene edificios vinculados)
             DocumentReference usuario = FirebaseFirestore.getInstance()
                     .collection("usuarios").document(cuenta_usuario);
             String cuenta = cuenta_usuario;
@@ -204,9 +208,11 @@ public class CustomLoginActivity extends AppCompatActivity {
                     });
             }
     }
+
     private void mensaje(String mensaje) {
         Snackbar.make(contenedor, mensaje, Snackbar.LENGTH_LONG).show();
     }
+
     private boolean verificaCampos() {
         correo = etCorreo.getText().toString();
         contraseña = etContraseña.getText().toString();
