@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.ImageView;
 
 
 import androidx.annotation.NonNull;
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
         btnEdificios = findViewById(R.id.edificio);//Boton selector edificio
+        ImageView imageView2 = findViewById(R.id.imageView2);
         btnMenu = findViewById(R.id.menu);//Boton menu
 
         contenedor_vista = findViewById(R.id.vista);
@@ -111,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         //edificios = ((Aplicacion) getApplicationContext()).edificios;
 
         btnEdificios.setOnClickListener(view -> mostrarPopupEdificios(view));
+        imageView2.setOnClickListener(view -> mostrarPopupEdificios(view));
         //adapter.startListening();
     }
 
