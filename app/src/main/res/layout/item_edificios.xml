@@ -45,7 +45,8 @@
 
     <ImageView
         android:id="@+id/iconoEliminar"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:src="@drawable/icon_casa" /> <!-- Botón de eliminar -->
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/icon_cerrar" /> <!-- Botón de eliminar -->
 </LinearLayout>

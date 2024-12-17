@@ -19,8 +19,9 @@
         android:id="@+id/nombreEdificio"
         android:layout_width="84dp"
         android:layout_height="73dp"
+        android:fontFamily="@font/poppinsbold"
         android:gravity="center"
         android:text="Edificio"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="14sp" />
 </LinearLayout>

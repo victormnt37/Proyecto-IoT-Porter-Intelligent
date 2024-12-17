@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
-    android:background="@color/blue_CLARITO"
+    android:background="@drawable/rounded_background"
     android:orientation="vertical"
     android:padding="16dp"
     app:layout_constraintCircleRadius="10dp">
@@ -19,9 +19,11 @@
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/poppinsbold"
+        android:gravity="center"
         android:text="Introduce los datos del nuevo contacto"
         android:textColor="@color/blue"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -32,8 +34,11 @@
         android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/poppinsbold"
         android:text="Nombre"
         android:textColor="@color/blue"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
@@ -41,7 +46,7 @@
         android:id="@+id/editText6"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@drawable/rounded_edittext"
         android:hint="Nombre"
         android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,8 +58,11 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/poppinsbold"
         android:text="Correo"
         android:textColor="@color/blue"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText6" />
 
@@ -66,7 +74,7 @@
         android:id="@+id/editText5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@drawable/rounded_edittext"
         android:hint="Correo"
         android:inputType="textEmailAddress"
         android:padding="8dp"
@@ -78,8 +86,11 @@
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/poppinsbold"
         android:text="Telefono"
         android:textColor="@color/blue"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText5" />
 
@@ -87,7 +98,8 @@
         android:id="@+id/editText7"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+
+        android:background="@drawable/rounded_edittext"
         android:hint="Telefono"
         android:inputType="phone"
         android:padding="8dp"
@@ -96,18 +108,20 @@
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
     <Button
-        android:id="@+id/btnAdd2"
+        android:id="@+id/btnAddVecino"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:backgroundTint="#255A7B"
+        android:fontFamily="@font/poppinsbold"
+
         android:text="Enviar"
         android:textColor="@color/white"
         android:textSize="20dp"
         android:textStyle="bold"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/editText7"
         app:layout_constraintTop_toBottomOf="@+id/editText7"
         tools:layout_conversion_absoluteHeight="48dp"
         tools:layout_conversion_absoluteWidth="150dp" />

@@ -16,7 +16,7 @@
         android:layout_height="117dp"
         android:layout_gravity="center"
         android:background="@drawable/icon_background"
-        android:src="@drawable/icon_puerta"
+        android:src="@drawable/icon_puertaprincipal"
         app:tint="@color/white"/>
 
     <!-- Nombre del acceso -->
