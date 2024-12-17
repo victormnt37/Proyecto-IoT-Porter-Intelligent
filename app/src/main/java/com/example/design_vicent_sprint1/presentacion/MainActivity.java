@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.icon_notificaciones,
             R.drawable.icon_cuenta
     };
+
     public static EdificiosFirestoreAdapter adapter;
     private EdificiosAsinc edificios;
     private Button btnEdificios;
@@ -98,42 +99,13 @@ public class MainActivity extends AppCompatActivity {
 
         contenedor_vista = findViewById(R.id.vista);
 
-        //buscar los edificios a los que esta vinculado el usuario
-        CollectionReference edificios_del_usuario = FirebaseFirestore.getInstance()
-                .collection("usuarios").document(userId).collection("edificios");
-        edificios_del_usuario.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful() && !task.getResult().isEmpty()) {
-
-                lista_edificios_y_roles = new HashMap<>();
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    lista_edificios_y_roles.put(document.getId(), document.getString("rol"));
-                }
-
-                if(!lista_edificios_y_roles.isEmpty()){
-                    Map.Entry<String, String> primerEdificio = lista_edificios_y_roles.entrySet().iterator().next();
-                    //seleccionar un edificio por defecto
-                    id_edificioSeleccionado = primerEdificio.getKey();
-                    cargarPantalla(id_edificioSeleccionado);
-
-                    DocumentReference datos_edificio_seleccionado = FirebaseFirestore.getInstance()
-                            .collection("edificios").document(id_edificioSeleccionado);
-                    datos_edificio_seleccionado.get().addOnCompleteListener(task2 -> {
-                        if (task2.isSuccessful()) {
-                            //rellenar el boton selector de edificio con edificio seleccionado por defecto
-                            String nombre_edificio_seleccionado = task2.getResult().getString("nombre");
-                            String calle_edificio_seleccionado = task2.getResult().getString("calle");
-                            String ciudad_edificio_seleccionado = task2.getResult().getString("ciudad");
-                            String texto_boton = nombre_edificio_seleccionado.toUpperCase()+"\n"+
-                                    calle_edificio_seleccionado+"\n"+ciudad_edificio_seleccionado;
-                            btnEdificios.setText(texto_boton);
-                            /*Log.d("Firestore", "Nombre del primer edificio: " + nombreEdificio);*/
-                        } else {
-                            Log.e("Firestore", "Error o colección vacía", task.getException());
-                        }
-                    });
-                }
-            } else {
-                Log.e("Firestore", "Error o colección vacía", task.getException());
+        actualizarListaEdificiosRoles(() -> {
+            if (!lista_edificios_y_roles.isEmpty()) {
+                Map.Entry<String, String> primerEdificio = lista_edificios_y_roles.entrySet().iterator().next();
+                //seleccionar un edificio por defecto
+                id_edificioSeleccionado = primerEdificio.getKey();
+                cargarDatosBotonEdificio(id_edificioSeleccionado);
+                cargarPantalla(id_edificioSeleccionado);
             }
         });
 
@@ -144,6 +116,30 @@ public class MainActivity extends AppCompatActivity {
         //adapter.startListening();
     }
 
+    private void cargarDatosBotonEdificio(String edificioSeleccionado){
+
+        DocumentReference datos_edificio_seleccionado = FirebaseFirestore.getInstance()
+                .collection("edificios").document(edificioSeleccionado);
+
+        datos_edificio_seleccionado.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult().exists()) {
+
+                //rellenar el boton selector de edificio con edificio seleccionado por defecto
+                String nombre_edificio_seleccionado = task.getResult().getString("nombre");
+                String calle_edificio_seleccionado = task.getResult().getString("calle");
+                String ciudad_edificio_seleccionado = task.getResult().getString("ciudad");
+
+                String texto_boton = nombre_edificio_seleccionado.toUpperCase()+"\n"+
+                        calle_edificio_seleccionado+"\n"+ciudad_edificio_seleccionado;
+
+                btnEdificios.setText(texto_boton);
+
+            } else {
+                Log.e("Firestore", "Error o colección vacía", task.getException());
+            }
+        });
+    }
+
     private void mostrarPopupEdificios(View view) {
         View popupView = LayoutInflater.from(this).inflate(R.layout.popup_selector_edificios, null);
         PopupWindow popupWindow = new PopupWindow(popupView,
@@ -151,51 +147,50 @@ public class MainActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 true);
 
-        Set<String> lista_id_edificios = lista_edificios_y_roles.keySet();
+        actualizarListaEdificiosRoles(() -> {
+            Set<String> lista_id_edificios = lista_edificios_y_roles.keySet();
 
-        CollectionReference edificios = FirebaseFirestore.getInstance().collection("edificios");
-        List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
+            CollectionReference edificios = FirebaseFirestore.getInstance().collection("edificios");
+            List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
 
-        for (String id : lista_id_edificios) {
-            Task<DocumentSnapshot> task = edificios.document(id).get();
-            tasks.add(task);
+            for (String id : lista_id_edificios) {
+                Task<DocumentSnapshot> task = edificios.document(id).get();
+                tasks.add(task);
+                task.addOnCompleteListener(t -> {
+                    if (t.isSuccessful() && t.getResult() != null) {
+                        DocumentSnapshot documentSnapshot = t.getResult();
+                        Edificio edificio = documentSnapshot.toObject(Edificio.class);
+                        lista_edificios.cargarEdificio(edificio);
+                    } else {
+                        Log.e("FirestoreError", "Error al obtener el documento con ID: " + id, t.getException());
+                    }
+                });
+            }
 
-            task.addOnCompleteListener(t -> {
-                if (t.isSuccessful() && t.getResult() != null) {
-                    DocumentSnapshot documentSnapshot = t.getResult();
-                    Edificio edificio = documentSnapshot.toObject(Edificio.class);
-                    lista_edificios.cargarEdificio(edificio);
-                } else {
-                    Log.e("FirestoreError", "Error al obtener el documento con ID: " + id, t.getException());
-                }
+            Tasks.whenAllComplete(tasks).addOnCompleteListener(task -> {
+                RecyclerView recyclerView = popupView.findViewById(R.id.recyclerViewEdificios);
+                // Configurar LayoutManager para scroll horizontal
+                LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+                recyclerView.setLayoutManager(layoutManager);
+                // Cambiar a EdificioMenuAdapter
+                EdificioMenuAdapter adapter = new EdificioMenuAdapter(lista_edificios.getEdificios(), edificio -> {
+                    if (edificio.getNombre().equals("add")) {
+                        popupWindow.dismiss();
+                        mostrarPopupAddEdificio(view);
+                    } else {
+                        id_edificioSeleccionado = edificio.getId();
+                        String texto = edificio.getNombre().toUpperCase() + "\n" +
+                                edificio.getCalle() + "\n" + edificio.getCiudad();
+                        btnEdificios.setText(texto);
+                        popupWindow.dismiss();
+                        cargarPantalla(id_edificioSeleccionado);
+                    }
+                });
+                recyclerView.setAdapter(adapter);
+                popupWindow.showAsDropDown(view, 0, 0);
             });
-        }
-
-        Tasks.whenAllComplete(tasks).addOnCompleteListener(task -> {
-            RecyclerView recyclerView = popupView.findViewById(R.id.recyclerViewEdificios);
-
-            // Configurar LayoutManager para scroll horizontal
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-            recyclerView.setLayoutManager(layoutManager);
-
-            // Cambiar a EdificioMenuAdapter
-            EdificioMenuAdapter adapter = new EdificioMenuAdapter(lista_edificios.getEdificios(), edificio -> {
-                if (edificio.getNombre().equals("add")) {
-                    popupWindow.dismiss();
-                    mostrarPopupAddEdificio(view);
-                } else {
-                    id_edificioSeleccionado = edificio.getId();
-                    String texto = edificio.getNombre().toUpperCase() + "\n" +
-                            edificio.getCalle() + "\n" + edificio.getCiudad();
-                    btnEdificios.setText(texto);
-                    popupWindow.dismiss();
-                    cargarPantalla(id_edificioSeleccionado);
-                }
-            });
-
-            recyclerView.setAdapter(adapter);
-            popupWindow.showAsDropDown(view, 0, 0);
         });
+
     }
 
     private void cargarPantalla(String id_edificioSeleccionado){
@@ -285,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
         TextView mensaje = popupView.findViewById(R.id.mensaje);
 
         btnAdd.setOnClickListener(v -> {
-            /*String edificio_nuevo = idEdificio.getText().toString();
+            String edificio_nuevo = idEdificio.getText().toString();
 
             //Vincularse a nuevo edificio con permiso
             DocumentReference edificio_por_vincular =  FirebaseFirestore.getInstance()
@@ -316,11 +311,27 @@ public class MainActivity extends AppCompatActivity {
                    // mensaje.setText("El código no es valido. Comprueba que sea correcto y que tienes permiso para acceder.");
                     mensaje.setText(" "+ userId + "   " + edificio_nuevo);
                 }
-            });*/
+            });
         });
         popupWindowAdd.setOutsideTouchable(true);
         popupWindowAdd.setFocusable(true);
         popupWindowAdd.showAtLocation(view, Gravity.CENTER, 0, 0);
+    }
+
+    private void actualizarListaEdificiosRoles(Runnable callback){
+        CollectionReference edificios_con_permiso = FirebaseFirestore.getInstance()
+                .collection("usuarios").document(userId).collection("edificios");
+        edificios_con_permiso.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                lista_edificios_y_roles = new HashMap<>();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    lista_edificios_y_roles.put(document.getId(), document.getString("rol"));
+                }
+                callback.run();
+            }else {
+                Log.e("Firestore", "Error al leer usuarios-userId-edificios o userId sin edificios");
+            }
+        });
     }
 
     public class MiPagerAdapter extends FragmentStateAdapter {
