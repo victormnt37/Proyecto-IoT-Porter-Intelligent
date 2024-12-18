@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
+    <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/header_vecinos"
         android:layout_width="match_parent"
@@ -14,6 +14,7 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
         <TextView
             android:id="@+id/header_vecinos_titulo"
             android:layout_width="wrap_content"
@@ -26,10 +27,35 @@
             android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
 
+    <!-- Contenedor del Spinner -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:orientation="horizontal"
+        android:background="#EAF3F7">
+
+        <TextView
+            android:id="@+id/textPiso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Piso:"
+            android:textSize="16sp"
+            android:textColor="#3B5D75"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp" />
+
+        <Spinner
+            android:id="@+id/spinnerPiso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/recyclerViewVecinos"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>
