@@ -1,5 +1,8 @@
 package com.example.design_vicent_sprint1;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -107,26 +110,31 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
     }
 
     private void mostrarPopupAlerta(View view) {
-        View popupView = LayoutInflater.from(getContext()).inflate(R.layout.popup_alerta, null);
-        PopupWindow popupWindowAdd = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        Dialog popupViewAlert = new Dialog(getContext());
+        popupViewAlert.setContentView(R.layout.popup_alerta);
+        popupViewAlert.setCanceledOnTouchOutside(true);
+//        View popupView = LayoutInflater.from(getContext()).inflate(R.layout.popup_alerta, null);
+//        PopupWindow popupWindowAdd = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
 
-        Button btnAdd = popupView.findViewById(R.id.btnAdd);
+        Button btnAdd = popupViewAlert.findViewById(R.id.btnAdd);
 
         btnAdd.setOnClickListener(v -> {
 
             //********************* PROCESO AÑADIR EDIFICIO
 
-            popupWindowAdd.dismiss();
+            popupViewAlert.dismiss();
         });
+        popupViewAlert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupViewAlert.show();
 
-        popupWindowAdd.setOutsideTouchable(true);
-        popupWindowAdd.setFocusable(true);
-        popupWindowAdd.showAtLocation(view, Gravity.CENTER, 0, 0);
     }
 
     private void mostrarPopupAdd(View view) {
-        View popupView = LayoutInflater.from(getContext()).inflate(R.layout.popup_add, null);
-        PopupWindow popupWindowAdd = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        Dialog popupViewAdd = new Dialog(getContext());
+        popupViewAdd.setContentView(R.layout.popup_add);
+        popupViewAdd.setCanceledOnTouchOutside(true);
+//        View popupView = LayoutInflater.from(getContext()).inflate(R.layout.popup_add, null);
+//        PopupWindow popupWindowAdd = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
 
 //        Button btnAdd = popupView.findViewById(R.id.btnAdd);
 //
@@ -137,9 +145,8 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
 //            popupWindowAdd.dismiss();
 //        });
 
-        popupWindowAdd.setOutsideTouchable(true);
-        popupWindowAdd.setFocusable(true);
-        popupWindowAdd.showAtLocation(view, Gravity.CENTER, 0, 0);
+        popupViewAdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupViewAdd.show();
     }
 
     private void cargarPaneles(SensorData datosSensor) {
@@ -149,8 +156,7 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
             adapter = new PanelAdapter(paneles, edificioSeleccionado, datosSensor);
             recyclerView.setAdapter(adapter);
         } else {
-            Log.i("Cargar paneles", datosSensor.toString());
-            adapter.llenarDatosMQTT(datosSensor);
+            adapter.llenarDatosMQTT(datosSensor, recyclerView);
         }
     }
 

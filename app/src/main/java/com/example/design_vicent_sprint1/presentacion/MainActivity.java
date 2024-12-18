@@ -282,6 +282,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("edificio", id_edificioSeleccionado);
             String rol = lista_edificios_y_roles.get(id_edificioSeleccionado);
             intent.putExtra("rol", rol);
+            intent.putExtra("userId", userId);
         }
         startActivity(intent);
     }
@@ -381,10 +382,6 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         adapter.stopListening();// deja de escucha los cambios en la base de datos
     }*/
-
-    public void setUserId(String newUserId) {
-        this.userId = newUserId;
-    }
 }
 
 

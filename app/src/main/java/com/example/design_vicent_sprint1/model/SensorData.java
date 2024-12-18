@@ -46,34 +46,6 @@ public class SensorData {
         this.ruido = json.getBoolean("ruido");
     }
 
-
-//    public static SensorData fromString(String data) {
-//        String regex = "fecha=(.*?), temperatura=(.*?), distancia=(.*?), gas=(.*?), luz=(.*?), ruido=(.*?)";
-//        Pattern pattern = Pattern.compile(regex);
-//        Matcher matcher = pattern.matcher(data);
-//
-//        if (matcher.find()) {
-//            try {
-//                String fechaStr = matcher.group(1).trim();
-//                double temperatura = Double.parseDouble(matcher.group(2).trim());
-//                Boolean distancia = Boolean.valueOf(matcher.group(3).trim());
-//                String gas = matcher.group(4).trim();
-//                String luz = matcher.group(5).trim();
-//                Boolean ruido = Boolean.valueOf(matcher.group(7).trim());
-////                String foto = matcher.group(8).trim();
-//
-//                Date fecha = new Date(fechaStr);
-//
-//                return new SensorData(fecha, temperatura, distancia, gas, luz, ruido);
-//
-//            } catch (Exception e) {
-//                throw new IllegalArgumentException("Formato de datos inválido: " + e.getMessage());
-//            }
-//        } else {
-//            throw new IllegalArgumentException("El String no coincide con el formato esperado.");
-//        }
-//    }
-
     public SensorData(String fecha, double temperatura, Boolean distancia, String gas, String luz, Boolean ruido) {
         this.fecha = fecha;
         this.temperatura = temperatura;
@@ -83,7 +55,14 @@ public class SensorData {
         this.ruido = ruido;
     }
 
-    public SensorData() {}
+    public SensorData() {
+        this.fecha = null;
+        this.temperatura = 100000000.0;
+        this.distancia = null;
+        this.gas = null;
+        this.luz = null;
+        this.ruido = null;
+    }
 
     public SensorData(String fecha, double temperatura, Boolean distancia, String gas, String luz, Boolean ruido, String foto) {
         this.fecha = fecha;
