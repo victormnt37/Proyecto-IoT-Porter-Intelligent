@@ -43,7 +43,7 @@ public class VecinosAdapter extends RecyclerView.Adapter<VecinosAdapter.VecinoVi
         Vecino vecino = vecinos.get(position);
 
         // Asignar el nombre y correo
-        holder.nombre.setText(vecino.getPiso());
+        holder.nombre.setText(vecino.getEdificio().getNombre());
         holder.correo.setText(vecino.getCorreoElectronico());
 
         // Cargar la imagen usando NetworkImageView

@@ -48,15 +48,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Cuenta extends Fragment {
 
+    TextView TextViewNombre;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.cuenta, container, false);
 
         FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
 
-        TextView nombre = view.findViewById(R.id.nombre);
+        TextViewNombre = view.findViewById(R.id.nombre);
         assert usuario != null;
-        nombre.setText(usuario.getDisplayName());
+        TextViewNombre.setText(usuario.getDisplayName());
 
         /*
          *SOLO USUARIOS REGISTRADOS CON GOOGLE O EMAIL PUEDEN CAMBIAR SUS DATOS
@@ -190,6 +192,7 @@ public class Cuenta extends Fragment {
 
                     if (!nombre.equals(nuevo_nombre)) {
                         usuario.updateProfile(perfil);
+                        TextViewNombre.setText(nuevo_nombre);
                         popupView.dismiss();
                         Toast toast = Toast.makeText(getContext(),"Nombre de usuario actualizado",Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER, 0, 0);
