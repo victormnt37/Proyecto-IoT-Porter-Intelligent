@@ -164,6 +164,7 @@ public class CustomLoginActivity extends AppCompatActivity {
                         finish();
                     } else {
                         auth.signOut();
+                        //TODO -> PASAR CURRENTUSER A NULL PARA PERMITIR ELEGIR CUENTA NUEVA
                         mensaje("No estás asociado a ningún edificio. Pide al administrador que permita acceso a tu cuenta.");
                     }
                 } else {
