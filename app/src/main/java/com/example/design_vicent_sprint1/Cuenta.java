@@ -1,6 +1,7 @@
 package com.example.design_vicent_sprint1;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -12,6 +13,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -23,6 +26,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.RequestQueue;
@@ -136,9 +140,92 @@ public class Cuenta extends Fragment {
         popupView.setContentView(R.layout.activity_cambiar_perfil);
         popupView.setCanceledOnTouchOutside(false); // No permite cancelar al tocar fuera
 
+        // Obtener las vistas del popup
+        EditText nombreUsuario = popupView.findViewById(R.id.nombreUsuario);
+        EditText nuevoCorreo = popupView.findViewById(R.id.nuevoCorreo);
+        TextInputLayout tilNombre = popupView.findViewById(R.id.tlNombre);
+        TextInputLayout tilCorreo = popupView.findViewById(R.id.tlCorreo);
+
+        FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
+
+        String nombre = usuario.getDisplayName();
+        String correo = usuario.getEmail();
+        nombreUsuario.setText(nombre);
+        nuevoCorreo.setText(correo);
+
+        Button btnCancelarCambiar = popupView.findViewById(R.id.cancelarCambiar);
+        btnCancelarCambiar.setOnClickListener(v -> popupView.dismiss());
+
+        Button btnCambiarPerfil = popupView.findViewById(R.id.cambiarPerfil);
+        btnCambiarPerfil.setOnClickListener(v -> {
+            String nuevo_correo = nuevoCorreo.getText().toString();
+            String nuevo_nombre = nombreUsuario.getText().toString();
+            if (!verificarCorreo(nuevo_correo)) {
+                tilCorreo.setError("Correo no válido");
+            } else if (correo.equals(nuevo_correo) && nombre.equals(nuevo_nombre)) {
+                tilNombre.setError("No has hecho ningún cambio");
+            } else if (nuevo_correo.isEmpty()) {
+                tilCorreo.setError("Introduce un correo");
+            } else if (nuevo_nombre.isEmpty()) {
+                tilNombre.setError("Introduce un nombre");
+            } else {
+                UserProfileChangeRequest perfil = new UserProfileChangeRequest.Builder()
+                        .setDisplayName(nuevo_nombre)
+                        .setPhotoUri(Uri.parse(String.valueOf(usuario.getPhotoUrl())))
+                        .build();
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                DocumentReference usuarioRef = db.collection("usuarios").document(correo);
+
+                if (!nombre.equals(nuevo_nombre)) {
+                    usuario.updateProfile(perfil);
+                    popupView.dismiss();
+                    Toast toast = Toast.makeText(getContext(), "Nombre de usuario actualizado", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+
+                if (!correo.equals(nuevo_correo)) {
+                    // Aquí irían los pasos mencionados en el comentario
+                    popupView.dismiss();
+                }
+            }
+        });
+
+        // Ocultar teclado al tocar fuera de los campos de texto
+        ConstraintLayout rootLayout = popupView.findViewById(R.id.contenedor); // Asegúrate de que este ID sea el correcto
+        rootLayout.setOnTouchListener((v, event) -> {
+            View currentFocus = popupView.getCurrentFocus();
+            if (currentFocus != null) {
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+                }
+            }
+            return false; // Devuelve false para que otros eventos de toque se procesen normalmente
+        });
+
+        // Configurar el estilo del popup
+        if (popupView.getWindow() != null) {
+            popupView.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            popupView.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        }
+
+        popupView.show();
+    }
+
+
+
+
+
+    /*private void mostrarPopupCambiarDatos(View view) {
+        Dialog popupView = new Dialog(getContext());
+        popupView.setContentView(R.layout.activity_cambiar_perfil);
+        popupView.setCanceledOnTouchOutside(false); // No permite cancelar al tocar fuera
+
 
         //View popupView = LayoutInflater.from(getContext()).inflate(R.layout.activity_cambiar_perfil, null);
-       // PopupWindow popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        // PopupWindow popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
 
         EditText nombreUsuario = popupView.findViewById(R.id.nombreUsuario);
         EditText nuevoCorreo = popupView.findViewById(R.id.nuevoCorreo);
@@ -170,7 +257,7 @@ public class Cuenta extends Fragment {
                     tilCorreo.setError("Correo no válido");
                 }
                 else if(correo.equals(nuevo_correo) && nombre.equals(nuevo_nombre)){
-                   // popupWindow.dismiss(); //¿MENSAJE SI NO HACE CAMBIOS?
+                    // popupWindow.dismiss(); //¿MENSAJE SI NO HACE CAMBIOS?
                     tilNombre.setError("No has hecho ningún cambio");
                 }
                 else if(nuevo_correo.isEmpty()){
@@ -214,7 +301,7 @@ public class Cuenta extends Fragment {
                         Toast toast = Toast.makeText(getContext(),"Correo electrónico actualizado " + correo + " -> " + nuevo_correo,Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
-                        */
+
                         popupView.dismiss();
                     }
 
@@ -228,7 +315,8 @@ public class Cuenta extends Fragment {
 //
 //        // Mostrar el PopupWindow
 //        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-    }
+    }*/
+
 
 
 

@@ -37,20 +37,22 @@
         app:layout_constraintTop_toBottomOf="@id/imagen" />
 
     <!-- EditText para correo -->
-    <EditText
+    <TextView
         android:id="@+id/correo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:backgroundTint="#255A7B"
+
         android:hint="correo@usuario.com"
         android:padding="8dp"
         android:textColor="#255A7B"
+        android:background="@drawable/textview_border"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
 
         app:layout_constraintTop_toBottomOf="@id/nombre"
         app:layout_constraintWidth_percent="0.7" />
+
 
     <!-- Botón Cambiar -->
     <Button
