@@ -42,14 +42,12 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Cuenta extends Fragment {
 
-    private Button btnEdificios;
-    private RepositorioEdificios repositorioEdificios;
-    private Edificio edificioSeleccionado;
-    private ImageButton btnMenu;
-    
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.cuenta, container, false);
@@ -59,6 +57,11 @@ public class Cuenta extends Fragment {
         TextView nombre = view.findViewById(R.id.nombre);
         assert usuario != null;
         nombre.setText(usuario.getDisplayName());
+
+        /*
+         *SOLO USUARIOS REGISTRADOS CON GOOGLE O EMAIL PUEDEN CAMBIAR SUS DATOS
+            PARA EVITAR  PROBLEMAS DE AUTENTIFICACION CON USUARIOS DE TWITTER
+         */
 
         if(usuario.getEmail()!=null && usuario.getEmail()!=""){
             TextView correo = view.findViewById(R.id.correo);
@@ -182,6 +185,9 @@ public class Cuenta extends Fragment {
                             .setPhotoUri(Uri.parse(String.valueOf(usuario.getPhotoUrl())))
                             .build();
 
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    DocumentReference usuarioRef = db.collection("usuarios").document(correo);
+
                     if (!nombre.equals(nuevo_nombre)) {
                         usuario.updateProfile(perfil);
                         popupView.dismiss();
@@ -191,11 +197,25 @@ public class Cuenta extends Fragment {
                     }
 
                     if (!correo.equals(nuevo_correo)) {
-                        usuario.updateEmail(nuevo_correo);
+                       /* usuario.updateEmail(nuevo_correo);
+                        /*
+
+                        !!!!!!!!!!!!!!!!!!! SPRINT 4 !!!!!!!!!!!!!!!!!!!!
+
+                        * PROCESO INCOMPLETO -> NO SE ACTUALIZAN DATOS EN FIRESTORE, LA CUENTA QUEDARIA SIN EDIFICIOS
+                        * 1- CREAR NUEVO DOCUMENTO CON CORREO ACTUALIZADO
+                        * 2- COPIAR EN ESE DOCUMENTO LA COLECCION EDIFICIOS DEL CORREO INICIAL
+                        * 3- BORRAR MANUALMENTE LA COLLECCION EDIFICIOS DEL CORREO INICIAL
+                        * 4- BORRAR DOCUMENTO CORREO INICIAL
+                        * 5- PASAR A MAIN ACTIVITY LOS NUEVOS DATOS DEL USUARIO PARA RECARGAR SUS EDIFICIOS
+                        *
+
                         popupView.dismiss();
                         Toast toast = Toast.makeText(getContext(),"Correo electrónico actualizado " + correo + " -> " + nuevo_correo,Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
+                        */
+                        popupView.dismiss();
                     }
 
                 }
@@ -208,6 +228,8 @@ public class Cuenta extends Fragment {
 //        // Mostrar el PopupWindow
 //        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
     }
+
+
 
     public void cerrarSesion(View view) {
         AuthUI.getInstance().signOut(requireContext())
