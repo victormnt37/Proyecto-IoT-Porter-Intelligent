@@ -21,6 +21,8 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
     private String edificioSeleccionado;
     private SensorData datosSensor;
 
+    private PanelViewHolder holderActual;
+
     public PanelAdapter(List<Panel> paneles, String edificioSeleccionado, SensorData datosSensor) {
         this.paneles = paneles;
         this.edificioSeleccionado = edificioSeleccionado;
@@ -42,6 +44,7 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
         holder.panelVacio.removeAllViews();
 
         actualizarDatos(panel, holder);
+        holderActual = holder;
     }
 
     @Override
@@ -57,6 +60,16 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
             super(itemView);
             tipoPanel = itemView.findViewById(R.id.tipoPanel);
             panelVacio = itemView.findViewById(R.id.panelVacio);
+        }
+    }
+
+    public void llenarDatosMQTT(SensorData datos) {
+        this.datosSensor = datos;
+        holderActual.panelVacio.removeAllViews();
+
+        for (Panel panel: paneles) {
+            holderActual.tipoPanel.setText(panel.getTipo());
+            actualizarDatos(panel, holderActual);
         }
     }
 
