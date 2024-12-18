@@ -7,12 +7,12 @@
         android:id="@+id/menu_vecinos"
         android:title="Vecinos" />
     <item
+        android:id="@+id/menu_administradores"
+        android:title="Administradores" />
+    <item
         android:id="@+id/menu_anuncios"
         android:title="Anuncios" />
     <item
         android:id="@+id/menu_contactos"
         android:title="Contactos" />
-    <item
-        android:id="@+id/menu_administradores"
-        android:title="Administradores" />
 </menu>

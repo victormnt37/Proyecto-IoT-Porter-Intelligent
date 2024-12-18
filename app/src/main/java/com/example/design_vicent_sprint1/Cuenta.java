@@ -36,8 +36,6 @@ public class Cuenta extends Fragment {
     private RepositorioEdificios repositorioEdificios;
     private Edificio edificioSeleccionado;
     private ImageButton btnMenu;
-
-
     
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
