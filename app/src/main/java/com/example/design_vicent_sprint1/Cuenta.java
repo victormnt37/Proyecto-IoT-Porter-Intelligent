@@ -1,7 +1,10 @@
 package com.example.design_vicent_sprint1;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.LruCache;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -125,8 +129,13 @@ public class Cuenta extends Fragment {
     }
 
     private void mostrarPopupCambiarDatos(View view) {
-        View popupView = LayoutInflater.from(getContext()).inflate(R.layout.activity_cambiar_perfil, null);
-        PopupWindow popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        Dialog popupView = new Dialog(getContext());
+        popupView.setContentView(R.layout.activity_cambiar_perfil);
+        popupView.setCanceledOnTouchOutside(false); // No permite cancelar al tocar fuera
+
+
+        //View popupView = LayoutInflater.from(getContext()).inflate(R.layout.activity_cambiar_perfil, null);
+       // PopupWindow popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
 
         EditText nombreUsuario = popupView.findViewById(R.id.nombreUsuario);
         EditText nuevoCorreo = popupView.findViewById(R.id.nuevoCorreo);
@@ -144,7 +153,7 @@ public class Cuenta extends Fragment {
         btnCancelarCambiar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                popupWindow.dismiss();
+                popupView.dismiss();
             }
         });
 
@@ -175,7 +184,7 @@ public class Cuenta extends Fragment {
 
                     if (!nombre.equals(nuevo_nombre)) {
                         usuario.updateProfile(perfil);
-                        popupWindow.dismiss();
+                        popupView.dismiss();
                         Toast toast = Toast.makeText(getContext(),"Nombre de usuario actualizado",Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
@@ -183,7 +192,7 @@ public class Cuenta extends Fragment {
 
                     if (!correo.equals(nuevo_correo)) {
                         usuario.updateEmail(nuevo_correo);
-                        popupWindow.dismiss();
+                        popupView.dismiss();
                         Toast toast = Toast.makeText(getContext(),"Correo electrónico actualizado " + correo + " -> " + nuevo_correo,Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
@@ -192,10 +201,12 @@ public class Cuenta extends Fragment {
                 }
             }
         });
-
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setFocusable(true);
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+        popupView.show();
+//        popupWindow.setFocusable(true); // Habilitar interacción con los elementos internos
+//        popupWindow.setOutsideTouchable(false);
+//
+//        // Mostrar el PopupWindow
+//        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
     }
 
     public void cerrarSesion(View view) {
