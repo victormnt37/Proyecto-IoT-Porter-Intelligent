@@ -128,14 +128,14 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
         View popupView = LayoutInflater.from(getContext()).inflate(R.layout.popup_add, null);
         PopupWindow popupWindowAdd = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
 
-        Button btnAdd = popupView.findViewById(R.id.btnAdd);
-
-        btnAdd.setOnClickListener(v -> {
-
-            //********************* PROCESO AÑADIR EDIFICIO
-
-            popupWindowAdd.dismiss();
-        });
+//        Button btnAdd = popupView.findViewById(R.id.btnAdd);
+//
+//        btnAdd.setOnClickListener(v -> {
+//
+//            //********************* PROCESO AÑADIR EDIFICIO
+//
+//            popupWindowAdd.dismiss();
+//        });
 
         popupWindowAdd.setOutsideTouchable(true);
         popupWindowAdd.setFocusable(true);

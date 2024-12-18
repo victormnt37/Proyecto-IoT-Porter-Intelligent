@@ -17,7 +17,7 @@
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="30dp">
+        android:padding="12dp">
 
         <!-- Título -->
         <TextView
@@ -26,68 +26,87 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppinsbold"
             android:gravity="center"
-            android:text="Añade un nuevo:"
+            android:text="¿Quieres enviar una alerta a tus vecinos?"
             android:textColor="@color/blue"
-            android:textSize="30sp"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_conversion_absoluteHeight="62dp"
+            tools:layout_conversion_absoluteWidth="379dp" />
 
-        <!-- Botón Vecino -->
+        <!-- Botón Robo -->
         <Button
-            android:id="@+id/btnVecino"
-            android:layout_width="0dp"
+            android:id="@+id/btnRobo"
+            android:layout_width="wrap_content"
             android:layout_height="80dp"
-            android:backgroundTint="@color/blue"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#000000"
             android:fontFamily="@font/poppinsbold"
-            android:text="Vecino"
+            android:text="Robo"
             android:textColor="@color/white"
-            android:textSize="25sp"
+            android:textSize="20sp"
             app:cornerRadius="12dp"
+            app:layout_constraintEnd_toStartOf="@+id/btnFuego"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textTitulo"/>
-        <Button
-            android:id="@+id/btnAdmin"
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:backgroundTint="@color/blue"
-            android:fontFamily="@font/poppinsbold"
-            android:text="Administrador"
-            android:textColor="@color/white"
-            android:textSize="25sp"
-            app:cornerRadius="12dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnVecino" />
-        <Button
-            android:id="@+id/btnContactos"
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:backgroundTint="@color/blue"
-            android:fontFamily="@font/poppinsbold"
-            android:text="Contactos"
-            android:textColor="@color/white"
-            android:textSize="25sp"
-            app:cornerRadius="12dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnAdmin" />
-        <Button
-            android:id="@+id/btnAnuncios"
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:backgroundTint="@color/blue"
-            android:fontFamily="@font/poppinsbold"
-            android:text="Anuncios"
-            android:textColor="@color/white"
-            android:textSize="25sp"
-            app:cornerRadius="12dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnContactos" />
+            app:layout_constraintTop_toBottomOf="@id/textTitulo"
+            tools:layout_conversion_absoluteHeight="100dp"
+            tools:layout_conversion_absoluteWidth="100dp" />
 
+        <!-- Botón Fuego -->
+        <Button
+            android:id="@+id/btnFuego"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:backgroundTint="#FFA500"
+            android:fontFamily="@font/poppinsbold"
+            android:text="Fuego"
+            android:textColor="#FFEB3B"
+            android:textSize="20sp"
+            app:cornerRadius="12dp"
 
+            app:layout_constraintEnd_toStartOf="@+id/btnSOS"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btnRobo"
+            app:layout_constraintTop_toTopOf="@id/btnRobo"
+            tools:layout_conversion_absoluteHeight="100dp"
+            tools:layout_conversion_absoluteWidth="100dp" />
+
+        <!-- Botón SOS -->
+        <Button
+            android:id="@+id/btnSOS"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:backgroundTint="#FF0000"
+            android:fontFamily="@font/poppinsbold"
+            android:text="SOS"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:cornerRadius="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btnFuego"
+            app:layout_constraintTop_toTopOf="@id/btnRobo"
+            tools:layout_conversion_absoluteHeight="100dp"
+            tools:layout_conversion_absoluteWidth="100dp" />
+
+        <!-- Botón Enviar -->
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#255A7B"
+            android:fontFamily="@font/poppinsbold"
+            android:text="Enviar"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            app:cornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="@+id/btnSOS"
+            app:layout_constraintTop_toBottomOf="@+id/btnFuego"
+            tools:layout_conversion_absoluteHeight="48dp"
+            tools:layout_conversion_absoluteWidth="150dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
