@@ -63,6 +63,14 @@
             android:name=".presentacion.AjustesNotificacionesActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".presentacion.MiembrosHogarActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".presentacion.AdministradoresActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>
