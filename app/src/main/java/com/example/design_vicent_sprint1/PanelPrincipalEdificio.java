@@ -51,7 +51,7 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
     private PanelAdapter adapter;
     Handler uiHandler = new Handler(Looper.getMainLooper());
 
-    // TODO: MQTT
+    // MQTT
     private static final String topic = "VicentPI/edificio1";
     private static final int qos = 1;
     private static final boolean retain = false;

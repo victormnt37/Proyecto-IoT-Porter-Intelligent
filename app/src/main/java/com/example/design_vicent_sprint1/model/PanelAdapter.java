@@ -41,6 +41,26 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
 
         holder.panelVacio.removeAllViews();
 
+        actualizarDatos(panel, holder);
+    }
+
+    @Override
+    public int getItemCount() {
+        return paneles.size();
+    }
+
+    public static class PanelViewHolder extends RecyclerView.ViewHolder {
+        TextView tipoPanel;
+        LinearLayout panelVacio;
+
+        public PanelViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tipoPanel = itemView.findViewById(R.id.tipoPanel);
+            panelVacio = itemView.findViewById(R.id.panelVacio);
+        }
+    }
+
+    public void actualizarDatos(Panel panel, PanelViewHolder holder) {
         switch (panel.getTipo()) {
             case "Tiempo":
                 llenarTiempo(holder);
@@ -60,22 +80,6 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
             case "Humo y Gas":
                 //
                 break;
-        }
-    }
-
-    @Override
-    public int getItemCount() {
-        return paneles.size();
-    }
-
-    public static class PanelViewHolder extends RecyclerView.ViewHolder {
-        TextView tipoPanel;
-        LinearLayout panelVacio;
-
-        public PanelViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tipoPanel = itemView.findViewById(R.id.tipoPanel);
-            panelVacio = itemView.findViewById(R.id.panelVacio);
         }
     }
 
@@ -102,11 +106,5 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
         }
 
         holder.panelVacio.addView(elTiempo);
-    }
-
-    public void actualizarDatos( SensorData nuevosDatosSensor) {
-        this.datosSensor = nuevosDatosSensor;
-        Log.i("Datos actualizados", datosSensor.toString());
-        notifyDataSetChanged(); // notifica al RecyclerView que los datos han cambiado
     }
 }

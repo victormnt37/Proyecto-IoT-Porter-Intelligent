@@ -23,7 +23,6 @@ public class RepositorioPaneles {
         paneles.add(new Panel(edificios.get(0), "Movimiento"));
         paneles.add(new Panel(edificios.get(0), "Ruido"));
         paneles.add(new Panel(edificios.get(0), "Luz"));
-        paneles.add(new Panel(edificios.get(0), "Vibraciones"));
         paneles.add(new Panel(edificios.get(0), "Humo y Gas"));
 
         paneles.add(new Panel(edificios.get(1), "Actividad Reciente"));
@@ -33,7 +32,6 @@ public class RepositorioPaneles {
         paneles.add(new Panel(edificios.get(1), "Movimiento"));
         paneles.add(new Panel(edificios.get(1), "Ruido"));
         paneles.add(new Panel(edificios.get(1), "Luz"));
-        paneles.add(new Panel(edificios.get(1), "Vibraciones"));
         paneles.add(new Panel(edificios.get(1), "Humo y Gas"));
 
         paneles.add(new Panel(edificios.get(2), "Actividad Reciente"));
@@ -43,7 +41,6 @@ public class RepositorioPaneles {
         paneles.add(new Panel(edificios.get(2), "Movimiento"));
         paneles.add(new Panel(edificios.get(2), "Ruido"));
         paneles.add(new Panel(edificios.get(2), "Luz"));
-        paneles.add(new Panel(edificios.get(2), "Vibraciones"));
         paneles.add(new Panel(edificios.get(2), "Humo y Gas"));
     }
 

@@ -8,9 +8,8 @@ public class SensorData {
     private Date fecha;
     private double temperatura;
     private double distancia;
-    private double gas;
-    private double vibracion;
-    private double ruido;
+    private String gas;
+    private Boolean ruido;
     private String luz;
     private String foto;
 
@@ -22,14 +21,13 @@ public class SensorData {
                 ", distancia=" + distancia +
                 ", gas=" + gas +
                 ", luz=" + luz +
-                ", vibracion=" + vibracion +
                 ", ruido=" + ruido +
                 ", foto='" + foto + '\'' +
                 '}';
     }
 
     public static SensorData fromString(String data) {
-        String regex = "fecha=(.*?), temperatura=(.*?), distancia=(.*?), gas=(.*?), luz=(.*?), vibracion=(.*?), ruido=(.*?), foto='(.*?)'";
+        String regex = "fecha=(.*?), temperatura=(.*?), distancia=(.*?), gas=(.*?), luz=(.*?), ruido=(.*?), foto='(.*?)'";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(data);
 
@@ -38,15 +36,14 @@ public class SensorData {
                 String fechaStr = matcher.group(1).trim();
                 double temperatura = Double.parseDouble(matcher.group(2).trim());
                 double distancia = Double.parseDouble(matcher.group(3).trim());
-                double gas = Double.parseDouble(matcher.group(4).trim());
+                String gas = matcher.group(4).trim();
                 String luz = matcher.group(5).trim();
-                double vibracion = Double.parseDouble(matcher.group(6).trim());
-                double ruido = Double.parseDouble(matcher.group(7).trim());
+                Boolean ruido = Boolean.valueOf(matcher.group(7).trim());
                 String foto = matcher.group(8).trim();
 
                 Date fecha = new Date(fechaStr);
 
-                return new SensorData(fecha, temperatura, distancia, gas, luz, vibracion, ruido, foto);
+                return new SensorData(fecha, temperatura, distancia, gas, luz, ruido, foto);
 
             } catch (Exception e) {
                 throw new IllegalArgumentException("Formato de datos inválido: " + e.getMessage());
@@ -56,25 +53,23 @@ public class SensorData {
         }
     }
 
-    public SensorData(Date fecha, double temperatura, double distancia, double gas, String luz, double vibracion, double ruido) {
+    public SensorData(Date fecha, double temperatura, double distancia, String gas, String luz, Boolean ruido) {
         this.fecha = fecha;
         this.temperatura = temperatura;
         this.distancia = distancia;
         this.gas = gas;
         this.luz = luz;
-        this.vibracion = vibracion;
         this.ruido = ruido;
     }
 
     public SensorData() {}
 
-    public SensorData(Date fecha, double temperatura, double distancia, double gas, String luz, double vibracion, double ruido, String foto) {
+    public SensorData(Date fecha, double temperatura, double distancia, String gas, String luz, Boolean ruido, String foto) {
         this.fecha = fecha;
         this.temperatura = temperatura;
         this.distancia = distancia;
         this.gas = gas;
         this.luz = luz;
-        this.vibracion = vibracion;
         this.ruido = ruido;
         this.foto = foto;
     }
@@ -103,11 +98,11 @@ public class SensorData {
         this.distancia = distancia;
     }
 
-    public double getGas() {
+    public String getGas() {
         return gas;
     }
 
-    public void setGas(double gas) {
+    public void setGas(String gas) {
         this.gas = gas;
     }
 
@@ -119,19 +114,11 @@ public class SensorData {
         this.luz = luz;
     }
 
-    public double getVibracion() {
-        return vibracion;
-    }
-
-    public void setVibracion(double vibracion) {
-        this.vibracion = vibracion;
-    }
-
-    public double getRuido() {
+    public Boolean getRuido() {
         return ruido;
     }
 
-    public void setRuido(double ruido) {
+    public void setRuido(Boolean ruido) {
         this.ruido = ruido;
     }
 
