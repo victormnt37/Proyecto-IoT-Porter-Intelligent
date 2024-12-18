@@ -224,6 +224,7 @@ public class Cuenta extends Fragment {
                 }
             }
         });
+
         popupView.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupView.show();
 //        popupWindow.setFocusable(true); // Habilitar interacción con los elementos internos
