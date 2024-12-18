@@ -65,12 +65,14 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
 
     public void llenarDatosMQTT(SensorData datos) {
         this.datosSensor = datos;
-        holderActual.panelVacio.removeAllViews();
+        holderActual.itemView.post(() -> {
+            holderActual.panelVacio.removeAllViews();
 
-        for (Panel panel: paneles) {
-            holderActual.tipoPanel.setText(panel.getTipo());
-            actualizarDatos(panel, holderActual);
-        }
+            for (Panel panel : paneles) {
+                holderActual.tipoPanel.setText(panel.getTipo());
+                actualizarDatos(panel, holderActual);
+            }
+        });
     }
 
     public void actualizarDatos(Panel panel, PanelViewHolder holder) {
@@ -97,27 +99,27 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
     }
 
     public void llenarTiempo(PanelViewHolder holder) {
-        RepositorioWeather RepositorioWeather = new RepositorioWeather();
-        // pedir el edificio con el edificioSeleccionado
-        Edificio edificio = new Edificio("", "Edificio Central", "Calle Principal", "Madrid");
-        //Edificio edificio = panel.getEdificio();
-
-        Weather weather = RepositorioWeather.getWeatherForEdificio(edificio);
-
-        TextView elTiempo = new TextView(holder.itemView.getContext());
+//        RepositorioWeather RepositorioWeather = new RepositorioWeather();
+//        // pedir el edificio con el edificioSeleccionado
+//        Edificio edificio = new Edificio("", "Edificio Central", "Calle Principal", "Madrid");
+//        //Edificio edificio = panel.getEdificio();
+//
+//        Weather weather = RepositorioWeather.getWeatherForEdificio(edificio);
+//
+//        TextView elTiempo = new TextView(holder.itemView.getContext());
         TextView temperaturaActual = new TextView(holder.itemView.getContext());
-
-        // ahora mismo weather siempre es nulo
-        if (weather != null) {
-            elTiempo.setText("Estado del clima: " + weather.getCondition() + ", Temperatura en " + edificio.getCiudad() + ": " + weather.getTemperature() + "°C");
-        } else {
-            elTiempo.setText("No se pudo obtener el clima.");
-        }
+//
+//        // ahora mismo weather siempre es nulo
+//        if (weather != null) {
+//            elTiempo.setText("Estado del clima: " + weather.getCondition() + ", Temperatura en " + edificio.getCiudad() + ": " + weather.getTemperature() + "°C");
+//        } else {
+//            elTiempo.setText("No se pudo obtener el clima.");
+//        }
 
         if (datosSensor != null) {
             temperaturaActual.setText("Temperatura actual: " + datosSensor.getTemperatura());
         }
 
-        holder.panelVacio.addView(elTiempo);
+        holder.panelVacio.addView(temperaturaActual);
     }
 }
