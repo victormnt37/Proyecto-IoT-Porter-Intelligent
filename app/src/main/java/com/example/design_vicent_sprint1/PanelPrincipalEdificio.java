@@ -145,13 +145,13 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
     private void cargarPaneles(SensorData datosSensor) {
         List<Panel> paneles = repositorioPaneles.getPanelesPorEdificio(edificioSeleccionado);
 
-//        if (adapter == null) {
+        if (adapter == null) {
             adapter = new PanelAdapter(paneles, edificioSeleccionado, datosSensor);
             recyclerView.setAdapter(adapter);
-//        } else if (datosMqtt) {
-//            Log.i("Cargar paneles", datosSensor.toString());
-//            adapter.actualizarDatos(datosSensor);
-//        }
+        } else {
+            Log.i("Cargar paneles", datosSensor.toString());
+            adapter.llenarDatosMQTT(datosSensor);
+        }
     }
 
     // Funciones MQTT
@@ -165,16 +165,11 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
         String payload = new String(message.getPayload());
         Log.i("MQTT", "Mensaje recibido del tópico [" + topic + "]: " + payload);
 
-        try {
-            datosSensor = SensorData.fromString(payload);
-            Log.i("MQTT", datosSensor.toString());
+        datosSensor.fromJson(payload);
+        Log.i("MQTT", datosSensor.toString());
 
-            // Ejecutar cargarPaneles en el hilo principal
-            cargarPaneles(datosSensor);
-        } catch (Exception e) {
-            Log.e("MQTT data conversion error", "Los datos del MQTT no se han inicializado");
-            throw new RuntimeException(e);
-        }
+        // Ejecutar cargarPaneles en el hilo principal
+        cargarPaneles(datosSensor);
     }
 
     @Override

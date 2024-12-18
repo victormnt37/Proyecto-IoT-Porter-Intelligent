@@ -21,6 +21,8 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
     private String edificioSeleccionado;
     private SensorData datosSensor;
 
+    private PanelViewHolder holderActual;
+
     public PanelAdapter(List<Panel> paneles, String edificioSeleccionado, SensorData datosSensor) {
         this.paneles = paneles;
         this.edificioSeleccionado = edificioSeleccionado;
@@ -42,6 +44,7 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
         holder.panelVacio.removeAllViews();
 
         actualizarDatos(panel, holder);
+        holderActual = holder;
     }
 
     @Override
@@ -58,6 +61,18 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
             tipoPanel = itemView.findViewById(R.id.tipoPanel);
             panelVacio = itemView.findViewById(R.id.panelVacio);
         }
+    }
+
+    public void llenarDatosMQTT(SensorData datos) {
+        this.datosSensor = datos;
+        holderActual.itemView.post(() -> {
+            holderActual.panelVacio.removeAllViews();
+
+            for (Panel panel : paneles) {
+                holderActual.tipoPanel.setText(panel.getTipo());
+                actualizarDatos(panel, holderActual);
+            }
+        });
     }
 
     public void actualizarDatos(Panel panel, PanelViewHolder holder) {
@@ -84,27 +99,27 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
     }
 
     public void llenarTiempo(PanelViewHolder holder) {
-        RepositorioWeather RepositorioWeather = new RepositorioWeather();
-        // pedir el edificio con el edificioSeleccionado
-        Edificio edificio = new Edificio("", "Edificio Central", "Calle Principal", "Madrid");
-        //Edificio edificio = panel.getEdificio();
-
-        Weather weather = RepositorioWeather.getWeatherForEdificio(edificio);
-
-        TextView elTiempo = new TextView(holder.itemView.getContext());
+//        RepositorioWeather RepositorioWeather = new RepositorioWeather();
+//        // pedir el edificio con el edificioSeleccionado
+//        Edificio edificio = new Edificio("", "Edificio Central", "Calle Principal", "Madrid");
+//        //Edificio edificio = panel.getEdificio();
+//
+//        Weather weather = RepositorioWeather.getWeatherForEdificio(edificio);
+//
+//        TextView elTiempo = new TextView(holder.itemView.getContext());
         TextView temperaturaActual = new TextView(holder.itemView.getContext());
-
-        // ahora mismo weather siempre es nulo
-        if (weather != null) {
-            elTiempo.setText("Estado del clima: " + weather.getCondition() + ", Temperatura en " + edificio.getCiudad() + ": " + weather.getTemperature() + "°C");
-        } else {
-            elTiempo.setText("No se pudo obtener el clima.");
-        }
+//
+//        // ahora mismo weather siempre es nulo
+//        if (weather != null) {
+//            elTiempo.setText("Estado del clima: " + weather.getCondition() + ", Temperatura en " + edificio.getCiudad() + ": " + weather.getTemperature() + "°C");
+//        } else {
+//            elTiempo.setText("No se pudo obtener el clima.");
+//        }
 
         if (datosSensor != null) {
             temperaturaActual.setText("Temperatura actual: " + datosSensor.getTemperatura());
         }
 
-        holder.panelVacio.addView(elTiempo);
+        holder.panelVacio.addView(temperaturaActual);
     }
 }
