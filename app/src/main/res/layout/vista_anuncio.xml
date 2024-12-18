@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="12dp"
     android:background="@android:color/white">
@@ -20,6 +20,7 @@
             android:id="@+id/horaAnuncio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppinsbold"
             android:text="20:45"
             android:textSize="16sp"
             android:textColor="#3B5D75"
@@ -31,6 +32,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/poppinsbold"
             android:text="Título del anuncio"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -43,7 +45,8 @@
             android:layout_height="wrap_content"
             android:src="@drawable/icon_menudot"
             android:contentDescription="Opciones"
-            android:padding="8dp" />
+            android:padding="8dp"
+            app:tint="@color/blue"/>
     </LinearLayout>
 
     <!-- Descripción del anuncio -->

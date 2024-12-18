@@ -24,8 +24,9 @@
             android:id="@+id/textoNotificacion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppinsbold"
             android:text="Movimiento detectado en la entrada"
-            android:textColor="#3B5D75"
+            android:textColor="@color/blue"
             android:textSize="16sp" />
 
         <TextView
