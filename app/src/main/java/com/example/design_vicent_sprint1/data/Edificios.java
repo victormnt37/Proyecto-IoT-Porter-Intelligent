@@ -34,4 +34,18 @@ public class Edificios extends ArrayList{
         }
         return null;
     }
+
+    public void ordenarEdificios(String id){
+        Edificio edificioSeleccionado = null;
+        for (Edificio edificio : edificios) {
+            if (edificio.getId().equals(id)) {
+                edificioSeleccionado = edificio;
+                break;
+            }
+        }
+        if (edificioSeleccionado != null) {
+            edificios.remove(edificioSeleccionado);
+            edificios.add(0, edificioSeleccionado);
+        }
+    }
 }

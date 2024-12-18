@@ -1,7 +1,5 @@
 package com.example.design_vicent_sprint1;
 
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
-
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 
 import com.example.design_vicent_sprint1.data.RepositorioPaneles;
 import com.example.design_vicent_sprint1.model.Panel;
@@ -34,20 +31,15 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
 
     private RecyclerView recyclerView;
     private RepositorioPaneles repositorioPaneles;
     private String edificioSeleccionado;
+    private String rol;
     private PanelAdapter adapter;
     Handler uiHandler = new Handler(Looper.getMainLooper());
 
@@ -69,7 +61,9 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
 
         if (getArguments() != null) {
             edificioSeleccionado = getArguments().getString("edificioSeleccionado");
+            rol = getArguments().getString("rol");
         }
+
         try {
             client = new MqttClient(broker, clientId, new MemoryPersistence()); // Conexión con el bróker
             MqttConnectOptions connOpts = new MqttConnectOptions();
@@ -85,17 +79,42 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
         } catch (MqttException e) {
             Log.e("MQTT", "Error al conectar con el bróker: " + e.getMessage());
         }
+
         repositorioPaneles = new RepositorioPaneles();
         datosSensor = new SensorData();
         cargarPaneles(datosSensor);
+
         FloatingActionButton btn_emergente = view.findViewById(R.id.btn_emergente);
         btn_emergente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mostrarPopupAdd(v);
+                if(rol.equals("admin")){
+                    mostrarPopupAdd(v);
+                }
+                if(rol.equals("vecino")){
+                    mostrarPopupAlerta(v);
+                };
             }
         });
         return view;
+    }
+
+    private void mostrarPopupAlerta(View view) {
+        View popupView = LayoutInflater.from(getContext()).inflate(R.layout.popup_alerta, null);
+        PopupWindow popupWindowAdd = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+
+        Button btnAdd = popupView.findViewById(R.id.btnAdd);
+
+        btnAdd.setOnClickListener(v -> {
+
+            //********************* PROCESO AÑADIR EDIFICIO
+
+            popupWindowAdd.dismiss();
+        });
+
+        popupWindowAdd.setOutsideTouchable(true);
+        popupWindowAdd.setFocusable(true);
+        popupWindowAdd.showAtLocation(view, Gravity.CENTER, 0, 0);
     }
 
     private void mostrarPopupAdd(View view) {
