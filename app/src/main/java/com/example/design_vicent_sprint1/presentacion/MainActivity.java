@@ -32,12 +32,13 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.design_vicent_sprint1.Cuenta;
+import com.example.design_vicent_sprint1.R;
 import com.example.design_vicent_sprint1.data.Edificios;
 import com.example.design_vicent_sprint1.data.EdificiosAsinc;
 import com.example.design_vicent_sprint1.Notificaciones;
 import com.example.design_vicent_sprint1.PanelPrincipalEdificio;
 import com.example.design_vicent_sprint1.Puertas;
-import com.example.design_vicent_sprint1.R;
+
 import com.example.design_vicent_sprint1.model.EdificioMenuAdapter;
 import com.example.design_vicent_sprint1.model.EdificiosFirestoreAdapter;
 import com.example.design_vicent_sprint1.model.Edificio;
@@ -188,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
                 LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
                 recyclerView.setLayoutManager(layoutManager);
                 // Cambiar a EdificioMenuAdapter
+                lista_edificios.ordenarEdificios(id_edificioSeleccionado);
                 EdificioMenuAdapter adapter = new EdificioMenuAdapter(lista_edificios.getEdificios(), edificio -> {
                     if (edificio.getNombre().equals("add")) {
                         popupWindow.dismiss();
@@ -309,6 +311,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void actualizarListaEdificiosRoles(Runnable callback){
+
         CollectionReference edificios_con_permiso = FirebaseFirestore.getInstance()
                 .collection("usuarios").document(userId).collection("edificios");
         edificios_con_permiso.get().addOnCompleteListener(task -> {
