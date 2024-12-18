@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/contenedor"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:padding="20dp">
 
 
@@ -43,6 +43,7 @@
         android:id="@+id/cambiarPerfil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:layout_marginBottom="32dp"
         android:backgroundTint="#6BA8CA"
         android:text="Cambiar"
@@ -51,6 +52,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/cancelarCambiar"
+        app:layout_constraintTop_toBottomOf="@+id/tlCorreo"
         app:strokeColor="#255A7B"
         app:strokeWidth="3dp" />
 

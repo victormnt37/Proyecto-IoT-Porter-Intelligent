@@ -85,17 +85,24 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
         cargarPaneles(datosSensor);
 
         FloatingActionButton btn_emergente = view.findViewById(R.id.btn_emergente);
-        btn_emergente.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(rol.equals("admin")){
+        if(rol.equals("admin")){
+            btn_emergente.setImageResource(R.drawable.icon_addfondo);
+            btn_emergente.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     mostrarPopupAdd(v);
                 }
-                if(rol.equals("vecino")){
+            });
+        }
+        if(rol.equals("vecino")){
+            btn_emergente.setImageResource(R.drawable.icon_alerta);
+            btn_emergente.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     mostrarPopupAlerta(v);
-                };
-            }
-        });
+                }
+            });
+        }
         return view;
     }
 
@@ -121,14 +128,14 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
         View popupView = LayoutInflater.from(getContext()).inflate(R.layout.popup_add, null);
         PopupWindow popupWindowAdd = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
 
-        Button btnAdd = popupView.findViewById(R.id.btnAdd);
-
-        btnAdd.setOnClickListener(v -> {
-
-            //********************* PROCESO AÑADIR EDIFICIO
-
-            popupWindowAdd.dismiss();
-        });
+//        Button btnAdd = popupView.findViewById(R.id.btnAdd);
+//
+//        btnAdd.setOnClickListener(v -> {
+//
+//            //********************* PROCESO AÑADIR EDIFICIO
+//
+//            popupWindowAdd.dismiss();
+//        });
 
         popupWindowAdd.setOutsideTouchable(true);
         popupWindowAdd.setFocusable(true);
