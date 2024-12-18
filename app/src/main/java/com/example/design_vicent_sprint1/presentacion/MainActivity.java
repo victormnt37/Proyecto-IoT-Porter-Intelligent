@@ -58,6 +58,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+//FALTA -> MENU SEGUN ROL
 
 public class MainActivity extends AppCompatActivity {
 
@@ -224,6 +225,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void mostrarMenu(View view, String rol) {
+        /*
+        * Admin  -> Tus Edificios, Vecinos, Administradores, Anuncios, Contactos.
+        * Vecino -> Tus Edificios, Miembros del hogar,  Anuncios, Contactos.
+        * */
         PopupMenu popup = new PopupMenu(this, view);
         if(rol.equals("vecino")) {
             popup.getMenuInflater().inflate(R.menu.menu_vecino, popup.getMenu());
@@ -232,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
                     lanzarActividad(EdificiosActivity.class);
                     return true;
                 } else if (item.getItemId() == R.id.menu_vecinos) {
-                    lanzarActividad(VecinosActivity.class);
+                    lanzarActividad(MiembrosHogarActivity.class);
                     return true;
                 } else if (item.getItemId() == R.id.menu_anuncios) {
                     lanzarActividad(AnunciosActivity.class);
@@ -261,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
                     lanzarActividad(ContactosActivity.class);
                     return true;
                 } else if (item.getItemId() == R.id.menu_administradores) {
-                    lanzarActividad(ContactosActivity.class);
+                    lanzarActividad(AdministradoresActivity.class);
                     return true;
                 } else {
                     return false;
@@ -376,6 +381,10 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         adapter.stopListening();// deja de escucha los cambios en la base de datos
     }*/
+
+    public void setUserId(String newUserId) {
+        this.userId = newUserId;
+    }
 }
 
 

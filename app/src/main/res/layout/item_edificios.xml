@@ -24,6 +24,8 @@
             android:id="@+id/nombreEdificio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppinsbold"
+            android:textColor="@color/blue"
             android:text="Nombre del edificio"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -45,8 +47,9 @@
 
     <ImageView
         android:id="@+id/iconoEliminar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_gravity="center"
-        android:src="@drawable/icon_cerrar" /> <!-- Botón de eliminar -->
+        android:src="@drawable/icon_papelera"
+        app:tint="@color/blue"/> <!-- Botón de eliminar -->
 </LinearLayout>
