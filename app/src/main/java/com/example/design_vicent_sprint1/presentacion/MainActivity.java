@@ -381,6 +381,10 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         adapter.stopListening();// deja de escucha los cambios en la base de datos
     }*/
+
+    public void setUserId(String newUserId) {
+        this.userId = newUserId;
+    }
 }
 
 

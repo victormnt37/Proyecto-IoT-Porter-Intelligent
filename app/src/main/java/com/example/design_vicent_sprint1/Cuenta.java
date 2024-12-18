@@ -1,7 +1,10 @@
 package com.example.design_vicent_sprint1;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.LruCache;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -38,23 +42,28 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Cuenta extends Fragment {
 
-    private Button btnEdificios;
-    private RepositorioEdificios repositorioEdificios;
-    private Edificio edificioSeleccionado;
-    private ImageButton btnMenu;
-    
+    TextView TextViewNombre;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.cuenta, container, false);
 
         FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
 
-        TextView nombre = view.findViewById(R.id.nombre);
+        TextViewNombre = view.findViewById(R.id.nombre);
         assert usuario != null;
-        nombre.setText(usuario.getDisplayName());
+        TextViewNombre.setText(usuario.getDisplayName());
+
+        /*
+         *SOLO USUARIOS REGISTRADOS CON GOOGLE O EMAIL PUEDEN CAMBIAR SUS DATOS
+            PARA EVITAR  PROBLEMAS DE AUTENTIFICACION CON USUARIOS DE TWITTER
+         */
 
         if(usuario.getEmail()!=null && usuario.getEmail()!=""){
             TextView correo = view.findViewById(R.id.correo);
@@ -125,8 +134,13 @@ public class Cuenta extends Fragment {
     }
 
     private void mostrarPopupCambiarDatos(View view) {
-        View popupView = LayoutInflater.from(getContext()).inflate(R.layout.activity_cambiar_perfil, null);
-        PopupWindow popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        Dialog popupView = new Dialog(getContext());
+        popupView.setContentView(R.layout.activity_cambiar_perfil);
+        popupView.setCanceledOnTouchOutside(false); // No permite cancelar al tocar fuera
+
+
+        //View popupView = LayoutInflater.from(getContext()).inflate(R.layout.activity_cambiar_perfil, null);
+       // PopupWindow popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
 
         EditText nombreUsuario = popupView.findViewById(R.id.nombreUsuario);
         EditText nuevoCorreo = popupView.findViewById(R.id.nuevoCorreo);
@@ -144,7 +158,7 @@ public class Cuenta extends Fragment {
         btnCancelarCambiar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                popupWindow.dismiss();
+                popupView.dismiss();
             }
         });
 
@@ -173,30 +187,54 @@ public class Cuenta extends Fragment {
                             .setPhotoUri(Uri.parse(String.valueOf(usuario.getPhotoUrl())))
                             .build();
 
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    DocumentReference usuarioRef = db.collection("usuarios").document(correo);
+
                     if (!nombre.equals(nuevo_nombre)) {
                         usuario.updateProfile(perfil);
-                        popupWindow.dismiss();
+                        TextViewNombre.setText(nuevo_nombre);
+                        popupView.dismiss();
                         Toast toast = Toast.makeText(getContext(),"Nombre de usuario actualizado",Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
                     }
 
                     if (!correo.equals(nuevo_correo)) {
-                        usuario.updateEmail(nuevo_correo);
-                        popupWindow.dismiss();
+                       /* usuario.updateEmail(nuevo_correo);
+                        /*
+
+                        !!!!!!!!!!!!!!!!!!! SPRINT 4 !!!!!!!!!!!!!!!!!!!!
+
+                        * PROCESO INCOMPLETO -> NO SE ACTUALIZAN DATOS EN FIRESTORE, LA CUENTA QUEDARIA SIN EDIFICIOS
+                        * 1- CREAR NUEVO DOCUMENTO CON CORREO ACTUALIZADO
+                        * 2- COPIAR EN ESE DOCUMENTO LA COLECCION EDIFICIOS DEL CORREO INICIAL
+                        * 3- BORRAR MANUALMENTE LA COLLECCION EDIFICIOS DEL CORREO INICIAL
+                        * 4- BORRAR DOCUMENTO CORREO INICIAL
+                        * 5- PASAR A MAIN ACTIVITY LOS NUEVOS DATOS DEL USUARIO PARA RECARGAR SUS EDIFICIOS
+                        *
+
+                        popupView.dismiss();
                         Toast toast = Toast.makeText(getContext(),"Correo electrónico actualizado " + correo + " -> " + nuevo_correo,Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
+                        */
+                        popupView.dismiss();
                     }
 
                 }
             }
         });
 
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setFocusable(true);
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+        popupView.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupView.show();
+//        popupWindow.setFocusable(true); // Habilitar interacción con los elementos internos
+//        popupWindow.setOutsideTouchable(false);
+//
+//        // Mostrar el PopupWindow
+//        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
     }
+
+
 
     public void cerrarSesion(View view) {
         AuthUI.getInstance().signOut(requireContext())

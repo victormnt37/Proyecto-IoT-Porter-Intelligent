@@ -9,8 +9,7 @@
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
     app:cardCornerRadius="16dp"
-    app:cardElevation="10dp"
-    app:cardMaxElevation="10dp"
+    app:cardElevation="0dp"
     app:cardBackgroundColor="@color/blue_CLARITO">
 
     <androidx.constraintlayout.widget.ConstraintLayout

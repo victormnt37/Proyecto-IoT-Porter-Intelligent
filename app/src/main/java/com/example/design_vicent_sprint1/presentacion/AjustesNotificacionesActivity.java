@@ -33,7 +33,6 @@ public class AjustesNotificacionesActivity extends AppCompatActivity {
         switchMovimientos = findViewById(R.id.switchMovimientos);
         switchRuidos = findViewById(R.id.switchRuidos);
         switchLuz = findViewById(R.id.switchLuz);
-        switchVibraciones = findViewById(R.id.switchVibraciones);
         switchGas = findViewById(R.id.switchGas);
 
         btnGuardar = findViewById(R.id.btnGuardar);
