@@ -63,16 +63,25 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
         }
     }
 
-    public void llenarDatosMQTT(SensorData datos) {
+    public void llenarDatosMQTT(SensorData datos, RecyclerView recyclerView) {
         this.datosSensor = datos;
-        holderActual.itemView.post(() -> {
-            holderActual.panelVacio.removeAllViews();
 
-            for (Panel panel : paneles) {
-                holderActual.tipoPanel.setText(panel.getTipo());
-                actualizarDatos(panel, holderActual);
-            }
-        });
+        for (int i = 0; i < paneles.size(); i++) {
+            int position = i;
+            Panel panel = paneles.get(i);
+
+            holderActual.itemView.post(() -> {
+                RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(position);
+
+                if (viewHolder instanceof PanelAdapter.PanelViewHolder) {
+                    PanelAdapter.PanelViewHolder holder = (PanelAdapter.PanelViewHolder) viewHolder;
+
+                    holder.panelVacio.removeAllViews();
+                    holder.tipoPanel.setText(panel.getTipo());
+                    actualizarDatos(panel, holder);
+                }
+            });
+        }
     }
 
     public void actualizarDatos(Panel panel, PanelViewHolder holder) {
