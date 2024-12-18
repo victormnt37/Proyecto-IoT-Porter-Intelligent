@@ -13,13 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 
 import com.example.design_vicent_sprint1.data.RepositorioPaneles;
 import com.example.design_vicent_sprint1.model.Panel;
@@ -136,17 +133,102 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
 //        View popupView = LayoutInflater.from(getContext()).inflate(R.layout.popup_add, null);
 //        PopupWindow popupWindowAdd = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
 
-//        Button btnAdd = popupView.findViewById(R.id.btnAdd);
-//
-//        btnAdd.setOnClickListener(v -> {
-//
-//            //********************* PROCESO AÑADIR EDIFICIO
-//
-//            popupWindowAdd.dismiss();
-//        });
+        Button btnVecino = popupViewAdd.findViewById(R.id.btnVecino); // Cambié el ID por 'btnVecino'
+
+        // Verifica que el botón no sea nulo
+        if (btnVecino != null) {
+            btnVecino.setOnClickListener(v -> {
+                // Mostrar el segundo pop-up
+                mostrarPopupVecino();
+
+                // Cerrar el primer pop-up
+                popupViewAdd.dismiss();
+            });
+        } else {
+            Log.e("PopupAdd", "Botón btnVecino no encontrado.");
+        }
+
+        Button btnAdmin = popupViewAdd.findViewById(R.id.btnAdmin);
+        if (btnAdmin != null) {
+            btnAdmin.setOnClickListener(v -> {
+                mostrarPopupAdmin();
+                popupViewAdd.dismiss();
+
+            });
+        }
+        Button btnAnuncios = popupViewAdd.findViewById(R.id.btnAnuncios);
+        if (btnAnuncios != null) {
+            btnAnuncios.setOnClickListener(v -> {
+                Log.d("PopupAdd", "Botón Admin pulsado");
+                mostrarPopupAnuncio();
+                popupViewAdd.dismiss();
+            });
+        }
+        Button btnContactos = popupViewAdd.findViewById(R.id.btnContactos);
+        if (btnContactos != null) {
+            btnContactos.setOnClickListener(v -> {
+                Log.d("PopupAdd", "Botón Admin pulsado");
+                mostrarPopupContacto();
+                popupViewAdd.dismiss();
+            });
+        }
+        // Mostrar el primer pop-up
+        popupViewAdd.show();
 
         popupViewAdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupViewAdd.show();
+    }
+    private void mostrarPopupVecino() {
+
+        // Crear el segundo pop-up (Dialog)
+        Dialog popupVecinos = new Dialog(getContext());
+        popupVecinos.setContentView(R.layout.popup_anyadir_vecino);  // Asegúrate de que este layout existe
+        popupVecinos.setCanceledOnTouchOutside(true);
+
+        // Hacer el fondo del segundo pop-up transparente
+        popupVecinos.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        // Mostrar el segundo pop-up
+        popupVecinos.show();
+    }
+    private void mostrarPopupAdmin() {
+
+        // Crear el segundo pop-up (Dialog)
+        Dialog popupAdmin = new Dialog(getContext());
+        popupAdmin.setContentView(R.layout.popup_contacto);  // Asegúrate de que este layout existe
+        popupAdmin.setCanceledOnTouchOutside(true);
+
+        // Hacer el fondo del segundo pop-up transparente
+        popupAdmin.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        // Mostrar el segundo pop-up
+        popupAdmin.show();
+    }
+    private void mostrarPopupAnuncio() {
+
+        // Crear el segundo pop-up (Dialog)
+        Dialog popupAnuncios = new Dialog(getContext());
+        popupAnuncios.setContentView(R.layout.popup_anuncio);  // Asegúrate de que este layout existe
+        popupAnuncios.setCanceledOnTouchOutside(true);
+
+        // Hacer el fondo del segundo pop-up transparente
+        popupAnuncios.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        // Mostrar el segundo pop-up
+        popupAnuncios.show();
+    }
+    private void mostrarPopupContacto() {
+
+        // Crear el segundo pop-up (Dialog)
+        Dialog popupContacto = new Dialog(getContext());
+        popupContacto.setContentView(R.layout.popup_contacto);  // Asegúrate de que este layout existe
+        popupContacto.setCanceledOnTouchOutside(true);
+
+        // Hacer el fondo del segundo pop-up transparente
+        popupContacto.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        // Mostrar el segundo pop-up
+        popupContacto.show();
     }
 
     private void cargarPaneles(SensorData datosSensor) {

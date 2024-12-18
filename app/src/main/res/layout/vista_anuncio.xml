@@ -41,9 +41,9 @@
         <!-- Menú de opciones -->
         <ImageView
             android:id="@+id/menuOpciones"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_menudot"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/icon_archivar"
             android:contentDescription="Opciones"
             android:padding="8dp"
             app:tint="@color/blue"/>
