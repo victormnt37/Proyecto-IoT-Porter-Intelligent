@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +67,28 @@ public class ContactosAdapter extends RecyclerView.Adapter<ContactosAdapter.Cont
 
             });
         }
+
+        // Evento de clic para el menú de opciones
+        holder.menuOpciones.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(holder.itemView.getContext(), holder.menuOpciones);
+            popupMenu.inflate(R.menu.menu_opciones_contacto); // Inflar el menú XML
+
+            // Configurar las acciones de cada opción del menú
+            popupMenu.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == R.id.opcion_editar) {
+
+                    return true;
+                } else if (item.getItemId() == R.id.opcion_eliminar) {
+
+                    return true;
+                } else if (item.getItemId() == R.id.opcion_info) {
+
+                    return true;
+                }
+                return false;
+            });
+            popupMenu.show(); // Mostrar el menú
+        });
     }
 
     @Override
@@ -102,12 +125,14 @@ public class ContactosAdapter extends RecyclerView.Adapter<ContactosAdapter.Cont
         TextView txtNombre;
         TextView txtTelefono;
         ImageView imageView;
+        ImageView menuOpciones;
 
         public ContactoViewHolder(@NonNull View itemView) {
             super(itemView);
             txtNombre = itemView.findViewById(R.id.contactName);
             txtTelefono = itemView.findViewById(R.id.contactPhone);
             imageView = itemView.findViewById(R.id.menuOpciones);
+            menuOpciones = itemView.findViewById(R.id.menuOpciones);
         }
     }
 }

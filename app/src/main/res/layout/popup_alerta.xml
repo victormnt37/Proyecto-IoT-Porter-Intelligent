@@ -16,6 +16,7 @@
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="#FFFFFF"
         android:padding="12dp">
 
         <!-- Título -->
@@ -23,6 +24,7 @@
             android:id="@+id/textTitulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/poppinsbold"
             android:gravity="center"
             android:text="¿Quieres enviar una alerta a tus vecinos?"
@@ -96,12 +98,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
             android:backgroundTint="#255A7B"
             android:fontFamily="@font/poppinsbold"
             android:text="Enviar"
             android:textColor="@color/white"
             android:textSize="20dp"
             app:cornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/btnSOS"
             app:layout_constraintTop_toBottomOf="@+id/btnFuego"
             tools:layout_conversion_absoluteHeight="48dp"
