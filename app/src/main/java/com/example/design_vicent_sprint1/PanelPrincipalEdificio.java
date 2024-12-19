@@ -32,10 +32,14 @@ import com.example.design_vicent_sprint1.model.Anuncio;
 import com.example.design_vicent_sprint1.model.Panel;
 import com.example.design_vicent_sprint1.model.PanelAdapter;
 import com.example.design_vicent_sprint1.model.SensorData;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -45,8 +49,10 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
 
@@ -194,11 +200,51 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
         EditText correo = popupVecinos.findViewById(R.id.etCorreo);
         Spinner piso = popupVecinos.findViewById(R.id.spinnerPiso);
         Spinner puerta = popupVecinos.findViewById(R.id.spinnerPuerta);
-        String[] items = {"1", "2", "3"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, items);
-        puerta.setAdapter(adapter);
-        piso.setAdapter(adapter);
+        List<String> pisosList = new ArrayList<>();
+        Map<String, List<String>> puertasMap = new HashMap<>();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("edificios").document(edificioSeleccionado).collection("pisos")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String piso = document.getId();
+                                pisosList.add(piso);
 
+                                List<String> puertas = (List<String>) document.get("puertas");
+                                if (puertas != null) {
+                                    puertasMap.put(piso, puertas);
+                                }
+                            }
+                            ArrayAdapter<String> pisosAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, pisosList);
+                            pisosAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            piso.setAdapter(pisosAdapter);
+                            piso.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    String pisoSeleccionado = pisosList.get(position);
+                                    List<String> puertas = puertasMap.get(pisoSeleccionado);
+
+                                    if (puertas != null) {
+                                        ArrayAdapter<String> puertasAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, puertas);
+                                        puertasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                        puerta.setAdapter(puertasAdapter);
+                                    } else {
+                                        puerta.setAdapter(null); // Vaciar el spinner si no hay puertas
+                                    }
+                                }
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+                                    // No hacer nada
+                                }
+                            });
+                        } else {
+                            Log.e("Firestore", "Error al cargar datos");
+                        }
+                    }
+                });
 
         Button btnAdd = popupVecinos.findViewById(R.id.btnAddVecino3);
         btnAdd.setOnClickListener(view -> {
@@ -209,8 +255,6 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
             if(!verificarCorreo(correo_i)){
                 tilCorreo.setError("Correo no válido");
             } else{
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-
                 DocumentReference usuarioRef = db.collection("usuarios").document(correo_i);
 
                 usuarioRef.get().addOnSuccessListener(documentSnapshot -> {
