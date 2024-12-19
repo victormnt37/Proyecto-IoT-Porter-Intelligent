@@ -71,6 +71,10 @@
             android:name=".presentacion.AdministradoresActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".presentacion.RegistroDatosSensorActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

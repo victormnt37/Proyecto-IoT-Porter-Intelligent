@@ -1,5 +1,9 @@
 package com.example.design_vicent_sprint1.model;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.design_vicent_sprint1.R;
 import com.example.design_vicent_sprint1.data.RepositorioWeather;
+import com.example.design_vicent_sprint1.presentacion.MainActivity;
+import com.example.design_vicent_sprint1.presentacion.RegistroDatosSensorActivity;
 
 import java.util.List;
 
@@ -20,13 +26,17 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
     private List<Panel> paneles;
     private String edificioSeleccionado;
     private SensorData datosSensor;
+    private Context context;
 
     private PanelViewHolder holderActual;
+    
+    private final String noData = "Esperando datos MQTT...";
 
-    public PanelAdapter(List<Panel> paneles, String edificioSeleccionado, SensorData datosSensor) {
+    public PanelAdapter(List<Panel> paneles, String edificioSeleccionado, SensorData datosSensor, Context context) {
         this.paneles = paneles;
         this.edificioSeleccionado = edificioSeleccionado;
         this.datosSensor = datosSensor;
+        this.context = context;
     }
 
     @NonNull
@@ -42,6 +52,13 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
         holder.tipoPanel.setText(panel.getTipo());
 
         holder.panelVacio.removeAllViews();
+
+        holder.panelVacio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lanzarActividad(panel);
+            }
+        });
 
         actualizarDatos(panel, holder);
         holderActual = holder;
@@ -139,12 +156,12 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
         TextView temperaturaActual = new TextView(holder.itemView.getContext());
         if (datosSensor != null) {
             if (datosSensor.getTemperatura() == 100000000.0) {
-                temperaturaActual.setText("...");
+                temperaturaActual.setText(noData);
             } else {
                 temperaturaActual.setText("Temperatura actual: " + datosSensor.getTemperatura());
             }
         } else {
-            temperaturaActual.setText("..."); // poner un icono de cargando o algo asi
+            temperaturaActual.setText(noData); // poner un icono de cargando o algo asi
         }
         holder.panelVacio.addView(temperaturaActual);
     }
@@ -160,10 +177,10 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
                     hayMovimiento.setText("No hay movimiento. Todo tranquilo por aquí.");
                 }
             } else {
-                hayMovimiento.setText("...");
+                hayMovimiento.setText(noData);
             }
         } else {
-            hayMovimiento.setText("...");
+            hayMovimiento.setText(noData);
         }
         holder.panelVacio.addView(hayMovimiento);
     }
@@ -179,10 +196,10 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
                     hayRuido.setText("No hay ruido. La calle está tranquila.");
                 }
             } else {
-                hayRuido.setText("...");
+                hayRuido.setText(noData);
             }
         } else {
-            hayRuido.setText("...");
+            hayRuido.setText(noData);
         }
         holder.panelVacio.addView(hayRuido);
     }
@@ -195,10 +212,10 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
             if (luz != null) {
                 nivelDeLuz.setText("Nivel de luz actual: " + luz);
             } else {
-                nivelDeLuz.setText("...");
+                nivelDeLuz.setText(noData);
             }
         } else {
-            nivelDeLuz.setText("...");
+            nivelDeLuz.setText(noData);
         }
         holder.panelVacio.addView(nivelDeLuz);
     }
@@ -210,12 +227,19 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
             if (gas != null) {
                 nivelDeGas.setText("Nivel de gas actual: " + gas);
             } else {
-                nivelDeGas.setText("...");
+                nivelDeGas.setText(noData);
             }
         } else {
-            nivelDeGas.setText("...");
+            nivelDeGas.setText(noData);
         }
         holder.panelVacio.addView(nivelDeGas);
     }
-
+    private void lanzarActividad(Panel panel) {
+        Intent intent = new Intent(context, RegistroDatosSensorActivity.class);
+        if (datosSensor != null) {
+            intent.putExtra("tipo-sensor", panel.getTipo());
+            intent.putExtra("edificio", edificioSeleccionado);
+        }
+        context.startActivity(intent);
+    }
 }

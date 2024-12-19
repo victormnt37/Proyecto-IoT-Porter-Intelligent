@@ -390,7 +390,7 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
         List<Panel> paneles = repositorioPaneles.getPanelesPorEdificio(edificioSeleccionado);
 
         if (adapter == null) {
-            adapter = new PanelAdapter(paneles, edificioSeleccionado, datosSensor);
+            adapter = new PanelAdapter(paneles, edificioSeleccionado, datosSensor, getContext());
             recyclerView.setAdapter(adapter);
         } else {
             adapter.llenarDatosMQTT(datosSensor, recyclerView);
