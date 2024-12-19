@@ -2,14 +2,21 @@ package com.example.design_vicent_sprint1.presentacion;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.design_vicent_sprint1.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -25,8 +32,17 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+/*
+    DECIDIR SI CREAR ACTIVITY PARA USUARIOS SIN EDIFICIOS
+*/
 
 public class CustomLoginActivity extends AppCompatActivity {
+
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private String correo = "";
     private String contraseña = "";
@@ -34,13 +50,18 @@ public class CustomLoginActivity extends AppCompatActivity {
     private EditText etCorreo, etContraseña;
     private TextInputLayout tilCorreo, tilContraseña;
     private ProgressDialog dialogo;
-    private Button btnTwitter;
+    private ImageButton btnTwitter;
+    private TextView recuperarContraseña;
     private static final int RC_GOOGLE_SIGN_IN = 123;
     GoogleSignInClient googleSignInClient;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_login);
+        ActionBar appBar = getSupportActionBar();
+        if (appBar != null) {
+            appBar.setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, R.color.white)));
+        }
         etCorreo = (EditText) findViewById(R.id.correo);
         etContraseña = (EditText) findViewById(R.id.contraseña);
         tilCorreo = (TextInputLayout) findViewById(R.id.til_correo);
@@ -50,7 +71,6 @@ public class CustomLoginActivity extends AppCompatActivity {
         dialogo.setTitle("Verificando usuario");
         dialogo.setMessage("Por favor espere...");
         verificaSiUsuarioValidado();
-
         //Google
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(
                 GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -69,18 +89,91 @@ public class CustomLoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // TODO: poner boton en activity_custom_login y descomentar cosas
+        recuperarContraseña = findViewById(R.id.recuperarContraseña);
+        recuperarContraseña.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reestablecerContraseña(view);
+            }
+        });
+
+    }
+
+    private void verificaSiUsuarioValidado(ProgressDialog dialog) {
+
+        if (auth.getCurrentUser() != null) {
+
+            String cuenta_usuario = auth.getCurrentUser().getEmail();
+           if(cuenta_usuario == null || cuenta_usuario.isEmpty()){
+               cuenta_usuario = auth.getCurrentUser().getDisplayName(); ;
+           }
+
+           //comprobar si usuario autorizado (tiene edificios vinculados)
+            DocumentReference usuario = FirebaseFirestore.getInstance()
+                    .collection("usuarios").document(cuenta_usuario);
+            String cuenta = cuenta_usuario;
+            usuario.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot userId = task.getResult();
+                    if (userId.exists()) {
+                        dialogo.dismiss();
+                        Intent i = new Intent(this, MainActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                | Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        i.putExtra("userId", cuenta);
+                        startActivity(i);
+                        finish();
+                    } else {
+                        dialogo.dismiss();
+                        auth.signOut();
+                        mensaje("No estás asociado a ningún edificio. Pide al administrador que permita acceso a tu cuenta.");
+                    }
+                } else {
+                    Log.e("Firestore", "Error al obtener el documento", task.getException()); // task1, no task
+                }
+            });
+        }
     }
 
     private void verificaSiUsuarioValidado() {
+
         if (auth.getCurrentUser() != null) {
-            Intent i = new Intent(this, MainActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    | Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(i);
-            finish();
+
+            String cuenta_usuario = auth.getCurrentUser().getEmail();
+            if(cuenta_usuario == null || cuenta_usuario.isEmpty()){
+                cuenta_usuario = auth.getCurrentUser().getDisplayName(); ;
+            }
+
+            //combrobar si usuario autorizado (tiene edificios vinculados)
+            DocumentReference usuario = FirebaseFirestore.getInstance()
+                    .collection("usuarios").document(cuenta_usuario);
+            String cuenta = cuenta_usuario;
+            usuario.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot userId = task.getResult();
+                    if (userId.exists()) {
+                        Intent i = new Intent(this, MainActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                | Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        i.putExtra("userId", cuenta);
+                        startActivity(i);
+                        finish();
+                    } else {
+                        auth.signOut();
+                        //TODO -> PASAR CURRENTUSER A NULL PARA PERMITIR ELEGIR CUENTA NUEVA
+                        mensaje("No estás asociado a ningún edificio. Pide al administrador que permita acceso a tu cuenta.");
+                    }
+                } else {
+                    Log.e("Firestore", "Error al obtener el documento", task.getException()); // task1, no task
+                }
+            });
         }
     }
+
     public void inicioSesiónCorreo(View v) {
         if (verificaCampos()) {
             dialogo.show();
@@ -89,7 +182,7 @@ public class CustomLoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                verificaSiUsuarioValidado();
+                                verificaSiUsuarioValidado(dialogo);
                             } else {
                                 dialogo.dismiss();
                                 mensaje(task.getException().getLocalizedMessage());
@@ -98,6 +191,7 @@ public class CustomLoginActivity extends AppCompatActivity {
                     });
         }
     }
+
     public void registroCorreo(View v) {
         if (verificaCampos()) {
             dialogo.show();
@@ -106,7 +200,7 @@ public class CustomLoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                verificaSiUsuarioValidado();
+                               verificaSiUsuarioValidado();
                             } else {
                                 dialogo.dismiss();
                                 mensaje(task.getException().getLocalizedMessage());
@@ -115,9 +209,11 @@ public class CustomLoginActivity extends AppCompatActivity {
                     });
             }
     }
+
     private void mensaje(String mensaje) {
         Snackbar.make(contenedor, mensaje, Snackbar.LENGTH_LONG).show();
     }
+
     private boolean verificaCampos() {
         correo = etCorreo.getText().toString();
         contraseña = etContraseña.getText().toString();
@@ -139,9 +235,8 @@ public class CustomLoginActivity extends AppCompatActivity {
         }
         return false;
     }
-    public void firebaseUI(View v) {
-        startActivity(new Intent(this, LoginActivity.class));
-    }
+
+    //on click btn google en activity_custom_login
     public void autentificarGoogle(View v) {
         Intent i = googleSignInClient.getSignInIntent();
         startActivityForResult(i, RC_GOOGLE_SIGN_IN);
@@ -168,6 +263,7 @@ public class CustomLoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             verificaSiUsuarioValidado();
+
                         }else{
                             mensaje(task.getException().getLocalizedMessage());
                         }
@@ -175,5 +271,26 @@ public class CustomLoginActivity extends AppCompatActivity {
                 });
     }
 
-
+    public void reestablecerContraseña(View v) {
+        correo = etCorreo.getText().toString();
+        tilCorreo.setError("");
+        if (correo.isEmpty()) {
+            tilCorreo.setError("Introduce un correo");
+        } else if (!correo.matches(".+@.+[.].+")) {
+            tilCorreo.setError("Correo no válido");
+        } else {
+            dialogo.show();
+            auth.sendPasswordResetEmail(correo)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override public void onComplete(@NonNull Task<Void> task) {
+                            dialogo.dismiss();
+                            if (task.isSuccessful()) {
+                                mensaje("Verifica tu correo para cambiar contraseña.");
+                            } else {
+                                mensaje("ERROR al mandar correo para cambiar contraseña");
+                            }
+                        }
+                    });
+        }
+    }
 }

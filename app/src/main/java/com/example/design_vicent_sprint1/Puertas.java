@@ -21,18 +21,18 @@ public class Puertas extends Fragment {
 
     private RecyclerView recyclerView;
     private RepositorioPuertas repositorioPuertas;
-    private int edificioSeleccionado;
+    private String edificioSeleccionado;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.puertas, container, false);
+        View view = inflater.inflate(R.layout.activity_puertas, container, false);
         recyclerView = view.findViewById(R.id.recyclerViewPuertas);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
         //recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         if (getArguments() != null) {
-            edificioSeleccionado = getArguments().getInt("edificioSeleccionado");
+            edificioSeleccionado = getArguments().getString("edificioSeleccionado");
         }
 
         repositorioPuertas = new RepositorioPuertas();
@@ -45,5 +45,7 @@ public class Puertas extends Fragment {
         PuertasAdapter adapter = new PuertasAdapter(puertas);
         recyclerView.setAdapter(adapter);
     }
+
+
 }
 

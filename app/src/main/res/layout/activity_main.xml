@@ -4,38 +4,64 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#426BA8CA">
+
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#6BA8CA"
+        android:background="@color/blue_CLARITO"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-        <Button
-            android:id="@+id/edificio"
+        <!-- Contenedor para el botón y la imagen -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Menu desplegable edificios"
-            android:text="Edificio" />
+            android:layout_gravity="start">
+
+            <Button
+                android:id="@+id/edificio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="-20dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Menu desplegable edificios"
+                android:fontFamily="@font/poppinsbold"
+                android:text="Edificio"
+                android:textAlignment="textStart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/edificio"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/icon_dropdown" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageButton
             android:id="@+id/menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:scaleType="fitXY"
             android:layout_gravity="end"
             android:layout_marginRight="20dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Opciones menu"
-            android:src="@drawable/icon_menu" />
+            android:src="@drawable/icon_menu"
+
+            app:tint="@color/white"/>
 
     </androidx.appcompat.widget.Toolbar>
 

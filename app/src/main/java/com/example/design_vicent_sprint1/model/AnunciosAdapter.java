@@ -3,14 +3,16 @@ package com.example.design_vicent_sprint1.model;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.example.design_vicent_sprint1.R;
 import java.util.List;
 
-public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.ViewHolder> {
+public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.AnuncioViewHolder> {
+
     private List<Anuncio> anuncios;
 
     public AnunciosAdapter(List<Anuncio> anuncios) {
@@ -19,17 +21,22 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.ViewHo
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_2, parent, false);
-        return new ViewHolder(view);
+    public AnuncioViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.vista_anuncio, parent, false);
+        return new AnuncioViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AnuncioViewHolder holder, int position) {
         Anuncio anuncio = anuncios.get(position);
-        holder.textView1.setText(anuncio.getAsunto());
-        holder.textView2.setText(anuncio.getTexto());
-       // holder.textView3.setText(anuncio.getFecha());
+
+        holder.hora.setText(anuncio.getFecha());
+        holder.titulo.setText(anuncio.getAsunto());
+        holder.descripcion.setText(anuncio.getTexto());
+
+        holder.menuOpciones.setOnClickListener(v -> {
+            Toast.makeText(holder.itemView.getContext(), "Opciones del anuncio: " + anuncio.getAsunto(), Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override
@@ -37,15 +44,18 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.ViewHo
         return anuncios.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textView1, textView2;
+    static class AnuncioViewHolder extends RecyclerView.ViewHolder {
 
-        public ViewHolder(@NonNull View itemView) {
+        TextView hora, titulo, descripcion;
+        ImageView menuOpciones;
+
+        public AnuncioViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView1 = itemView.findViewById(android.R.id.text1);
-            textView2 = itemView.findViewById(android.R.id.text2);
-            //textView3 = itemView.findViewById(android.R.id.text3);
+
+            hora = itemView.findViewById(R.id.horaAnuncio);
+            titulo = itemView.findViewById(R.id.tituloAnuncio);
+            descripcion = itemView.findViewById(R.id.descripcionAnuncio);
+            menuOpciones = itemView.findViewById(R.id.menuOpciones);
         }
     }
 }
-

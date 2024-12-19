@@ -7,17 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RepositorioContactos {
-    private List<Contacto> contactos;
+    /*private List<Contacto> contactos;
 
     public RepositorioContactos() {
         contactos = new ArrayList<>();
         cargarContactosEjemplo();
     }
 
-    public List<Contacto> getContactosPorEdificio(int id_edificio) {
+    public List<Contacto> getContactosPorEdificio(String id_edificio) {
         List<Contacto> resultado = new ArrayList<>();
         for (Contacto contacto : contactos) {
-            if (contacto.getEdificio().getId() == id_edificio) {
+            if (contacto.getEdificio().getId().equals(id_edificio)) {
                 resultado.add(contacto);
             }
         }
@@ -47,6 +47,6 @@ public class RepositorioContactos {
         contactos.add(new Contacto(edificios.get(2), "Administrador", "555-6789"));
         contactos.add(new Contacto(edificios.get(2), "Mantenimiento", "555-9876"));
         contactos.add(new Contacto(edificios.get(2), "Seguridad", "555-4321"));
-    }
+    }*/
 }
 

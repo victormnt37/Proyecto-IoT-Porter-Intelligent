@@ -17,7 +17,7 @@ public class RepositorioPuertas {
         puertas = new ArrayList<>();
 
         puertas.add(new Puerta(edificios.get(0), "Puerta Principal", "P008"));
-        puertas.add(new Puerta(edificios.get(0), "Puerta de Acceso a la Terraza", "P009"));
+        puertas.add(new Puerta(edificios.get(0), "Puerta Terraza", "P009"));
 
         puertas.add(new Puerta(edificios.get(1), "Puerta Principal", "P001"));
         puertas.add(new Puerta(edificios.get(1), "Puerta del Garaje", "P002"));
@@ -29,10 +29,10 @@ public class RepositorioPuertas {
         puertas.add(new Puerta(edificios.get(2), "Puerta de Emergencia", "P007"));
     }
 
-    public List<Puerta> getPuertasPorEdificio(int id_edificio) {
+    public List<Puerta> getPuertasPorEdificio(String id_edificio) {
         List<Puerta> resultado = new ArrayList<>();
         for (Puerta puerta : puertas) {
-            if (puerta.getEdificio().getId() == id_edificio) {
+            if (puerta.getEdificio().getId().equals(id_edificio)) {
                 resultado.add(puerta);
             }
         }

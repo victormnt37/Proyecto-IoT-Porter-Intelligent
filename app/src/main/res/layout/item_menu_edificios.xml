@@ -1,0 +1,29 @@
+<!-- item_edificio.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="0dp"
+    android:background="@color/blue_CLARITO"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="8dp"> <!-- Ajusta el padding según necesites -->
+
+
+    <ImageView
+        android:id="@+id/iconoEdificio"
+        android:layout_width="69dp"
+        android:layout_height="77dp"
+        android:src="@drawable/icon_edificio"
+        app:tint="@color/blue"/>
+
+    <TextView
+        android:id="@+id/nombreEdificio"
+        android:layout_width="84dp"
+        android:layout_height="73dp"
+        android:fontFamily="@font/poppinsbold"
+        android:gravity="center"
+        android:text="Edificio"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+</LinearLayout>

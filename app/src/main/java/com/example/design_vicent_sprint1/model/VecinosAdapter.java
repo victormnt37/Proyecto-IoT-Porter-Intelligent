@@ -1,49 +1,105 @@
 package com.example.design_vicent_sprint1.model;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.example.design_vicent_sprint1.R;
+
 import java.util.List;
+import com.example.design_vicent_sprint1.R;
 
-public class VecinosAdapter extends RecyclerView.Adapter<VecinosAdapter.ViewHolder> {
+
+public class VecinosAdapter extends RecyclerView.Adapter<VecinosAdapter.VecinoViewHolder> {
+
     private List<Vecino> vecinos;
+    private ImageLoader lectorImagenes;
 
+    // Constructor que recibe la lista de vecinos y el lector de imágenes
     public VecinosAdapter(List<Vecino> vecinos) {
         this.vecinos = vecinos;
+        this.lectorImagenes = lectorImagenes;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_2, parent, false);
-        return new ViewHolder(view);
+    public VecinoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.vista_vecino, parent, false);
+        return new VecinoViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull VecinoViewHolder holder, int position) {
         Vecino vecino = vecinos.get(position);
-        holder.textView1.setText("Piso " + vecino.getPiso() + ", Puerta " + vecino.getPuerta());
-        holder.textView2.setText(vecino.getCorreoElectronico());
+
+        // Asignar el nombre y correo
+        //holder.nombre.setText(vecino.getEdificio().getNombre());
+        holder.correo.setText(vecino.getCorreo());
+
+        // Cargar la imagen usando NetworkImageView
+        Uri urlImagen = vecino.getPhotoUrl();
+        if (urlImagen != null) {
+            holder.imagen.setImageUrl(urlImagen.toString(), lectorImagenes);
+        } else {
+            holder.imagen.setDefaultImageResId(R.drawable.icon_perfil); // Imagen predeterminada
+        }
+
+        // Evento de clic para el menú de opciones
+        holder.menuOpciones.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(holder.itemView.getContext(), holder.menuOpciones);
+            popupMenu.inflate(R.menu.menu_opciones_vecino); // Inflar el menú XML
+
+            // Configurar las acciones de cada opción del menú
+            popupMenu.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == R.id.opcion_editar) {
+                    Toast.makeText(holder.itemView.getContext(),
+                            "Editar: " + vecino.getPiso(), Toast.LENGTH_SHORT).show();
+                    return true;
+                } else if (item.getItemId() == R.id.opcion_eliminar) {
+                    Toast.makeText(holder.itemView.getContext(),
+                            "Eliminar: " + vecino.getPiso(), Toast.LENGTH_SHORT).show();
+                    return true;
+                } else if (item.getItemId() == R.id.opcion_info) {
+                    Toast.makeText(holder.itemView.getContext(),
+                            "Información de: " + vecino.getPiso(), Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            });
+            popupMenu.show(); // Mostrar el menú
+        });
     }
+
 
     @Override
     public int getItemCount() {
         return vecinos.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textView1, textView2;
+    // Clase ViewHolder para los elementos del RecyclerView
+    static class VecinoViewHolder extends RecyclerView.ViewHolder {
 
-        public ViewHolder(@NonNull View itemView) {
+        TextView /*nombre,*/ correo;
+        NetworkImageView imagen; // NetworkImageView para cargar imágenes desde URL
+        ImageView menuOpciones;
+
+        public VecinoViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView1 = itemView.findViewById(android.R.id.text1);
-            textView2 = itemView.findViewById(android.R.id.text2);
+
+            //nombre = itemView.findViewById(R.id.nombreVecino);
+            correo = itemView.findViewById(R.id.correoVecino);
+            imagen = itemView.findViewById(R.id.imagen);
+            menuOpciones = itemView.findViewById(R.id.menuOpciones);
         }
     }
 }
-

@@ -13,7 +13,7 @@ public class RepositorioPaneles {
     public RepositorioPaneles() {
         RepositorioEdificios repositorioEdificios = new RepositorioEdificios();
         List<Edificio> edificios = repositorioEdificios.getEdificios();
-        edificios.remove(edificios.size()-1);
+        //edificios.remove(edificios.size()-1);
         paneles = new ArrayList<>();
 
         paneles.add(new Panel(edificios.get(0), "Actividad Reciente"));
@@ -23,7 +23,6 @@ public class RepositorioPaneles {
         paneles.add(new Panel(edificios.get(0), "Movimiento"));
         paneles.add(new Panel(edificios.get(0), "Ruido"));
         paneles.add(new Panel(edificios.get(0), "Luz"));
-        paneles.add(new Panel(edificios.get(0), "Vibraciones"));
         paneles.add(new Panel(edificios.get(0), "Humo y Gas"));
 
         paneles.add(new Panel(edificios.get(1), "Actividad Reciente"));
@@ -33,7 +32,6 @@ public class RepositorioPaneles {
         paneles.add(new Panel(edificios.get(1), "Movimiento"));
         paneles.add(new Panel(edificios.get(1), "Ruido"));
         paneles.add(new Panel(edificios.get(1), "Luz"));
-        paneles.add(new Panel(edificios.get(1), "Vibraciones"));
         paneles.add(new Panel(edificios.get(1), "Humo y Gas"));
 
         paneles.add(new Panel(edificios.get(2), "Actividad Reciente"));
@@ -43,14 +41,13 @@ public class RepositorioPaneles {
         paneles.add(new Panel(edificios.get(2), "Movimiento"));
         paneles.add(new Panel(edificios.get(2), "Ruido"));
         paneles.add(new Panel(edificios.get(2), "Luz"));
-        paneles.add(new Panel(edificios.get(2), "Vibraciones"));
         paneles.add(new Panel(edificios.get(2), "Humo y Gas"));
     }
 
-    public List<Panel> getPanelesPorEdificio(int id_edificio) {
+    public List<Panel> getPanelesPorEdificio(String id_edificio) {
         List<Panel> resultado = new ArrayList<>();
         for (Panel panel : paneles) {
-            if (panel.getEdificio().getId() == id_edificio) {
+            if (panel.getEdificio().getId().equals(id_edificio)) {
                 resultado.add(panel);
             }
         }

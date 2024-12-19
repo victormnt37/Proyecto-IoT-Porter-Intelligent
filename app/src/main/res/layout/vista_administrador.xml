@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:background="@android:color/white">
+
+    <!-- Imagen del administrador -->
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/imagen"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
+        android:paddingTop="0dp"
+        android:src="@drawable/icon_perfil"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Contenedor de texto (nombre y correo) -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+
+        <!-- Nombre -->
+        <TextView
+            android:id="@+id/nombreAdministrador"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppinsbold"
+            android:text="Nombre"
+            android:textSize="16sp"
+            android:textColor="#3B5D75"
+            android:textStyle="bold" />
+
+        <!-- Correo -->
+        <TextView
+            android:id="@+id/correoAdministrador"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Correo electrónico"
+            android:textSize="14sp"
+            android:textColor="#4A4A4A" />
+    </LinearLayout>
+
+    <!-- Menú de opciones -->
+    <ImageView
+        android:id="@+id/menuOpciones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_menudot"
+        android:contentDescription="Menú de opciones"
+        android:padding="8dp"
+        app:tint="@color/blue" />
+</LinearLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF">
@@ -17,21 +18,24 @@
             android:gravity="center"
             android:padding="16dp"
             android:text="Configuración de notificaciones"
+            android:fontFamily="@font/poppinsbold"
             android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+            android:textSize="20sp" />
 
 
         <!-- Header -->
 
         <!-- Notification Section -->
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:paddingStart="16dp"
+            android:fontFamily="@font/poppinsbold"
             android:text="Recibir notificaciones de:"
-            android:textColor="#000000"
-            android:textSize="16sp" />
+            android:textColor="@color/blue"
+            android:textSize="18sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -39,7 +43,7 @@
             android:layout_marginTop="8dp"
             android:paddingStart="16dp"
             android:text="Selecciona los sensores de los cuales quieras recibir actualizaciones"
-            android:textColor="#777777"
+            android:textColor="#414141"
             android:textSize="14sp" />
 
         <!-- Notification Switches -->
@@ -62,11 +66,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:fontFamily="@font/poppinsmedium"
                     android:text="Accesos"
                     android:textColor="#000000"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <Switch
+                    android:id="@+id/switchAccessos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -84,11 +90,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:fontFamily="@font/poppinsmedium"
                     android:text="Movimientos"
                     android:textColor="#000000"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <Switch
+                    android:id="@+id/switchMovimientos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -105,11 +113,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:fontFamily="@font/poppinsmedium"
                     android:text="Ruidos"
                     android:textColor="#000000"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <Switch
+                    android:id="@+id/switchRuidos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -126,35 +136,18 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:fontFamily="@font/poppinsmedium"
                     android:text="Luz"
                     android:textColor="#000000"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <Switch
+                    android:id="@+id/switchLuz"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
-            <!-- Vibraciones Switch -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
 
-                android:orientation="horizontal"
-                android:paddingVertical="8dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Vibraciones"
-                    android:textColor="#000000"
-                    android:textSize="14sp" />
-
-                <Switch
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
 
             <!-- Humo y Gas Switch -->
             <LinearLayout
@@ -168,11 +161,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:fontFamily="@font/poppinsmedium"
                     android:text="Humo y gas"
                     android:textColor="#000000"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <Switch
+                    android:id="@+id/switchGas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -184,9 +179,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:paddingStart="16dp"
+            android:fontFamily="@font/poppinsbold"
             android:text="¿Quieres activar las notificaciones por correo?"
-            android:textColor="#000000"
-            android:textSize="16sp" />
+            android:textColor="@color/blue"
+            android:textSize="18sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -194,7 +190,7 @@
             android:layout_marginTop="8dp"
             android:paddingStart="16dp"
             android:text="Si quieres que te lleguen las notificaciones por correo, activa esta opción."
-            android:textColor="#777777"
+            android:textColor="#414141"
             android:textSize="14sp" />
 
         <!-- Email Notification Switch -->
@@ -207,12 +203,14 @@
             android:layout_marginTop="8dp" />
 
         <Button
+            android:id="@+id/btnGuardar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="24dp"
             android:backgroundTint="#3B5D75"
             android:text="Guardar"
-            android:textColor="#FFFFFF" />
+            android:fontFamily="@font/poppinsbold"
+            android:textColor="#FFFFFF"/>
     </LinearLayout>
 </ScrollView>

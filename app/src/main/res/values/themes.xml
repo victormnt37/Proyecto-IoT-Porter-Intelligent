@@ -3,7 +3,11 @@
     <style name="Base.Theme.PruebasRecycler" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:fontFamily">@font/poppinsregular</item>
     </style>
 
-    <style name="Theme.PruebasRecycler" parent="Base.Theme.PruebasRecycler" />
+    <style name="Theme.PruebasRecycler" parent="Base.Theme.PruebasRecycler">
+        <item name="colorPrimary">@color/blue_CLARITO</item>
+    </style>
+
 </resources>

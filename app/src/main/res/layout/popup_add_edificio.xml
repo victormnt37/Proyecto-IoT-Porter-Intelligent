@@ -1,30 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:background="@android:color/white"
-    android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/Titulo"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="10dp"
+    app:cardMaxElevation="10dp"
+    app:cardBackgroundColor="@color/blue_CLARITO">
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Añadir un nuevo edificio"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:padding="15dp">
 
-    <EditText
-        android:id="@+id/idEdificio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Código del edificio"/>
+        <TextView
+            android:id="@+id/Titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/poppinsbold"
+            android:gravity="center"
+            android:text=" Añadir  Introduce el codigo de tu edificio"
+            android:textColor="@color/blue"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btnAddEdificio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Añadir"
-        android:layout_gravity="end"/>
-</LinearLayout>
+        <EditText
+            android:id="@+id/idEdificio"
+            android:layout_width="0dp"
+            android:layout_height="58dp"
+            android:hint="Código del edificio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Titulo" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="!Este código te lo debe proporcionar el presidente de la comunidad  o el administrador de tu finca!"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@+id/idEdificio"
+            app:layout_constraintStart_toStartOf="@+id/idEdificio"
+            app:layout_constraintTop_toBottomOf="@+id/idEdificio" />
+
+        <Button
+            android:id="@+id/btnAddEdificio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            android:fontFamily="@font/poppinsbold"
+            android:text="Añadir"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:cornerRadius="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/mensaje"
+            app:strokeColor="#6BA8CA"
+            app:strokeWidth="3dp" />
+
+        <TextView
+            android:id="@+id/mensaje"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FF0000"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>

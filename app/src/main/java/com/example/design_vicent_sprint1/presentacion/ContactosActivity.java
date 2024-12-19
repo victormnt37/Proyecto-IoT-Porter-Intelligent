@@ -1,6 +1,8 @@
 package com.example.design_vicent_sprint1.presentacion;
 
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,14 +11,19 @@ import com.example.design_vicent_sprint1.model.Contacto;
 import com.example.design_vicent_sprint1.model.ContactosAdapter;
 import com.example.design_vicent_sprint1.R;
 import com.example.design_vicent_sprint1.data.RepositorioContactos;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContactosActivity extends AppCompatActivity {
 
-    private RepositorioContactos repositorioContactos;
+    private  List<Contacto> contactos;
     private RecyclerView recyclerViewContactos;
-    private int edificioSeleccionado;
+    private String edificioSeleccionado;
+    private String rol;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,17 +31,28 @@ public class ContactosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contactos);
 
         recyclerViewContactos = findViewById(R.id.recyclerViewContactos);
-        edificioSeleccionado = getIntent().getIntExtra("edificio", 0);
-
-        repositorioContactos = new RepositorioContactos();
-        cargarContactos();
+        edificioSeleccionado = getIntent().getStringExtra("edificio");
+        rol = getIntent().getStringExtra("rol");
+        obtenerContactosPorEdificio(edificioSeleccionado, rol);
     }
 
-    private void cargarContactos() {
-        List<Contacto> contactos = repositorioContactos.getContactosPorEdificio(edificioSeleccionado);
-        recyclerViewContactos.setLayoutManager(new LinearLayoutManager(this));
-        ContactosAdapter adapter = new ContactosAdapter(contactos);
-        recyclerViewContactos.setAdapter(adapter);
+    private void obtenerContactosPorEdificio(String edificioId, String rol) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference contactosRef = db.collection("edificios").document(edificioId).collection("contactos");
+
+        contactosRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                List<Contacto> contactos = new ArrayList<>();
+                for (QueryDocumentSnapshot doc : task.getResult()) {
+                    contactos.add(doc.toObject(Contacto.class));
+                }
+                recyclerViewContactos.setLayoutManager(new LinearLayoutManager(this));
+                ContactosAdapter adapter = new ContactosAdapter(contactos, this, rol);
+                recyclerViewContactos.setAdapter(adapter);
+            } else {
+                Log.e("FirestoreError", "Error al obtener contactos", task.getException());
+            }
+        });
     }
 }
 

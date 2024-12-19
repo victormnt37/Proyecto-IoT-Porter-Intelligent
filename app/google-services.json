@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "453845709889",
     "project_id": "vicent-porter-intelligent",
-    "storage_bucket": "vicent-porter-intelligent.appspot.com"
+    "storage_bucket": "vicent-porter-intelligent.firebasestorage.app"
   },
   "client": [
     {
@@ -30,6 +30,30 @@
           }
         },
         {
+          "client_id": "453845709889-h4hsk23l7fap370dth2and5cgf7b9a36.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.design_vicent_sprint1",
+            "certificate_hash": "8fa4fa06fcb6aefef3249bbae33336a73a29e776"
+          }
+        },
+        {
+          "client_id": "453845709889-lf514f29d6uiqf6selapm28vfk5v3ln6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.design_vicent_sprint1",
+            "certificate_hash": "290d40f1fbbb4f46fa93539e31a749c18ba9504b"
+          }
+        },
+        {
+          "client_id": "453845709889-ofepsgb88v4t7jbjqm071vjfan2c5ruc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.design_vicent_sprint1",
+            "certificate_hash": "75212741b0d83ef81fae9dc1f9da2324e6f9c835"
+          }
+        },
+        {
           "client_id": "453845709889-u4ommggchlb2vc1vti8lut19lep1lf3q.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -37,6 +61,151 @@
             "certificate_hash": "79c8a1da28b3d351e3481bf490ee13ab085c6711"
           }
         },
+        {
+          "client_id": "453845709889-7ara6ebelcoamtvhfi7o23g2nap9s3vf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNt1vXz-6Ln2eJAVjJoi5oIBZ5mU10fD8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453845709889-7ara6ebelcoamtvhfi7o23g2nap9s3vf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453845709889:android:f2a4d185049ac73cc482c0",
+        "android_client_info": {
+          "package_name": "com.example.porteroautomatico"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "453845709889-7ara6ebelcoamtvhfi7o23g2nap9s3vf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNt1vXz-6Ln2eJAVjJoi5oIBZ5mU10fD8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453845709889-7ara6ebelcoamtvhfi7o23g2nap9s3vf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453845709889:android:87c584ea3a41c3edc482c0",
+        "android_client_info": {
+          "package_name": "com.example.porteroburgos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "453845709889-7ara6ebelcoamtvhfi7o23g2nap9s3vf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNt1vXz-6Ln2eJAVjJoi5oIBZ5mU10fD8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453845709889-7ara6ebelcoamtvhfi7o23g2nap9s3vf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453845709889:android:caa819aeec29dc84c482c0",
+        "android_client_info": {
+          "package_name": "com.example.porterodavid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "453845709889-7ara6ebelcoamtvhfi7o23g2nap9s3vf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNt1vXz-6Ln2eJAVjJoi5oIBZ5mU10fD8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453845709889-7ara6ebelcoamtvhfi7o23g2nap9s3vf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453845709889:android:24b17feff067781ec482c0",
+        "android_client_info": {
+          "package_name": "org.example.porteroautomtico"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "453845709889-7ara6ebelcoamtvhfi7o23g2nap9s3vf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNt1vXz-6Ln2eJAVjJoi5oIBZ5mU10fD8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453845709889-7ara6ebelcoamtvhfi7o23g2nap9s3vf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453845709889:android:24ab9f85aeaf179bc482c0",
+        "android_client_info": {
+          "package_name": "org.example.porteromorant"
+        }
+      },
+      "oauth_client": [
         {
           "client_id": "453845709889-7ara6ebelcoamtvhfi7o23g2nap9s3vf.apps.googleusercontent.com",
           "client_type": 3

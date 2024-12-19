@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:background="@drawable/rounded_background"
+    android:orientation="vertical"
+    android:padding="16dp"
+    app:layout_constraintCircleRadius="10dp">
+
+    <!-- Título -->
+
+    <!-- Campo Nombre -->
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppinsbold"
+        android:gravity="center"
+        android:text="Añade un nuevo:"
+        android:textColor="@color/blue"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Desplegable tipo dropdown -->
+
+
+    <!-- Campo Correo -->
+
+    <!-- Campo Teléfono -->
+
+    <!-- Botón Añadir -->
+
+    <Button
+        android:id="@+id/btnAddVecino"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#255A7B"
+        android:fontFamily="@font/poppinsbold"
+        android:text="Vecino"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView13"
+        tools:layout_conversion_absoluteHeight="48dp"
+        tools:layout_conversion_absoluteWidth="150dp" />
+
+    <Button
+        android:id="@+id/btnAddAdministrador"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#255A7B"
+        android:fontFamily="@font/poppinsbold"
+        android:text="Administrador"
+
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/btnAddVecino"
+        app:layout_constraintHorizontal_bias="0.578"
+        app:layout_constraintStart_toStartOf="@+id/btnAddVecino"
+        app:layout_constraintTop_toBottomOf="@+id/btnAddVecino"
+        tools:layout_conversion_absoluteHeight="48dp"
+        tools:layout_conversion_absoluteWidth="150dp" />
+
+
+    <Button
+        android:id="@+id/btnAddContacto"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#255A7B"
+
+        android:fontFamily="@font/poppinsbold"
+
+        android:text="Contacto"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/btnAddAdministrador"
+        app:layout_constraintStart_toStartOf="@+id/btnAddAdministrador"
+        app:layout_constraintTop_toBottomOf="@+id/btnAddAdministrador"
+        tools:layout_conversion_absoluteHeight="48dp"
+        tools:layout_conversion_absoluteWidth="150dp" />
+
+    <Button
+        android:id="@+id/btnAddAnuncio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="16dp"
+
+        android:layout_marginBottom="16dp"
+
+        android:backgroundTint="#255A7B"
+        android:fontFamily="@font/poppinsbold"
+        android:text="Anuncio"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btnAddContacto"
+        app:layout_constraintStart_toStartOf="@+id/btnAddContacto"
+        app:layout_constraintTop_toBottomOf="@+id/btnAddContacto"
+        tools:layout_conversion_absoluteHeight="48dp"
+        tools:layout_conversion_absoluteWidth="150dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
