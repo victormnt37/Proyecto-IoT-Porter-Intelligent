@@ -1,6 +1,8 @@
 package com.example.design_vicent_sprint1.presentacion;
 
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +12,11 @@ import com.android.volley.toolbox.Volley;
 import com.example.design_vicent_sprint1.R;
 import com.example.design_vicent_sprint1.model.Administrador;
 import com.example.design_vicent_sprint1.model.AdministradoresAdapter;
+import com.example.design_vicent_sprint1.model.Contacto;
+import com.example.design_vicent_sprint1.model.ContactosAdapter;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +42,7 @@ public class AdministradoresActivity extends AppCompatActivity {
         // Inicializar el lector de imágenes
         //lectorImagenes = new ImageLoader(Volley.newRequestQueue(this), new LruBitmapCache());
 
-        // Crear una lista de ejemplo de administradores (puedes reemplazar esto con datos reales)
-        List<Administrador> administradores = cargarAdministradores();
-
-        // Configurar el adaptador
-        administradoresAdapter = new AdministradoresAdapter(administradores, lectorImagenes);
-        recyclerViewAdministradores.setAdapter(administradoresAdapter);
+        obtenerAdministradoresPorEdificio(edificioSeleccionado);
     }
 
     // Método para cargar datos de ejemplo de administradores
@@ -50,5 +52,28 @@ public class AdministradoresActivity extends AppCompatActivity {
         administradores.add(new Administrador("admin2@example.com", "Administrador 2", "987654321"));
         administradores.add(new Administrador("admin3@example.com", "Administrador 3", "567890123"));
         return administradores;
+    }
+
+    private void obtenerAdministradoresPorEdificio(String edificioId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference adminsRef = db.collection("edificios").document(edificioId).collection("administradores");
+
+        adminsRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                List<Administrador> administradores = new ArrayList<>();
+                for (QueryDocumentSnapshot doc : task.getResult()) {
+                    Administrador administrador = new Administrador();
+                    administrador.setCorreo(doc.getId());
+                    administrador.setNombre(doc.getString("nombre"));
+                    administrador.setTelefono(doc.getString("telefono"));
+                    administradores.add(administrador);
+                }
+                recyclerViewAdministradores.setLayoutManager(new LinearLayoutManager(this));
+                administradoresAdapter = new AdministradoresAdapter(administradores, lectorImagenes);
+                recyclerViewAdministradores.setAdapter(administradoresAdapter);
+            } else {
+                Log.e("FirestoreError", "Error al obtener contactos", task.getException());
+            }
+        });
     }
 }

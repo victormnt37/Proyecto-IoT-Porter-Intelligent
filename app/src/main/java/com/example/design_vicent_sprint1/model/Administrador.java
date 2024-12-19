@@ -16,7 +16,6 @@ public class Administrador {
         this.correo = correo;
         this.nombre = nombre;
         this.telefono = telefono;
-
     }
 
     public Administrador() {

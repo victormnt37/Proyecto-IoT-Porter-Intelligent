@@ -9,11 +9,11 @@
         android:id="@+id/tipoPanel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/poppinsbold"
-        android:textColor="@color/blue"/>
+        android:textColor="@color/blue"
+        android:textSize="18sp" />
 
     <LinearLayout
         android:id="@+id/panelVacio"
@@ -22,7 +22,6 @@
         android:layout_weight="1"
         android:background="@drawable/rounded_panel"
         android:gravity="center"
-        android:padding="8dp"
-        android:orientation="vertical">
-    </LinearLayout>
+        android:orientation="vertical"
+        android:padding="8dp"></LinearLayout>
 </LinearLayout>
