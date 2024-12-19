@@ -37,38 +37,38 @@
             android:id="@+id/tvCorreo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/poppinsbold"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/poppinsmedium"
             android:text="Correo"
-            android:textColor="@color/blue"
-            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
         <!-- Input Correo -->
-        <EditText
-            android:id="@+id/etCorreo"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlCorreo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_edittext"
-            android:hint="Introduce el correo"
-            android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvCorreo" />
+            app:layout_constraintTop_toBottomOf="@id/tvCorreo">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Introduce el correo" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Piso Label -->
         <TextView
             android:id="@+id/tvPiso"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/poppinsbold"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/poppinsmedium"
             android:text="Piso"
-            android:textColor="@color/blue"
-            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/etCorreo" />
+            app:layout_constraintTop_toBottomOf="@+id/tlCorreo" />
 
         <!-- Puerta Label -->
 
@@ -77,13 +77,11 @@
             android:id="@+id/tvPuerta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/poppinsbold"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/poppinsmedium"
             android:text="Puerta"
-            android:textColor="@color/blue"
-            android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@id/spinnerPiso"
-            app:layout_constraintTop_toBottomOf="@id/etCorreo" />
+            app:layout_constraintTop_toBottomOf="@+id/tlCorreo" />
 
         <!-- Spinner Puerta -->
 
@@ -92,7 +90,6 @@
             android:id="@+id/spinnerPiso"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_edittext"
             android:padding="8dp"
             app:layout_constraintEnd_toStartOf="@id/spinnerPuerta"
             app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +99,6 @@
             android:id="@+id/spinnerPuerta"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_edittext"
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/spinnerPiso"
