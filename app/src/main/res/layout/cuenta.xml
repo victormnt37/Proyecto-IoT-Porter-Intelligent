@@ -59,30 +59,33 @@
         android:id="@+id/btnCambiar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#255A7B"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#3B5D75"
         android:text="Cambiar"
         android:fontFamily="@font/poppinsbold"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/correo"
         app:layout_constraintTop_toBottomOf="@id/correo"
-        app:strokeColor="@color/blue_CLARITO"
-        app:strokeWidth="3dp"/>
+        />
+
 
     <!-- Botón Cerrar Sesión -->
+
     <Button
         android:id="@+id/btn_cerrar_sesion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:backgroundTint="#255A7B"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#3B5D75"
         android:text="Cerrar sesión"
         android:fontFamily="@font/poppinsbold"
-        android:textColor="@color/white"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="@color/blue_CLARITO"
-        app:strokeWidth="3dp"/>
+        app:layout_constraintStart_toStartOf="parent"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
