@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,15 +25,21 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.design_vicent_sprint1.data.RepositorioPaneles;
 import com.example.design_vicent_sprint1.model.Anuncio;
 import com.example.design_vicent_sprint1.model.Panel;
 import com.example.design_vicent_sprint1.model.PanelAdapter;
 import com.example.design_vicent_sprint1.model.SensorData;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -42,8 +49,10 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
 
@@ -187,14 +196,55 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
 
         // Hacer el fondo del segundo pop-up transparente
         popupVecinos.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        TextInputLayout tilCorreo = popupVecinos.findViewById(R.id.tlCorreo);
         EditText correo = popupVecinos.findViewById(R.id.etCorreo);
         Spinner piso = popupVecinos.findViewById(R.id.spinnerPiso);
         Spinner puerta = popupVecinos.findViewById(R.id.spinnerPuerta);
-        String[] items = {"1", "2", "3"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, items);
-        puerta.setAdapter(adapter);
-        piso.setAdapter(adapter);
+        List<String> pisosList = new ArrayList<>();
+        Map<String, List<String>> puertasMap = new HashMap<>();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("edificios").document(edificioSeleccionado).collection("pisos")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String piso = document.getId();
+                                pisosList.add(piso);
 
+                                List<String> puertas = (List<String>) document.get("puertas");
+                                if (puertas != null) {
+                                    puertasMap.put(piso, puertas);
+                                }
+                            }
+                            ArrayAdapter<String> pisosAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, pisosList);
+                            pisosAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            piso.setAdapter(pisosAdapter);
+                            piso.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    String pisoSeleccionado = pisosList.get(position);
+                                    List<String> puertas = puertasMap.get(pisoSeleccionado);
+
+                                    if (puertas != null) {
+                                        ArrayAdapter<String> puertasAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, puertas);
+                                        puertasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                        puerta.setAdapter(puertasAdapter);
+                                    } else {
+                                        puerta.setAdapter(null); // Vaciar el spinner si no hay puertas
+                                    }
+                                }
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+                                    // No hacer nada
+                                }
+                            });
+                        } else {
+                            Log.e("Firestore", "Error al cargar datos");
+                        }
+                    }
+                });
 
         Button btnAdd = popupVecinos.findViewById(R.id.btnAddVecino3);
         btnAdd.setOnClickListener(view -> {
@@ -202,38 +252,43 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
             String puerta_i = puerta.getSelectedItem().toString();
             String piso_i = piso.getSelectedItem().toString();
 
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            if(!verificarCorreo(correo_i)){
+                tilCorreo.setError("Correo no válido");
+            } else{
+                DocumentReference usuarioRef = db.collection("usuarios").document(correo_i);
 
-            DocumentReference usuarioRef = db.collection("usuarios").document(correo_i);
+                usuarioRef.get().addOnSuccessListener(documentSnapshot -> {
+                    if (!documentSnapshot.exists()) {
+                        usuarioRef.set(new HashMap<>())
+                                .addOnSuccessListener(aVoid -> {
+                                    usuarioRef.collection("edificios").document(edificioSeleccionado)
+                                            .set(new HashMap<String, Object>() {{
+                                                put("rol", "vecino");
+                                            }});
+                                });
 
-            usuarioRef.get().addOnSuccessListener(documentSnapshot -> {
-                if (!documentSnapshot.exists()) {
-                    usuarioRef.set(new HashMap<>())
-                            .addOnSuccessListener(aVoid -> {
-                                usuarioRef.collection("edificios").document(edificioSeleccionado)
-                                        .set(new HashMap<String, Object>() {{
-                                            put("rol", "vecino");
-                                        }});
-                            });
+                    } else {
+                        usuarioRef.collection("edificios").document(edificioSeleccionado)
+                                .set(new HashMap<String, Object>() {{
+                                    put("rol", "vecino");
+                                }});
 
-                } else {
-                    usuarioRef.collection("edificios").document(edificioSeleccionado)
-                            .set(new HashMap<String, Object>() {{
-                                put("rol", "vecino");
-                            }});
+                    }
+                    DocumentReference edificioRef = db.collection("edificios").document(edificioSeleccionado);
 
-                }
-                DocumentReference edificioRef = db.collection("edificios").document(edificioSeleccionado);
-
-                edificioRef.get().addOnSuccessListener(documentSnapshot2 -> {
-                    edificioRef.collection("vecinos").document(correo_i)
-                            .set(new HashMap<String, Object>() {{
-                                put("piso", piso_i);
-                                put("puerta", puerta_i);
-                            }});
+                    edificioRef.get().addOnSuccessListener(documentSnapshot2 -> {
+                        edificioRef.collection("vecinos").document(correo_i)
+                                .set(new HashMap<String, Object>() {{
+                                    put("piso", piso_i);
+                                    put("puerta", puerta_i);
+                                }});
+                    });
+                    popupVecinos.dismiss();
+                    Toast toast = Toast.makeText(getContext(), "Vecino añadido", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 });
-                popupVecinos.dismiss();
-            });
+            }
         });
         configurarTeclado(popupVecinos);
         // Mostrar el segundo pop-up
@@ -245,6 +300,10 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
         Dialog popupAdmin = new Dialog(getContext());
         popupAdmin.setContentView(R.layout.popup_admin);  // Asegúrate de que este layout existe
         popupAdmin.setCanceledOnTouchOutside(true);
+        TextInputLayout tilNombre = popupAdmin.findViewById(R.id.tlNombre);
+        TextInputLayout tilCorreo = popupAdmin.findViewById(R.id.tlCorreo);
+        TextInputLayout tilTelefono = popupAdmin.findViewById(R.id.tlTelefono);
+
         EditText nombre = popupAdmin.findViewById(R.id.editText6);
         EditText correo = popupAdmin.findViewById(R.id.editText5);
         EditText telefono = popupAdmin.findViewById(R.id.editText7);
@@ -258,38 +317,49 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
             String nombre_i = nombre.getText().toString();
             String telefono_i = telefono.getText().toString();
 
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            if(!verificarCorreo(correo_i)){
+                tilCorreo.setError("Correo no válido");
+            }else if(!verificarTelefono(telefono_i)){
+                tilTelefono.setError("Telefono no válido");
+            } else if (nombre_i.isEmpty()) {
+                tilNombre.setError("Introduce un nombre");
+            }else{
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-            DocumentReference usuarioRef = db.collection("usuarios").document(correo_i);
+                DocumentReference usuarioRef = db.collection("usuarios").document(correo_i);
 
-            usuarioRef.get().addOnSuccessListener(documentSnapshot -> {
-                if (!documentSnapshot.exists()) {
-                    usuarioRef.set(new HashMap<>())
-                            .addOnSuccessListener(aVoid -> {
-                                usuarioRef.collection("edificios").document(edificioSeleccionado)
-                                        .set(new HashMap<String, Object>() {{
-                                            put("rol", "admin");
-                                        }});
-                            });
+                usuarioRef.get().addOnSuccessListener(documentSnapshot -> {
+                    if (!documentSnapshot.exists()) {
+                        usuarioRef.set(new HashMap<>())
+                                .addOnSuccessListener(aVoid -> {
+                                    usuarioRef.collection("edificios").document(edificioSeleccionado)
+                                            .set(new HashMap<String, Object>() {{
+                                                put("rol", "admin");
+                                            }});
+                                });
 
-                } else {
-                    usuarioRef.collection("edificios").document(edificioSeleccionado)
-                            .set(new HashMap<String, Object>() {{
-                                put("rol", "admin");
-                            }});
+                    } else {
+                        usuarioRef.collection("edificios").document(edificioSeleccionado)
+                                .set(new HashMap<String, Object>() {{
+                                    put("rol", "admin");
+                                }});
 
-                }
-                DocumentReference edificioRef = db.collection("edificios").document(edificioSeleccionado);
+                    }
+                    DocumentReference edificioRef = db.collection("edificios").document(edificioSeleccionado);
 
-                edificioRef.get().addOnSuccessListener(documentSnapshot2 -> {
-                    edificioRef.collection("administradores").document(correo_i)
-                            .set(new HashMap<String, Object>() {{
-                                put("nombre", nombre_i);
-                                put("telefono", telefono_i);
-                            }});
+                    edificioRef.get().addOnSuccessListener(documentSnapshot2 -> {
+                        edificioRef.collection("administradores").document(correo_i)
+                                .set(new HashMap<String, Object>() {{
+                                    put("nombre", nombre_i);
+                                    put("telefono", telefono_i);
+                                }});
+                    });
+                    popupAdmin.dismiss();
+                    Toast toast = Toast.makeText(getContext(), "Administrador añadido", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 });
-                popupAdmin.dismiss();
-            });
+            }
         });
         configurarTeclado(popupAdmin);
         // Mostrar el segundo pop-up
@@ -306,43 +376,54 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
         popupAnuncios.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         EditText asunto = popupAnuncios.findViewById(R.id.editText6);
         EditText texto = popupAnuncios.findViewById(R.id.editText5);
+        TextInputLayout tilAsunto = popupAnuncios.findViewById(R.id.tlAsunto);
+        TextInputLayout tilTexto = popupAnuncios.findViewById(R.id.tlTexto);
 
         Button btnAdd = popupAnuncios.findViewById(R.id.btnAddVecino);
         btnAdd.setOnClickListener(view -> {
             String asunto_i = asunto.getText().toString();
             String texto_i = texto.getText().toString();
 
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            if(asunto_i.isEmpty()){
+                tilAsunto.setError("Introduce un titulo");
+            }else if(texto_i.isEmpty()){
+                tilTexto.setError("Escribe una descripción");
+            }else{
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-            db.collection("edificios").document(edificioSeleccionado) // Documento del edificio
-                    .collection("administradores").document(userId) // Documento del administrador
-                    .get().addOnSuccessListener(documentSnapshot -> {
-                        if (documentSnapshot.exists()) {
-                            String autor = documentSnapshot.getString("nombre");
-                            if (autor != null) {
-                                Anuncio anuncio = new Anuncio(asunto_i, texto_i, autor);
-                                String fecha = anuncio.getFecha();
-                                DocumentReference edificioRef = db.collection("edificios").document(edificioSeleccionado);
-                                edificioRef.get().addOnSuccessListener(documentSnapshot2 -> {
-                                    edificioRef.collection("anuncios").document()
-                                            .set(new HashMap<String, Object>() {{
-                                                put("asunto", asunto_i);
-                                                put("texto", texto_i);
-                                                put("fecha", fecha);
-                                                put("autor", autor);
-                                            }});
-                                    popupAnuncios.dismiss();
-                                });
+                db.collection("edificios").document(edificioSeleccionado) // Documento del edificio
+                        .collection("administradores").document(userId) // Documento del administrador
+                        .get().addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.exists()) {
+                                String autor = documentSnapshot.getString("nombre");
+                                if (autor != null) {
+                                    Anuncio anuncio = new Anuncio(asunto_i, texto_i, autor);
+                                    String fecha = anuncio.getFecha();
+                                    DocumentReference edificioRef = db.collection("edificios").document(edificioSeleccionado);
+                                    edificioRef.get().addOnSuccessListener(documentSnapshot2 -> {
+                                        edificioRef.collection("anuncios").document()
+                                                .set(new HashMap<String, Object>() {{
+                                                    put("asunto", asunto_i);
+                                                    put("texto", texto_i);
+                                                    put("fecha", fecha);
+                                                    put("autor", autor);
+                                                }});
+                                        popupAnuncios.dismiss();
+                                        Toast toast = Toast.makeText(getContext(), "Anuncio añadido", Toast.LENGTH_SHORT);
+                                        toast.setGravity(Gravity.CENTER, 0, 0);
+                                        toast.show();
+                                    });
+                                } else {
+                                    Log.d("Firestore", "El campo 'nombre' no existe en el documento.");
+                                }
                             } else {
-                                Log.d("Firestore", "El campo 'nombre' no existe en el documento.");
+                                Log.d("Firestore", "No se encontró el documento del administrador.");
                             }
-                        } else {
-                            Log.d("Firestore", "No se encontró el documento del administrador.");
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.e("Firestore", "Error al buscar el administrador: ", e);
-                    });
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("Firestore", "Error al buscar el administrador: ", e);
+                        });
+            }
         });
 
         configurarTeclado(popupAnuncios);
@@ -360,6 +441,8 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
         // Hacer el fondo del segundo pop-up transparente
         popupContacto.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+        TextInputLayout tilNombre = popupContacto.findViewById(R.id.tlNombre);
+        TextInputLayout tilTelefono = popupContacto.findViewById(R.id.tlTelefono);
         EditText nombre = popupContacto.findViewById(R.id.editText6);
         EditText telefono = popupContacto.findViewById(R.id.editText7);
 
@@ -368,9 +451,14 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
             String nombre_i = nombre.getText().toString();
             String telefono_i = telefono.getText().toString();
 
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            if(!verificarTelefono(telefono_i)){
+                tilTelefono.setError("Teléfono no válido");
+            }else if (nombre_i.isEmpty()) {
+                tilNombre.setError("Introduce un nombre");
+            }else{
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-            DocumentReference edificioRef = db.collection("edificios").document(edificioSeleccionado);
+                DocumentReference edificioRef = db.collection("edificios").document(edificioSeleccionado);
                 edificioRef.get().addOnSuccessListener(documentSnapshot -> {
                     edificioRef.collection("contactos").document()
                             .set(new HashMap<String, Object>() {{
@@ -378,12 +466,30 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
                                 put("telefono", telefono_i);
                             }});
                     popupContacto.dismiss();
+                    Toast toast = Toast.makeText(getContext(), "Contacto añadido", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 });
+            }
         });
 
         configurarTeclado(popupContacto);
         // Mostrar el segundo pop-up
         popupContacto.show();
+    }
+
+    private boolean verificarCorreo(String correo){
+        if (correo.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean verificarTelefono(String telefono) {
+        if (telefono.matches("^\\d{9}$")) {
+            return true;
+        }
+        return false;
     }
 
     private void cargarPaneles(SensorData datosSensor) {

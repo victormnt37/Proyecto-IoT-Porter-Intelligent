@@ -39,24 +39,26 @@
             android:id="@+id/textView14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/poppinsbold"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/poppinsmedium"
             android:text="Nombre"
-            android:textColor="@color/blue"
-            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
-        <EditText
-            android:id="@+id/editText6"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlNombre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_edittext"
-            android:hint="Nombre"
-            android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView14" />
+            app:layout_constraintTop_toBottomOf="@+id/textView14">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editText6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Campo Correo -->
 
@@ -68,41 +70,41 @@
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppinsbold"
+            android:fontFamily="@font/poppinsmedium"
             android:text="Telefono"
-            android:textColor="@color/blue"
-            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText6" />
+            app:layout_constraintTop_toBottomOf="@+id/tlNombre" />
 
-        <EditText
-            android:id="@+id/editText7"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlTelefono"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-
-            android:background="@drawable/rounded_edittext"
-            android:hint="Telefono"
-            android:inputType="phone"
-            android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+            app:layout_constraintTop_toBottomOf="@+id/textView9">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editText7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Telefono" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btnAddVecino"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="#255A7B"
-            android:fontFamily="@font/poppinsbold"
 
+            android:fontFamily="@font/poppinsbold"
             android:text="Enviar"
             android:textColor="@color/white"
             android:textSize="20dp"
             android:textStyle="bold"
             app:cornerRadius="10dp"
-            app:layout_constraintEnd_toEndOf="@+id/editText7"
-            app:layout_constraintTop_toBottomOf="@+id/editText7"
+            app:layout_constraintEnd_toEndOf="@+id/textView13"
+            app:layout_constraintTop_toBottomOf="@+id/tlTelefono"
             tools:layout_conversion_absoluteHeight="48dp"
             tools:layout_conversion_absoluteWidth="150dp" />
 
