@@ -2,6 +2,7 @@ package com.example.design_vicent_sprint1.presentacion;
 
 import static android.app.PendingIntent.getActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -35,7 +36,8 @@ public class EdificiosActivity extends AppCompatActivity {
     private String userId;
     private String id_edificioSeleccionado;
     private List<Edificio> listaEdificios = new ArrayList<>();
-    private List<String> listaIds;
+    private Set<String> listaIds;
+    private Map<String,String> lista_edificios_y_roles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +59,12 @@ public class EdificiosActivity extends AppCompatActivity {
 
         edificios_con_permiso.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                listaIds = new ArrayList<>();
+                lista_edificios_y_roles = new HashMap<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    String id = document.getId().toString();
-                    listaIds.add(id);
+                    lista_edificios_y_roles.put(document.getId(), document.getString("rol"));
                 }
 
+                Set<String> listaIds = lista_edificios_y_roles.keySet();
                 CollectionReference edificios = FirebaseFirestore.getInstance().collection("edificios");
                 List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
 
@@ -88,7 +90,8 @@ public class EdificiosActivity extends AppCompatActivity {
                     EdificiosAdapter adapter = new EdificiosAdapter(listaEdificios, new EdificiosAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(Edificio edificio) {
-                            onEdificioSeleccionado(edificio); // Manejar selección
+                            String id = edificio.getId();
+                            onEdificioSeleccionado(id); // Manejar selección
                         }
 
                         @Override
@@ -104,11 +107,11 @@ public class EdificiosActivity extends AppCompatActivity {
         });
     }
 
-    private void onEdificioSeleccionado(Edificio edificio) {
-        // Aquí puedes manejar la acción al seleccionar un edificio.
-        // Ejemplo: abrir otra actividad.
-        /*Intent intent = new Intent(this, VecinosActivity.class);
-        intent.putExtra("edificio", edificio.getId());
-        startActivity(intent);*/
+    private void onEdificioSeleccionado(String id) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("edificio", id);
+        intent.putExtra("userId", userId);
+        startActivity(intent);
+        finish();
     }
 }

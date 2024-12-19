@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         //recuperar cuenta del usuario
         Bundle extras = getIntent().getExtras();
         userId = extras.getString("userId");
-
+        id_edificioSeleccionado = extras.getString("edificio","");
         //Header
         Toolbar toolbar = (Toolbar) findViewById(R.id.header);
         setSupportActionBar(toolbar);
@@ -103,9 +103,11 @@ public class MainActivity extends AppCompatActivity {
 
         actualizarListaEdificiosRoles(() -> {
             if (!lista_edificios_y_roles.isEmpty()) {
-                Map.Entry<String, String> primerEdificio = lista_edificios_y_roles.entrySet().iterator().next();
-                //seleccionar un edificio por defecto
-                id_edificioSeleccionado = primerEdificio.getKey();
+                if(id_edificioSeleccionado==null || id_edificioSeleccionado.isEmpty()){
+                    Map.Entry<String, String> primerEdificio = lista_edificios_y_roles.entrySet().iterator().next();
+                    //seleccionar un edificio por defecto
+                    id_edificioSeleccionado = primerEdificio.getKey();
+                }
                 cargarDatosBotonEdificio(id_edificioSeleccionado);
                 cargarPantalla(id_edificioSeleccionado);
             }
@@ -371,6 +373,7 @@ public class MainActivity extends AppCompatActivity {
             args.putString("edificioSeleccionado", edificioSeleccionadoId);
             String rol = lista_edificios_y_roles.get(id_edificioSeleccionado);
             args.putString("rol", rol);
+            args.putString("userId", userId);
             fragment.setArguments(args);
 
             return fragment;

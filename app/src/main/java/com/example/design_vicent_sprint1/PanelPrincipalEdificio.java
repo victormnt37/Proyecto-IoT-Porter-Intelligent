@@ -16,13 +16,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.example.design_vicent_sprint1.data.RepositorioPaneles;
+import com.example.design_vicent_sprint1.model.Anuncio;
 import com.example.design_vicent_sprint1.model.Panel;
 import com.example.design_vicent_sprint1.model.PanelAdapter;
 import com.example.design_vicent_sprint1.model.SensorData;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -32,6 +39,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
@@ -40,6 +48,7 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
     private RepositorioPaneles repositorioPaneles;
     private String edificioSeleccionado;
     private String rol;
+    private String userId;
     private PanelAdapter adapter;
     Handler uiHandler = new Handler(Looper.getMainLooper());
 
@@ -62,6 +71,7 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
         if (getArguments() != null) {
             edificioSeleccionado = getArguments().getString("edificioSeleccionado");
             rol = getArguments().getString("rol");
+            userId = getArguments().getString("userId");
         }
 
         try {
@@ -134,44 +144,32 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
 //        PopupWindow popupWindowAdd = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
 
         Button btnVecino = popupViewAdd.findViewById(R.id.btnVecino); // Cambié el ID por 'btnVecino'
-
-        // Verifica que el botón no sea nulo
-        if (btnVecino != null) {
-            btnVecino.setOnClickListener(v -> {
+        btnVecino.setOnClickListener(v -> {
                 // Mostrar el segundo pop-up
                 mostrarPopupVecino();
 
                 // Cerrar el primer pop-up
                 popupViewAdd.dismiss();
-            });
-        } else {
-            Log.e("PopupAdd", "Botón btnVecino no encontrado.");
-        }
+        });
 
         Button btnAdmin = popupViewAdd.findViewById(R.id.btnAdmin);
-        if (btnAdmin != null) {
-            btnAdmin.setOnClickListener(v -> {
+        btnAdmin.setOnClickListener(v -> {
                 mostrarPopupAdmin();
                 popupViewAdd.dismiss();
 
-            });
-        }
+        });
+
         Button btnAnuncios = popupViewAdd.findViewById(R.id.btnAnuncios);
-        if (btnAnuncios != null) {
-            btnAnuncios.setOnClickListener(v -> {
-                Log.d("PopupAdd", "Botón Admin pulsado");
+        btnAnuncios.setOnClickListener(v -> {
                 mostrarPopupAnuncio();
                 popupViewAdd.dismiss();
-            });
-        }
+        });
+
         Button btnContactos = popupViewAdd.findViewById(R.id.btnContactos);
-        if (btnContactos != null) {
-            btnContactos.setOnClickListener(v -> {
-                Log.d("PopupAdd", "Botón Admin pulsado");
+        btnContactos.setOnClickListener(v -> {
                 mostrarPopupContacto();
                 popupViewAdd.dismiss();
-            });
-        }
+        });
         // Mostrar el primer pop-up
         popupViewAdd.show();
 
@@ -180,14 +178,60 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
     }
     private void mostrarPopupVecino() {
 
-        // Crear el segundo pop-up (Dialog)
         Dialog popupVecinos = new Dialog(getContext());
-        popupVecinos.setContentView(R.layout.popup_anyadir_vecino);  // Asegúrate de que este layout existe
+        popupVecinos.setContentView(R.layout.popup_anyadir_vecino);
         popupVecinos.setCanceledOnTouchOutside(true);
 
         // Hacer el fondo del segundo pop-up transparente
         popupVecinos.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        EditText correo = popupVecinos.findViewById(R.id.etCorreo);
+        Spinner piso = popupVecinos.findViewById(R.id.spinnerPiso);
+        Spinner puerta = popupVecinos.findViewById(R.id.spinnerPuerta);
+        String[] items = {"1", "2", "3"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, items);
+        puerta.setAdapter(adapter);
+        piso.setAdapter(adapter);
 
+
+        Button btnAdd = popupVecinos.findViewById(R.id.btnAddVecino3);
+        btnAdd.setOnClickListener(view -> {
+            String correo_i = correo.getText().toString();
+            String puerta_i = puerta.getSelectedItem().toString();
+            String piso_i = piso.getSelectedItem().toString();
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            DocumentReference usuarioRef = db.collection("usuarios").document(correo_i);
+
+            usuarioRef.get().addOnSuccessListener(documentSnapshot -> {
+                if (!documentSnapshot.exists()) {
+                    usuarioRef.set(new HashMap<>())
+                            .addOnSuccessListener(aVoid -> {
+                                usuarioRef.collection("edificios").document(edificioSeleccionado)
+                                        .set(new HashMap<String, Object>() {{
+                                            put("rol", "vecino");
+                                        }});
+                            });
+
+                } else {
+                    usuarioRef.collection("edificios").document(edificioSeleccionado)
+                            .set(new HashMap<String, Object>() {{
+                                put("rol", "vecino");
+                            }});
+
+                }
+                DocumentReference edificioRef = db.collection("edificios").document(edificioSeleccionado);
+
+                edificioRef.get().addOnSuccessListener(documentSnapshot2 -> {
+                    edificioRef.collection("vecinos").document(correo_i)
+                            .set(new HashMap<String, Object>() {{
+                                put("piso", piso_i);
+                                put("puerta", puerta_i);
+                            }});
+                });
+                popupVecinos.dismiss();
+            });
+        });
         // Mostrar el segundo pop-up
         popupVecinos.show();
     }
@@ -195,12 +239,54 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
 
         // Crear el segundo pop-up (Dialog)
         Dialog popupAdmin = new Dialog(getContext());
-        popupAdmin.setContentView(R.layout.popup_contacto);  // Asegúrate de que este layout existe
+        popupAdmin.setContentView(R.layout.popup_admin);  // Asegúrate de que este layout existe
         popupAdmin.setCanceledOnTouchOutside(true);
+        EditText nombre = popupAdmin.findViewById(R.id.editText6);
+        EditText correo = popupAdmin.findViewById(R.id.editText5);
+        EditText telefono = popupAdmin.findViewById(R.id.editText7);
 
         // Hacer el fondo del segundo pop-up transparente
         popupAdmin.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+        Button btnAdd = popupAdmin.findViewById(R.id.btnAddVecino);
+        btnAdd.setOnClickListener(view -> {
+            String correo_i = correo.getText().toString();
+            String nombre_i = nombre.getText().toString();
+            String telefono_i = telefono.getText().toString();
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            DocumentReference usuarioRef = db.collection("usuarios").document(correo_i);
+
+            usuarioRef.get().addOnSuccessListener(documentSnapshot -> {
+                if (!documentSnapshot.exists()) {
+                    usuarioRef.set(new HashMap<>())
+                            .addOnSuccessListener(aVoid -> {
+                                usuarioRef.collection("edificios").document(edificioSeleccionado)
+                                        .set(new HashMap<String, Object>() {{
+                                            put("rol", "admin");
+                                        }});
+                            });
+
+                } else {
+                    usuarioRef.collection("edificios").document(edificioSeleccionado)
+                            .set(new HashMap<String, Object>() {{
+                                put("rol", "admin");
+                            }});
+
+                }
+                DocumentReference edificioRef = db.collection("edificios").document(edificioSeleccionado);
+
+                edificioRef.get().addOnSuccessListener(documentSnapshot2 -> {
+                    edificioRef.collection("administradores").document(correo_i)
+                            .set(new HashMap<String, Object>() {{
+                                put("nombre", nombre_i);
+                                put("telefono", telefono_i);
+                            }});
+                });
+                popupAdmin.dismiss();
+            });
+        });
         // Mostrar el segundo pop-up
         popupAdmin.show();
     }
@@ -213,6 +299,46 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
 
         // Hacer el fondo del segundo pop-up transparente
         popupAnuncios.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        EditText asunto = popupAnuncios.findViewById(R.id.editText6);
+        EditText texto = popupAnuncios.findViewById(R.id.editText5);
+
+        Button btnAdd = popupAnuncios.findViewById(R.id.btnAddVecino);
+        btnAdd.setOnClickListener(view -> {
+            String asunto_i = asunto.getText().toString();
+            String texto_i = texto.getText().toString();
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            db.collection("edificios").document(edificioSeleccionado) // Documento del edificio
+                    .collection("administradores").document(userId) // Documento del administrador
+                    .get().addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String autor = documentSnapshot.getString("nombre");
+                            if (autor != null) {
+                                Anuncio anuncio = new Anuncio(asunto_i, texto_i, autor);
+                                String fecha = anuncio.getFecha();
+                                DocumentReference edificioRef = db.collection("edificios").document(edificioSeleccionado);
+                                edificioRef.get().addOnSuccessListener(documentSnapshot2 -> {
+                                    edificioRef.collection("anuncios").document()
+                                            .set(new HashMap<String, Object>() {{
+                                                put("asunto", asunto_i);
+                                                put("texto", texto_i);
+                                                put("fecha", fecha);
+                                                put("autor", autor);
+                                            }});
+                                    popupAnuncios.dismiss();
+                                });
+                            } else {
+                                Log.d("Firestore", "El campo 'nombre' no existe en el documento.");
+                            }
+                        } else {
+                            Log.d("Firestore", "No se encontró el documento del administrador.");
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("Firestore", "Error al buscar el administrador: ", e);
+                    });
+        });
 
         // Mostrar el segundo pop-up
         popupAnuncios.show();
@@ -226,6 +352,27 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
 
         // Hacer el fondo del segundo pop-up transparente
         popupContacto.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        EditText nombre = popupContacto.findViewById(R.id.editText6);
+        EditText telefono = popupContacto.findViewById(R.id.editText7);
+
+        Button btnAdd = popupContacto.findViewById(R.id.btnAddVecino);
+        btnAdd.setOnClickListener(view -> {
+            String nombre_i = nombre.getText().toString();
+            String telefono_i = telefono.getText().toString();
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            DocumentReference edificioRef = db.collection("edificios").document(edificioSeleccionado);
+                edificioRef.get().addOnSuccessListener(documentSnapshot -> {
+                    edificioRef.collection("contactos").document()
+                            .set(new HashMap<String, Object>() {{
+                                put("nombre", nombre_i);
+                                put("telefono", telefono_i);
+                            }});
+                    popupContacto.dismiss();
+                });
+        });
 
         // Mostrar el segundo pop-up
         popupContacto.show();

@@ -23,6 +23,7 @@ public class ContactosActivity extends AppCompatActivity {
     private  List<Contacto> contactos;
     private RecyclerView recyclerViewContactos;
     private String edificioSeleccionado;
+    private String rol;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +32,11 @@ public class ContactosActivity extends AppCompatActivity {
 
         recyclerViewContactos = findViewById(R.id.recyclerViewContactos);
         edificioSeleccionado = getIntent().getStringExtra("edificio");
-        obtenerContactosPorEdificio(edificioSeleccionado);
+        rol = getIntent().getStringExtra("rol");
+        obtenerContactosPorEdificio(edificioSeleccionado, rol);
     }
 
-    private void obtenerContactosPorEdificio(String edificioId) {
+    private void obtenerContactosPorEdificio(String edificioId, String rol) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference contactosRef = db.collection("edificios").document(edificioId).collection("contactos");
 
@@ -45,7 +47,7 @@ public class ContactosActivity extends AppCompatActivity {
                     contactos.add(doc.toObject(Contacto.class));
                 }
                 recyclerViewContactos.setLayoutManager(new LinearLayoutManager(this));
-                ContactosAdapter adapter = new ContactosAdapter(contactos, this);
+                ContactosAdapter adapter = new ContactosAdapter(contactos, this, rol);
                 recyclerViewContactos.setAdapter(adapter);
             } else {
                 Log.e("FirestoreError", "Error al obtener contactos", task.getException());

@@ -216,10 +216,6 @@ public class Cuenta extends Fragment {
         popupView.show();
     }
 
-
-
-
-
     /*private void mostrarPopupCambiarDatos(View view) {
         Dialog popupView = new Dialog(getContext());
         popupView.setContentView(R.layout.activity_cambiar_perfil);

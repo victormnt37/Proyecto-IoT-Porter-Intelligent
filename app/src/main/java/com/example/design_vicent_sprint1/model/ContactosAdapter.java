@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,10 +27,12 @@ public class ContactosAdapter extends RecyclerView.Adapter<ContactosAdapter.Cont
     private final List<Contacto> contactos;
     private final Activity actividad;
     public static final int REQUEST_CALL_PERMISSION = 100;
+    private String rol;
 
-    public ContactosAdapter(List<Contacto> contactos, Activity actividad) {
+    public ContactosAdapter(List<Contacto> contactos, Activity actividad, String rol) {
         this.contactos = contactos;
         this.actividad = actividad;
+        this.rol = rol;
     }
 
     @NonNull
@@ -41,6 +44,7 @@ public class ContactosAdapter extends RecyclerView.Adapter<ContactosAdapter.Cont
 
     @Override
     public void onBindViewHolder(@NonNull ContactoViewHolder holder, int position) {
+
         Contacto contacto = contactos.get(position);
         holder.txtNombre.setText(contacto.getNombre());
         holder.txtTelefono.setText(contacto.getTelefono());
@@ -55,6 +59,13 @@ public class ContactosAdapter extends RecyclerView.Adapter<ContactosAdapter.Cont
                 solicitarPermisoLlamada(); // Solicitar permisos si no están concedidos
             }
         });
+        if(rol.equals("vecino")){
+            holder.imageView.setVisibility(View.GONE);
+        }else{
+            holder.imageView.setOnClickListener(view -> {
+                
+            });
+        }
     }
 
     @Override
@@ -90,11 +101,13 @@ public class ContactosAdapter extends RecyclerView.Adapter<ContactosAdapter.Cont
     static class ContactoViewHolder extends RecyclerView.ViewHolder {
         TextView txtNombre;
         TextView txtTelefono;
+        ImageView imageView;
 
         public ContactoViewHolder(@NonNull View itemView) {
             super(itemView);
             txtNombre = itemView.findViewById(R.id.contactName);
             txtTelefono = itemView.findViewById(R.id.contactPhone);
+            imageView = itemView.findViewById(R.id.menuOpciones);
         }
     }
 }
