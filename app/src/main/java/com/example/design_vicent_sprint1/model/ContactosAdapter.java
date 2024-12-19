@@ -71,7 +71,7 @@ public class ContactosAdapter extends RecyclerView.Adapter<ContactosAdapter.Cont
         // Evento de clic para el menú de opciones
         holder.menuOpciones.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(holder.itemView.getContext(), holder.menuOpciones);
-            popupMenu.inflate(R.menu.menu_opciones_vecino); // Inflar el menú XML
+            popupMenu.inflate(R.menu.menu_opciones_contacto); // Inflar el menú XML
 
             // Configurar las acciones de cada opción del menú
             popupMenu.setOnMenuItemClickListener(item -> {
@@ -125,12 +125,14 @@ public class ContactosAdapter extends RecyclerView.Adapter<ContactosAdapter.Cont
         TextView txtNombre;
         TextView txtTelefono;
         ImageView imageView;
+        ImageView menuOpciones;
 
         public ContactoViewHolder(@NonNull View itemView) {
             super(itemView);
             txtNombre = itemView.findViewById(R.id.contactName);
             txtTelefono = itemView.findViewById(R.id.contactPhone);
             imageView = itemView.findViewById(R.id.menuOpciones);
+            menuOpciones = itemView.findViewById(R.id.menuOpciones);
         }
     }
 }
