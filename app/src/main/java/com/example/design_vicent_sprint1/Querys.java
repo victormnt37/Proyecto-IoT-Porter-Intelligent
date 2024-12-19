@@ -38,26 +38,6 @@ public class Querys {
         });
     }
 
-    private void obtenerAnunciosPorEdificio(String edificioId, OnCompleteListener<List<Anuncio>> callback) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference anunciosRef = db.collection("edificios").document(edificioId).collection("anuncios");
-
-        anunciosRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful() && task.getResult() != null) {
-                List<Anuncio> anuncios = new ArrayList<>();
-                for (QueryDocumentSnapshot doc : task.getResult()) {
-                    anuncios.add(doc.toObject(Anuncio.class));
-                }
-                callback.onComplete(anuncios);
-            } else {
-                Log.e("FirestoreError", "Error al obtener anuncios", task.getException());
-            }
-        });
-    }
-
-
-
-
     private void obtenerContactosPorEdificio(String edificioId, OnCompleteListener<List<Contacto>> callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference contactosRef = db.collection("edificios").document(edificioId).collection("contactos");

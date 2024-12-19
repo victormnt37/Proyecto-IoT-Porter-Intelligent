@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Edificios extends ArrayList{
 
-    private List<Edificio> edificios;
+    public List<Edificio> edificios;
 
     public Edificios() {
         edificios = new ArrayList<>();
