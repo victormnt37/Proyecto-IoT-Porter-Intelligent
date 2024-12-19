@@ -42,6 +42,8 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import java.util.HashMap;
 import java.util.List;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
 
     private RecyclerView recyclerView;
