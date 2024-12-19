@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -17,13 +18,17 @@ import com.example.design_vicent_sprint1.R;
 import com.example.design_vicent_sprint1.data.RepositorioVecinos;
 import com.example.design_vicent_sprint1.model.Vecino;
 import com.example.design_vicent_sprint1.model.VecinosAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class VecinosActivity extends AppCompatActivity {
 
-    private RepositorioVecinos repositorioVecinos;
     private RecyclerView recyclerViewVecinos;
     private Spinner spinnerPisos;
     private String edificioSeleccionado;
@@ -38,18 +43,32 @@ public class VecinosActivity extends AppCompatActivity {
         recyclerViewVecinos = findViewById(R.id.recyclerViewVecinos);
         spinnerPisos = findViewById(R.id.spinnerPiso);
         edificioSeleccionado = getIntent().getStringExtra("edificio");
+        obtenerVecinosPorEdificio(edificioSeleccionado);
 
-        repositorioVecinos = new RepositorioVecinos();
-
-        cargarVecinos();
-        configurarSpinner();
     }
 
-    private void cargarVecinos() {
-        vecinos = repositorioVecinos.getVecinosPorEdificio(edificioSeleccionado);
-        recyclerViewVecinos.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new VecinosAdapter(vecinos);
-        recyclerViewVecinos.setAdapter(adapter);
+    private void obtenerVecinosPorEdificio(String edificioId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference vecinosRef = db.collection("edificios").document(edificioId).collection("vecinos");
+
+        vecinosRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                vecinos = new ArrayList<>();
+                for (QueryDocumentSnapshot doc : task.getResult()) {
+                    Vecino vecino = new Vecino();
+                    vecino.setCorreo(doc.getId());
+                    vecino.setPiso(doc.getString("piso"));
+                    vecino.setPuerta(doc.getString("puerta"));
+                    vecinos.add(vecino);
+                }
+                recyclerViewVecinos.setLayoutManager(new LinearLayoutManager(this));
+                adapter = new VecinosAdapter(vecinos);
+                recyclerViewVecinos.setAdapter(adapter);
+                configurarSpinner();
+            } else {
+                Log.e("FirestoreError", "Error al obtener vecinos del edificio", task.getException());
+            }
+        });
     }
 
     private void configurarSpinner() {
@@ -77,7 +96,6 @@ public class VecinosActivity extends AppCompatActivity {
         });
     }
 
-
     private List<String> obtenerPisosUnicos(List<Vecino> vecinos) {
         List<String> pisos = new ArrayList<>();
         for (Vecino vecino : vecinos) {
@@ -98,6 +116,4 @@ public class VecinosActivity extends AppCompatActivity {
         adapter = new VecinosAdapter(vecinosFiltrados);
         recyclerViewVecinos.setAdapter(adapter);
     }
-
-
 }

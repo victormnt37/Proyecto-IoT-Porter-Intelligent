@@ -1,7 +1,9 @@
 package com.example.design_vicent_sprint1.model;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Anuncio {
     private Edificio edificio;
@@ -18,12 +20,29 @@ public class Anuncio {
         this.fecha = Calendar.getInstance();
     }
 
-    public Anuncio(Edificio edificio, String asunto, String texto, String autor, Calendar fecha) {
+    public  Anuncio(){}
+
+    public Anuncio(String asunto, String texto, String autor) {
+        this.asunto = asunto;
+        this.texto = texto;
+        this.autor = autor;
+        this.fecha = Calendar.getInstance();
+    }
+
+    public Anuncio(String asunto, String texto, String autor, String fecha) {
         this.edificio = edificio;
         this.asunto = asunto;
         this.texto = texto;
         this.autor = autor;
-        this.fecha = fecha;
+        try {
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = formato.parse(fecha);
+            this.fecha = Calendar.getInstance();
+            this.fecha.setTime(date);
+        }
+        catch (ParseException e) {
+            this.fecha = null;
+        }
     }
 
     public Edificio getEdificio() {

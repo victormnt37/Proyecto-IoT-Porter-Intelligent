@@ -1,14 +1,19 @@
 package com.example.design_vicent_sprint1.presentacion;
 
+import static android.app.PendingIntent.getActivity;
+
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.design_vicent_sprint1.R;
+import com.example.design_vicent_sprint1.data.Edificios;
 import com.example.design_vicent_sprint1.data.RepositorioEdificios;
 import com.example.design_vicent_sprint1.model.Edificio;
+import com.example.design_vicent_sprint1.model.EdificioMenuAdapter;
 import com.example.design_vicent_sprint1.model.EdificiosAdapter;
 
 import java.util.List;
@@ -17,11 +22,16 @@ public class EdificiosActivity extends AppCompatActivity {
 
     private RecyclerView recyclerViewEdificios;
     private List<Edificio> listaEdificios;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edificios);
+
+        Bundle extras = getIntent().getExtras();
+        userId = extras.getString("userId");
 
         recyclerViewEdificios = findViewById(R.id.recyclerViewEdificios);
 
@@ -58,4 +68,5 @@ public class EdificiosActivity extends AppCompatActivity {
         intent.putExtra("edificio", edificio.getId());
         startActivity(intent);*/
     }
+
 }

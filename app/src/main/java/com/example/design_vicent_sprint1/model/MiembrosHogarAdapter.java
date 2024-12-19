@@ -17,29 +17,27 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.example.design_vicent_sprint1.R;
 
 import java.util.List;
-import com.example.design_vicent_sprint1.R;
 
-
-public class VecinosAdapter extends RecyclerView.Adapter<VecinosAdapter.VecinoViewHolder> {
+public class MiembrosHogarAdapter extends RecyclerView.Adapter<MiembrosHogarAdapter.VecinoViewHolder> {
 
     private List<Vecino> vecinos;
     private ImageLoader lectorImagenes;
 
     // Constructor que recibe la lista de vecinos y el lector de imágenes
-    public VecinosAdapter(List<Vecino> vecinos) {
+    public MiembrosHogarAdapter(List<Vecino> vecinos) {
         this.vecinos = vecinos;
         this.lectorImagenes = lectorImagenes;
     }
 
     @NonNull
     @Override
-    public VecinoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MiembrosHogarAdapter.VecinoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.vista_vecino, parent, false);
-        return new VecinoViewHolder(view);
+        return new MiembrosHogarAdapter.VecinoViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VecinoViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MiembrosHogarAdapter.VecinoViewHolder holder, int position) {
         Vecino vecino = vecinos.get(position);
 
         // Asignar el nombre y correo
@@ -103,3 +101,4 @@ public class VecinosAdapter extends RecyclerView.Adapter<VecinosAdapter.VecinoVi
         }
     }
 }
+

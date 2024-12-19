@@ -11,6 +11,11 @@ public class Contacto {
         this.telefono = telefono;
     }
 
+    public Contacto(String nombre, String telefono) {
+        this.nombre = nombre;
+        this.telefono = telefono;
+    }
+
     public Edificio getEdificio() {
         return edificio;
     }
