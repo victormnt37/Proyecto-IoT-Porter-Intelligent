@@ -24,6 +24,9 @@ public class AjustesNotificacionesActivity extends AppCompatActivity {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private Switch switchAccessos, switchMovimientos, switchRuidos, switchLuz, switchVibraciones, switchGas;
 
+    private String edificioSeleccionado;
+    private String userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +37,10 @@ public class AjustesNotificacionesActivity extends AppCompatActivity {
         switchRuidos = findViewById(R.id.switchRuidos);
         switchLuz = findViewById(R.id.switchLuz);
         switchGas = findViewById(R.id.switchGas);
+
+        Bundle extras = getIntent().getExtras();
+        userId = extras.getString("userId");
+        edificioSeleccionado = extras.getString("edificio","");
 
         btnGuardar = findViewById(R.id.btnGuardar);
         btnGuardar.setOnClickListener(new View.OnClickListener() {
@@ -59,12 +66,12 @@ public class AjustesNotificacionesActivity extends AppCompatActivity {
 
 
                 // volver a main activity
-                String user_id = auth.getCurrentUser().getUid();
                 Intent i = new Intent(AjustesNotificacionesActivity.this, MainActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                         | Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                i.putExtra("userId", user_id);
+                i.putExtra("userId", userId);
+                i.putExtra("edificio", edificioSeleccionado);
                 startActivity(i);
                 finish();
             }

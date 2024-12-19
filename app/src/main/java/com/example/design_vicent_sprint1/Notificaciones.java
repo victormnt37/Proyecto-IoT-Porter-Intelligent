@@ -26,6 +26,7 @@ public class Notificaciones extends Fragment {
     private RecyclerView recyclerView;
     private RepositorioNotificaciones repositorioNotificaciones;
     private String edificioSeleccionado;
+    private String userId;
     private ImageView btnAjustesNotificaciones;
 
     @Nullable
@@ -38,6 +39,7 @@ public class Notificaciones extends Fragment {
 
         if (getArguments() != null) {
             edificioSeleccionado = getArguments().getString("edificioSeleccionado");
+            userId = getArguments().getString("userId");
         }
 
         btnAjustesNotificaciones = view.findViewById(R.id.imageView);
@@ -48,6 +50,8 @@ public class Notificaciones extends Fragment {
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                     | Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            i.putExtra("edificio", edificioSeleccionado);
+            i.putExtra("userId", userId);
             startActivity(i);
             }
         });
