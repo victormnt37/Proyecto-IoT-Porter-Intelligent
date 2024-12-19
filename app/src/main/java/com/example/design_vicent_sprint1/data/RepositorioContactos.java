@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RepositorioContactos {
-    private List<Contacto> contactos;
+    /*private List<Contacto> contactos;
 
     public RepositorioContactos() {
         contactos = new ArrayList<>();
@@ -47,6 +47,6 @@ public class RepositorioContactos {
         contactos.add(new Contacto(edificios.get(2), "Administrador", "555-6789"));
         contactos.add(new Contacto(edificios.get(2), "Mantenimiento", "555-9876"));
         contactos.add(new Contacto(edificios.get(2), "Seguridad", "555-4321"));
-    }
+    }*/
 }
 

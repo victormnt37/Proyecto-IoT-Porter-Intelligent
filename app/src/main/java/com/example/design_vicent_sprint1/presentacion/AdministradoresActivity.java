@@ -15,7 +15,7 @@ import java.util.List;
 
 public class AdministradoresActivity extends AppCompatActivity {
 
-    private RepositorioContactos repositorioContactos;
+
     private RecyclerView recyclerViewContactos;
     private String edificioSeleccionado;
 
@@ -27,14 +27,9 @@ public class AdministradoresActivity extends AppCompatActivity {
         recyclerViewContactos = findViewById(R.id.recyclerViewContactos);
         edificioSeleccionado = getIntent().getStringExtra("edificio");
 
-        repositorioContactos = new RepositorioContactos();
-        cargarContactos();
+
+
     }
 
-    private void cargarContactos() {
-        List<Contacto> contactos = repositorioContactos.getContactosPorEdificio(edificioSeleccionado);
-        recyclerViewContactos.setLayoutManager(new LinearLayoutManager(this));
-        ContactosAdapter adapter = new ContactosAdapter(contactos, this);
-        recyclerViewContactos.setAdapter(adapter);
-    }
+   
 }
