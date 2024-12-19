@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardLayout"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
+    app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="16dp"
-    app:cardElevation="0dp"
-    app:cardBackgroundColor="@color/blue_CLARITO">
+    app:cardElevation="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="30dp">
+        android:padding="34dp">
 
         <!-- Título -->
         <TextView
@@ -27,10 +26,10 @@
             android:gravity="center"
             android:text="Añade un nuevo:"
             android:textColor="@color/blue"
-            android:textSize="30sp"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Botón Vecino -->
         <Button
@@ -41,11 +40,12 @@
             android:fontFamily="@font/poppinsbold"
             android:text="Vecino"
             android:textColor="@color/white"
-            android:textSize="25sp"
+            android:textSize="20sp"
             app:cornerRadius="12dp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textTitulo"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textTitulo" />
+
         <Button
             android:id="@+id/btnAdmin"
             android:layout_width="0dp"
@@ -54,11 +54,12 @@
             android:fontFamily="@font/poppinsbold"
             android:text="Administrador"
             android:textColor="@color/white"
-            android:textSize="25sp"
+            android:textSize="20sp"
             app:cornerRadius="12dp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnVecino" />
+
         <Button
             android:id="@+id/btnContactos"
             android:layout_width="0dp"
@@ -67,11 +68,12 @@
             android:fontFamily="@font/poppinsbold"
             android:text="Contactos"
             android:textColor="@color/white"
-            android:textSize="25sp"
+            android:textSize="20sp"
             app:cornerRadius="12dp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnAdmin" />
+
         <Button
             android:id="@+id/btnAnuncios"
             android:layout_width="0dp"
@@ -80,13 +82,11 @@
             android:fontFamily="@font/poppinsbold"
             android:text="Anuncios"
             android:textColor="@color/white"
-            android:textSize="25sp"
+            android:textSize="20sp"
             app:cornerRadius="12dp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnContactos" />
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

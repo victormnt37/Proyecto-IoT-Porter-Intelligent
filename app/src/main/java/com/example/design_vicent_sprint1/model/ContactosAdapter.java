@@ -63,7 +63,7 @@ public class ContactosAdapter extends RecyclerView.Adapter<ContactosAdapter.Cont
             holder.imageView.setVisibility(View.GONE);
         }else{
             holder.imageView.setOnClickListener(view -> {
-                
+
             });
         }
     }
