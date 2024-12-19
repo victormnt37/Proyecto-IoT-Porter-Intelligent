@@ -43,7 +43,6 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.1")
-    implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.17")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
