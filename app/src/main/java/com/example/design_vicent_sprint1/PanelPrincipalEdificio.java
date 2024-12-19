@@ -1,11 +1,13 @@
 package com.example.design_vicent_sprint1;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -232,6 +235,7 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
                 popupVecinos.dismiss();
             });
         });
+        configurarTeclado(popupVecinos);
         // Mostrar el segundo pop-up
         popupVecinos.show();
     }
@@ -287,6 +291,7 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
                 popupAdmin.dismiss();
             });
         });
+        configurarTeclado(popupAdmin);
         // Mostrar el segundo pop-up
         popupAdmin.show();
     }
@@ -340,6 +345,8 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
                     });
         });
 
+        configurarTeclado(popupAnuncios);
+
         // Mostrar el segundo pop-up
         popupAnuncios.show();
     }
@@ -374,6 +381,7 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
                 });
         });
 
+        configurarTeclado(popupContacto);
         // Mostrar el segundo pop-up
         popupContacto.show();
     }
@@ -423,6 +431,20 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
         } catch (MqttException e) {
             Log.e("MQTT", "Error al desconectar el cliente: " + e.getMessage());
         }
+    }
+
+    private void configurarTeclado(Dialog popupView){
+        ConstraintLayout rootLayout = popupView.findViewById(R.id.contenedor); // Asegúrate de que este ID sea el correcto
+        rootLayout.setOnTouchListener((v, event) -> {
+            View currentFocus = popupView.getCurrentFocus();
+            if (currentFocus != null) {
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+                }
+            }
+            return false; // Devuelve false para que otros eventos de toque se procesen normalmente
+        });
     }
 }
 
