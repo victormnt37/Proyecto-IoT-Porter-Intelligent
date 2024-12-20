@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.example.design_vicent_sprint1.presentacion.CustomLoginActivity;
+import com.example.design_vicent_sprint1.presentacion.MainActivity;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -38,9 +40,6 @@ public class ServicioAlertas extends Service {
         super.onCreate();
         db = FirebaseFirestore.getInstance();
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-        Toast.makeText(this,"Servicio creado",
-                Toast.LENGTH_SHORT).show();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
@@ -69,19 +68,23 @@ public class ServicioAlertas extends Service {
         notificationManager.notify(NOTIFICACION_ID, notificacion.build());*/
 
     }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int idArranque) {
-        Toast.makeText(this,"Servicio arrancado "+ idArranque,
-                Toast.LENGTH_SHORT).show();
         idEdificioSeleccionado = intent.getStringExtra("edificio");
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CANAL_ID)
-                .setContentTitle("Servicio de Alertas")
-                .setContentText("Monitorizando alertas en el edificio seleccionado")
-                .setSmallIcon(android.R.drawable.ic_popup_reminder);
+                .setContentTitle("Bienvenido a tu edificio")
+                .setContentText("")
+                .setSmallIcon(R.drawable.icon_vicent)
+                .setSilent(true);
+        PendingIntent intencionPendiente = PendingIntent.getActivity(this, 0,
+                new Intent(this, CustomLoginActivity.class), PendingIntent.FLAG_IMMUTABLE);
+        builder.setContentIntent(intencionPendiente);
         startForeground(NOTIFICACION_ID, builder.build());
         observarAlertas();
         return START_STICKY;
     }
+
     private void observarAlertas() {
         db.collection("edificios")
                 .document(idEdificioSeleccionado)
@@ -101,13 +104,14 @@ public class ServicioAlertas extends Service {
                                     // Nueva alerta
                                     alertasExistentes.add(idAlerta);
                                     String mensaje = doc.getString("mensaje");
-                                    generarNotificacion(mensaje != null ? mensaje : "Nueva alerta");
+                                    generarNotificacion(mensaje != null ? mensaje : "Nueva alerta Vicent");
                                 }
                             }
                         }
                     }
                 });
     }
+
     private void generarNotificacion(String mensaje) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CANAL_ID)
                 .setContentTitle("Nueva Alerta")
@@ -115,12 +119,16 @@ public class ServicioAlertas extends Service {
                 .setSmallIcon(android.R.drawable.ic_dialog_alert)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 
+        PendingIntent intencionPendiente = PendingIntent.getActivity(this, 0,
+                new Intent(this, MainActivity.class), PendingIntent.FLAG_IMMUTABLE);
+        builder.setContentIntent(intencionPendiente);
+
         notificationManager.notify((int) System.currentTimeMillis(), builder.build());
     }
+
     @Override public void onDestroy() {
-        Toast.makeText(this,"Servicio detenido",
-                Toast.LENGTH_SHORT).show();
     }
+
     @Override public IBinder onBind(Intent intencion) {
         return null;
     }
