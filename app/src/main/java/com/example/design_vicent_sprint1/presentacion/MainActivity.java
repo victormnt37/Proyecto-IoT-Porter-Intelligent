@@ -33,6 +33,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.design_vicent_sprint1.Cuenta;
 import com.example.design_vicent_sprint1.R;
+import com.example.design_vicent_sprint1.ServicioAlertas;
 import com.example.design_vicent_sprint1.data.Edificios;
 import com.example.design_vicent_sprint1.data.EdificiosAsinc;
 import com.example.design_vicent_sprint1.Notificaciones;
@@ -108,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
                     //seleccionar un edificio por defecto
                     id_edificioSeleccionado = primerEdificio.getKey();
                 }
+                Intent servicio = new Intent(this, ServicioAlertas.class);
+                servicio.putExtra("edificio", id_edificioSeleccionado);
+                startService(servicio);
                 cargarDatosBotonEdificio(id_edificioSeleccionado);
                 cargarPantalla(id_edificioSeleccionado);
             }
