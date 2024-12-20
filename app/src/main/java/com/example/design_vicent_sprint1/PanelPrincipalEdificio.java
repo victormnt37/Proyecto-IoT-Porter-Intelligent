@@ -316,13 +316,12 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
             String correo_i = correo.getText().toString();
             String nombre_i = nombre.getText().toString();
             String telefono_i = telefono.getText().toString();
-
-            if(!verificarCorreo(correo_i)){
+            if (nombre_i.isEmpty()) {
+                tilNombre.setError("Introduce un nombre");
+            } else if(!verificarCorreo(correo_i)){
                 tilCorreo.setError("Correo no válido");
             }else if(!verificarTelefono(telefono_i)){
                 tilTelefono.setError("Telefono no válido");
-            } else if (nombre_i.isEmpty()) {
-                tilNombre.setError("Introduce un nombre");
             }else{
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -451,10 +450,10 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
             String nombre_i = nombre.getText().toString();
             String telefono_i = telefono.getText().toString();
 
-            if(!verificarTelefono(telefono_i)){
-                tilTelefono.setError("Teléfono no válido");
-            }else if (nombre_i.isEmpty()) {
+            if (nombre_i.isEmpty()) {
                 tilNombre.setError("Introduce un nombre");
+            }else if(!verificarTelefono(telefono_i)){
+                tilTelefono.setError("Teléfono no válido");
             }else{
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
 

@@ -1,26 +1,45 @@
 package com.example.design_vicent_sprint1.presentacion;
 
+import static java.security.AccessController.getContext;
+
+import android.app.Dialog;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.design_vicent_sprint1.R;
-import com.example.design_vicent_sprint1.data.RepositorioContactos;
-import com.example.design_vicent_sprint1.model.Contacto;
-import com.example.design_vicent_sprint1.model.ContactosAdapter;
 import com.example.design_vicent_sprint1.model.MiembrosHogarAdapter;
 import com.example.design_vicent_sprint1.model.Vecino;
-import com.example.design_vicent_sprint1.model.VecinosAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MiembrosHogarActivity extends AppCompatActivity {
 
@@ -29,6 +48,8 @@ public class MiembrosHogarActivity extends AppCompatActivity {
     private String userId;
     private MiembrosHogarAdapter adapter;
     private List<Vecino> vecinos;
+    private String piso_hogar;
+    private String puerta_hogar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +59,97 @@ public class MiembrosHogarActivity extends AppCompatActivity {
         recyclerViewVecinos = findViewById(R.id.recyclerViewVecinos);
         edificioSeleccionado = getIntent().getStringExtra("edificio");
         userId = getIntent().getStringExtra("userId");
+        FloatingActionButton btn_emergente = findViewById(R.id.btn_emergente);
+        btn_emergente.setImageResource(R.drawable.icon_addfondo);
+        btn_emergente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarPopupAdd(v);
+            }
+        });
         obtenerVecinosMismoPisoYPuerta(edificioSeleccionado, userId);
+
+    }
+
+    private void mostrarPopupAdd(View v) {
+
+        Dialog popupVecinos = new Dialog(this);
+        popupVecinos.setContentView(R.layout.popup_anyadir_miembro_hogar);
+        popupVecinos.setCanceledOnTouchOutside(true);
+
+        // Hacer el fondo del segundo pop-up transparente
+        popupVecinos.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        TextInputLayout tilCorreo = popupVecinos.findViewById(R.id.tlCorreo);
+        EditText correo = popupVecinos.findViewById(R.id.etCorreo);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        Button btnAdd = popupVecinos.findViewById(R.id.btnAddVecino3);
+        btnAdd.setOnClickListener(view -> {
+            String correo_i = correo.getText().toString();
+
+            if(!verificarCorreo(correo_i)){
+                tilCorreo.setError("Correo no válido");
+            } else{
+                DocumentReference usuarioRef = db.collection("usuarios").document(correo_i);
+
+                usuarioRef.get().addOnSuccessListener(documentSnapshot -> {
+                    if (!documentSnapshot.exists()) {
+                        usuarioRef.set(new HashMap<>())
+                                .addOnSuccessListener(aVoid -> {
+                                    usuarioRef.collection("edificios").document(edificioSeleccionado)
+                                            .set(new HashMap<String, Object>() {{
+                                                put("rol", "vecino");
+                                            }});
+                                });
+
+                    } else {
+                        usuarioRef.collection("edificios").document(edificioSeleccionado)
+                                .set(new HashMap<String, Object>() {{
+                                    put("rol", "vecino");
+                                }});
+
+                    }
+                    DocumentReference edificioRef = db.collection("edificios").document(edificioSeleccionado);
+
+                    edificioRef.get().addOnSuccessListener(documentSnapshot2 -> {
+                        edificioRef.collection("vecinos").document(correo_i)
+                                .set(new HashMap<String, Object>() {{
+                                    put("piso", piso_hogar);
+                                    put("puerta", puerta_hogar);
+                                }});
+                    });
+                    popupVecinos.dismiss();
+                    Toast toast = Toast.makeText(this, "Compañero añadido", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                });
+            }
+        });
+        configurarTeclado(popupVecinos);
+        // Mostrar el segundo pop-up
+        popupVecinos.show();
+    }
+
+    private void configurarTeclado(Dialog popupView){
+        ConstraintLayout rootLayout = popupView.findViewById(R.id.contenedor); // Asegúrate de que este ID sea el correcto
+        rootLayout.setOnTouchListener((v, event) -> {
+            View currentFocus = popupView.getCurrentFocus();
+            if (currentFocus != null) {
+                InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+                }
+            }
+            return false; // Devuelve false para que otros eventos de toque se procesen normalmente
+        });
+    }
+
+    private boolean verificarCorreo(String correo){
+        if (correo.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            return true;
+        }
+        return false;
     }
 
     private void obtenerVecinosMismoPisoYPuerta(String edificioId, String userId) {
@@ -53,7 +164,9 @@ public class MiembrosHogarActivity extends AppCompatActivity {
                 vecino.setPuerta(task.getResult().getString("puerta"));
                 if (vecino != null) {
                     String piso = vecino.getPiso();
+                    piso_hogar = piso;
                     String puerta = vecino.getPuerta();
+                    puerta_hogar = puerta;
                     db.collection("edificios").document(edificioId).collection("vecinos")
                             .whereEqualTo("piso", piso)
                             .whereEqualTo("puerta", puerta)

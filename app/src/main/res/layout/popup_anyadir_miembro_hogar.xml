@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppinsbold"
             android:gravity="center"
-            android:text="Introduce los datos del nuevo vecino"
+            android:text="Introduce el correo de tu nuevo compañero"
             android:textColor="@color/blue"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -59,63 +59,20 @@
                 android:hint="Introduce el correo" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Piso Label -->
-        <TextView
-            android:id="@+id/tvPiso"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/poppinsmedium"
-            android:text="Piso"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tlCorreo" />
-
-        <!-- Puerta Label -->
-
-        <!-- Spinner Piso -->
-        <TextView
-            android:id="@+id/tvPuerta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/poppinsmedium"
-            android:text="Puerta"
-            app:layout_constraintStart_toEndOf="@id/spinnerPiso"
-            app:layout_constraintTop_toBottomOf="@+id/tlCorreo" />
-
-        <!-- Spinner Puerta -->
-
         <!-- Botón Añadir -->
-        <Spinner
-            android:id="@+id/spinnerPiso"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            app:layout_constraintEnd_toStartOf="@id/spinnerPuerta"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvPiso" />
-
-        <Spinner
-            android:id="@+id/spinnerPuerta"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/spinnerPiso"
-            app:layout_constraintTop_toBottomOf="@+id/tvPuerta" />
 
         <Button
             android:id="@+id/btnAddVecino3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="#255A7B"
+            android:layout_marginTop="15dp"
 
+            android:backgroundTint="#255A7B"
             android:fontFamily="@font/poppinsbold"
             android:text="Enviar"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@+id/spinnerPuerta"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerPuerta"
+            app:layout_constraintEnd_toEndOf="@+id/tlCorreo"
+            app:layout_constraintTop_toBottomOf="@+id/tlCorreo"
             tools:layout_conversion_absoluteHeight="48dp"
             tools:layout_conversion_absoluteWidth="150dp" />
 

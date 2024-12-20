@@ -24,12 +24,14 @@
             android:id="@+id/textView13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:fontFamily="@font/poppinsbold"
             android:gravity="center"
+
             android:text="Escribe el anuncio"
             android:textColor="@color/blue"
             android:textSize="24sp"
-
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +41,7 @@
             android:id="@+id/textView14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:fontFamily="@font/poppinsmedium"
             android:text="Título"
             app:layout_constraintStart_toStartOf="parent"
@@ -86,7 +88,8 @@
                 android:id="@+id/editText5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Descripción ..." />
+                android:hint="Descripción ..."
+                android:paddingBottom="80dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -99,9 +102,6 @@
             android:fontFamily="@font/poppinsbold"
             android:text="Enviar"
             android:textColor="@color/white"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            app:cornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="@+id/tlTexto"
             app:layout_constraintTop_toBottomOf="@+id/tlTexto"
             tools:layout_conversion_absoluteHeight="48dp"

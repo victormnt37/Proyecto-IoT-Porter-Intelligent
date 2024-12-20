@@ -96,8 +96,7 @@ public class EdificiosActivity extends AppCompatActivity {
 
                         @Override
                         public void onDeleteClick(int position) {
-                            // Eliminar el edificio de la lista
-                            listaEdificios.remove(position);
+
                             recyclerViewEdificios.getAdapter().notifyItemRemoved(position);
                         }
                     });
