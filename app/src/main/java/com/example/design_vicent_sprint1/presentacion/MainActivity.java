@@ -114,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
                 startService(servicio);
                 cargarDatosBotonEdificio(id_edificioSeleccionado);
                 cargarPantalla(id_edificioSeleccionado);
+                Intent intent = new Intent(this, ServicioAlertas.class);
+                stopService(intent);
             }
         });
 
@@ -384,11 +386,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*@Override
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        adapter.stopListening();// deja de escucha los cambios en la base de datos
-    }*/
+        Intent intent = new Intent(this, ServicioAlertas.class);
+        stopService(intent);
+    }
 }
 
 

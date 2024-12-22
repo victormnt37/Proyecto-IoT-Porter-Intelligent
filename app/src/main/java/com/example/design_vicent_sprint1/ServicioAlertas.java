@@ -21,6 +21,7 @@ import com.example.design_vicent_sprint1.presentacion.MainActivity;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -29,6 +30,7 @@ import java.util.Set;
 
 public class ServicioAlertas extends Service {
 
+    private ListenerRegistration listenerRegistration;
     private FirebaseFirestore db;
     private NotificationManager notificationManager;
     private static final String CANAL_ID = "mi_canal";
@@ -82,30 +84,28 @@ public class ServicioAlertas extends Service {
         builder.setContentIntent(intencionPendiente);
         startForeground(NOTIFICACION_ID, builder.build());
         observarAlertas();
-        return START_STICKY;
+        listenerRegistration.remove();
+        return START_NOT_STICKY;
     }
 
     private void observarAlertas() {
-        db.collection("edificios")
+        listenerRegistration = db.collection("edificios")
                 .document(idEdificioSeleccionado)
                 .collection("notificaciones")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Toast.makeText(ServicioAlertas.this, "Error al escuchar alertas: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+                .addSnapshotListener((snapshots, e) -> {
+                    if (e != null) {
+                        Toast.makeText(ServicioAlertas.this, "Error al escuchar alertas: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-                        if (snapshots != null) {
-                            for (QueryDocumentSnapshot doc : snapshots) {
-                                String idAlerta = doc.getId();
-                                if (!alertasExistentes.contains(idAlerta)) {
-                                    // Nueva alerta
-                                    alertasExistentes.add(idAlerta);
-                                    String mensaje = doc.getString("mensaje");
-                                    generarNotificacion(mensaje != null ? mensaje : "Nueva alerta Vicent");
-                                }
+                    if (snapshots != null) {
+                        for (QueryDocumentSnapshot doc : snapshots) {
+                            String idAlerta = doc.getId();
+                            if (!alertasExistentes.contains(idAlerta)) {
+                                // Nueva alerta
+                                alertasExistentes.add(idAlerta);
+                                String mensaje = doc.getString("mensaje");
+                                generarNotificacion(mensaje != null ? mensaje : "Nueva alerta Vicent");
                             }
                         }
                     }
@@ -127,6 +127,10 @@ public class ServicioAlertas extends Service {
     }
 
     @Override public void onDestroy() {
+        if (listenerRegistration != null) {
+            listenerRegistration.remove();
+        }
+        super.onDestroy();
     }
 
     @Override public IBinder onBind(Intent intencion) {
