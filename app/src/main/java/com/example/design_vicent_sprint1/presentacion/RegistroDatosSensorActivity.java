@@ -36,18 +36,18 @@ public class RegistroDatosSensorActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         // documento: edificio/tipo-sensor
-//        db.collection(edificio + "/" + tipoSensor)
-//                .limit(50) // limita la consulta a 50 documentos
-//                .get()
-//                .addOnSuccessListener(queryDocumentSnapshots -> {
-//                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-//                        Map<String, Object> datos = document.getData();
-//                        Log.d("Firestore", "Documento ID: " + document.getId() + " -> Datos: " + datos);
-//                    }
-//                })
-//                .addOnFailureListener(e -> {
-//                    Log.w("Firestore", "Error al obtener documentos", e);
-//                });
+        db.collection("edificios/" + edificio + "/sensores/" + tipoSensor + "/")
+                .limit(7) // limita la consulta a 50 documentos
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Map<String, Object> datos = document.getData();
+                        Log.d("Firestore", "Documento ID: " + document.getId() + " -> Datos: " + datos);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("Firestore", "Error al obtener documentos", e);
+                });
 
         registroSensor = findViewById(R.id.textView10);
         registroSensor.setText("Registro " + tipoSensor);
