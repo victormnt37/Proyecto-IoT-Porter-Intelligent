@@ -63,6 +63,7 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
     private String userId;
     private PanelAdapter adapter;
     Handler uiHandler = new Handler(Looper.getMainLooper());
+    private Map<String, Object> registroDatos = new HashMap<>();
 
     // MQTT
     private static final String topic = "VicentPI/edificio1";
@@ -85,6 +86,23 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
             rol = getArguments().getString("rol");
             userId = getArguments().getString("userId");
         }
+
+        // Peticion registro Firestore
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("edificios/" + edificioSeleccionado + "/sensores/")
+                .limit(7) // recibe los datos de la ultima semana
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        registroDatos.put(document.getId(), document.getData());
+                        Log.d("Firestore", "Documento ID: " + document.getId() + " -> Datos: " + registroDatos);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("Firestore", "Error al obtener documentos", e);
+                });
 
         try {
             client = new MqttClient(broker, clientId, new MemoryPersistence()); // Conexión con el bróker
@@ -494,8 +512,9 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
     private void cargarPaneles(SensorData datosSensor) {
         List<Panel> paneles = repositorioPaneles.getPanelesPorEdificio(edificioSeleccionado);
 
+        // TODO: pasar datos de registro
         if (adapter == null) {
-            adapter = new PanelAdapter(paneles, edificioSeleccionado, datosSensor, getContext());
+            adapter = new PanelAdapter(paneles, edificioSeleccionado, datosSensor, getContext(), registroDatos);
             recyclerView.setAdapter(adapter);
         } else {
             adapter.llenarDatosMQTT(datosSensor, recyclerView);

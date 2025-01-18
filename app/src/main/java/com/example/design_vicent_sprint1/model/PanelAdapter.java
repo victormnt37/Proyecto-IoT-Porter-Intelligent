@@ -19,7 +19,9 @@ import com.example.design_vicent_sprint1.data.RepositorioWeather;
 import com.example.design_vicent_sprint1.presentacion.MainActivity;
 import com.example.design_vicent_sprint1.presentacion.RegistroDatosSensorActivity;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHolder> {
 
@@ -27,16 +29,18 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
     private String edificioSeleccionado;
     private SensorData datosSensor;
     private Context context;
+    private HashMap<String, Object> registroDatos;
 
     private PanelViewHolder holderActual;
     
     private final String noData = "Esperando datos MQTT...";
 
-    public PanelAdapter(List<Panel> paneles, String edificioSeleccionado, SensorData datosSensor, Context context) {
+    public PanelAdapter(List<Panel> paneles, String edificioSeleccionado, SensorData datosSensor, Context context, Map<String, Object> registroDatos) {
         this.paneles = paneles;
         this.edificioSeleccionado = edificioSeleccionado;
         this.datosSensor = datosSensor;
         this.context = context;
+        this.registroDatos = (HashMap<String, Object>) registroDatos;
     }
 
     @NonNull
@@ -105,8 +109,7 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
         switch (panel.getTipo()) {
             case "Actividad Reciente":
                 break;
-            case "Tiempo":
-//                llenarTiempo(holder);
+            case "Temperatura":
                 mostrarTemperatura(holder);
                 break;
             case "Acceso":
@@ -114,19 +117,15 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
             case "Estado de Puertas":
                 break;
             case "Movimiento":
-                // recibe la distancia
                 mostrarMovimiento(holder);
                 break;
             case "Ruido":
-                // recibe si hay ruido o no
                 mostrarRuido(holder);
                 break;
             case "Luz":
-                // recibe el nivel de luz
                 mostrarLuz(holder);
                 break;
             case "Humo y Gas":
-                // recibe el nivel de gas
                 mostrarGas(holder);
                 break;
             default:
@@ -135,6 +134,7 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
     }
 
     public void llenarTiempo(PanelViewHolder holder) {
+        // Contacto con el api del tiempo, actualmente no implementado
         RepositorioWeather RepositorioWeather = new RepositorioWeather();
         // pedir el edificio con el edificioSeleccionado
         Edificio edificio = new Edificio("", "Edificio Central", "Calle Principal", "Madrid");
@@ -237,8 +237,10 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
     private void lanzarActividad(Panel panel) {
         Intent intent = new Intent(context, RegistroDatosSensorActivity.class);
         if (datosSensor != null) {
+            // TODO: pasar datos de registro
             intent.putExtra("tipo-sensor", panel.getTipo());
             intent.putExtra("edificio", edificioSeleccionado);
+            intent.putExtra("registro-datos", registroDatos);
         }
         context.startActivity(intent);
     }

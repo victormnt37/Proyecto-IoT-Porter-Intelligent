@@ -3,7 +3,7 @@ package com.example.design_vicent_sprint1.model;
 public class Panel {
     private Edificio edificio;
     private String tipo;
-    // Actividad Reciente, Tiempo, Acceso, Estado de Puertas, Movimiento, Ruido, Luz, Vibraciones, Humo y Gas
+    // Actividad Reciente, Temperatura, Acceso, Estado de Puertas, Movimiento, Ruido, Luz, Vibraciones, Humo y Gas
 
     //private List<Sensor> sensores;
 
