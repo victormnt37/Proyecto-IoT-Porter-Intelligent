@@ -7,7 +7,11 @@
     </style>
 
     <style name="Theme.PruebasRecycler" parent="Base.Theme.PruebasRecycler">
+        <item name="android:colorBackground">@color/color_backgroundLight</item>
         <item name="colorPrimary">@color/blue_CLARITO</item>
+        <item name="colorSecondary">@color/blue</item>
+        <item name="colorToolbar">@color/white</item>
+        <item name="colorTextWhite">@color/white</item>
     </style>
 
 </resources>
