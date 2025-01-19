@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+    android:layout_height="match_parent">
 
 
     <TextView
@@ -25,11 +24,11 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:tint="@color/blue"
         app:layout_constraintBottom_toBottomOf="@+id/textView6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView6"
-        app:srcCompat="@drawable/icon_ajustes" />
+        app:srcCompat="@drawable/icon_ajustes"
+        app:tint="@color/blue" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewNotificaciones"
