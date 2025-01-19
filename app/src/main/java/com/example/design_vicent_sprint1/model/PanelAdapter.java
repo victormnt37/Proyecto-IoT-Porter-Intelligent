@@ -308,7 +308,7 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
                                 Map<String, Object> data = document.getData();
 
                                 if (data != null) {
-                                    accesos.setText("" + data.get("Accesos"));
+                                    accesos.setText("Accesos en el dia de hoy: " + data.get("Accesos"));
                                 }
                             }
                         })
