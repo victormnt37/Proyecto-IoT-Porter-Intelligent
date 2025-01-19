@@ -11,7 +11,7 @@ public class RepositorioAnuncios {
 
     public RepositorioAnuncios() {
         anuncios = new ArrayList<>();
-        cargarAnunciosEjemplo();
+        //cargarAnunciosEjemplo();
     }
 
     public List<Anuncio> getAnunciosPorEdificio(String id_edificio) {
@@ -24,7 +24,7 @@ public class RepositorioAnuncios {
         return resultado;
     }
 
-    private void cargarAnunciosEjemplo() {
+    /*private void cargarAnunciosEjemplo() {
         RepositorioEdificios repositorioEdificios = new RepositorioEdificios();
         List<Edificio> edificios = repositorioEdificios.getEdificios();
         edificios.remove(edificios.size()-1); // edificio ADD
@@ -41,6 +41,6 @@ public class RepositorioAnuncios {
         anuncios.add(new Anuncio(edificios.get(2), "Reparación de la piscina", "La piscina estará cerrada por reparaciones durante los próximos 3 días.", "Mantenimiento"));
         anuncios.add(new Anuncio(edificios.get(2), "Nueva recolección de reciclaje", "A partir del lunes, se implementará un nuevo sistema de recolección de reciclaje.", "Administrador"));
         anuncios.add(new Anuncio(edificios.get(2), "Entrega de correspondencia", "Se recuerda a los vecinos que la correspondencia será entregada en la nueva portería a partir de esta semana.", "Administrador"));
-    }
+    }*/
 }
 
