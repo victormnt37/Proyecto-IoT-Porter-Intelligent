@@ -33,6 +33,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.design_vicent_sprint1.Cuenta;
 import com.example.design_vicent_sprint1.R;
+import com.example.design_vicent_sprint1.ServicioAlertas;
 import com.example.design_vicent_sprint1.data.Edificios;
 import com.example.design_vicent_sprint1.data.EdificiosAsinc;
 import com.example.design_vicent_sprint1.Notificaciones;
@@ -108,8 +109,13 @@ public class MainActivity extends AppCompatActivity {
                     //seleccionar un edificio por defecto
                     id_edificioSeleccionado = primerEdificio.getKey();
                 }
+                Intent servicio = new Intent(this, ServicioAlertas.class);
+                servicio.putExtra("edificio", id_edificioSeleccionado);
+                startService(servicio);
                 cargarDatosBotonEdificio(id_edificioSeleccionado);
                 cargarPantalla(id_edificioSeleccionado);
+                Intent intent = new Intent(this, ServicioAlertas.class);
+                stopService(intent);
             }
         });
 
@@ -243,6 +249,9 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 } else if (item.getItemId() == R.id.menu_anuncios) {
                     lanzarActividad(AnunciosActivity.class);
+                    return true;
+                } else if (item.getItemId() == R.id.menu_administradores) {
+                    lanzarActividad(AdministradoresActivity.class);
                     return true;
                 } else if (item.getItemId() == R.id.menu_contactos) {
                     lanzarActividad(ContactosActivity.class);
@@ -380,11 +389,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*@Override
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        adapter.stopListening();// deja de escucha los cambios en la base de datos
-    }*/
+        Intent intent = new Intent(this, ServicioAlertas.class);
+        stopService(intent);
+    }
 }
 
 

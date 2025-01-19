@@ -1,7 +1,13 @@
 package com.example.design_vicent_sprint1.presentacion;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +33,9 @@ public class AdministradoresActivity extends AppCompatActivity {
     private AdministradoresAdapter administradoresAdapter;
     private String edificioSeleccionado;
     private ImageLoader lectorImagenes;
+    private String rol;
+    private String userId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +44,8 @@ public class AdministradoresActivity extends AppCompatActivity {
 
         recyclerViewAdministradores = findViewById(R.id.recyclerViewAdministradores);
         edificioSeleccionado = getIntent().getStringExtra("edificio");
-
+        rol = getIntent().getStringExtra("rol");
+        userId = getIntent().getStringExtra("userId");
         // Configuración del RecyclerView
         recyclerViewAdministradores.setLayoutManager(new LinearLayoutManager(this));
 
@@ -69,11 +79,74 @@ public class AdministradoresActivity extends AppCompatActivity {
                     administradores.add(administrador);
                 }
                 recyclerViewAdministradores.setLayoutManager(new LinearLayoutManager(this));
-                administradoresAdapter = new AdministradoresAdapter(administradores, lectorImagenes);
+                administradoresAdapter = new AdministradoresAdapter(this, administradores, lectorImagenes,
+                        new AdministradoresAdapter.OnItemClickListener() {
+                            @Override
+                            public void onEliminarClick(Administrador administrador, int position) {
+                                mostrarPopupDesvincular(administrador.getCorreo(), edificioSeleccionado, position);
+                            }
+
+                            @Override
+                            public void onEditarClick(Administrador administrador) {
+
+                            }
+                        },rol, userId);
                 recyclerViewAdministradores.setAdapter(administradoresAdapter);
             } else {
                 Log.e("FirestoreError", "Error al obtener contactos", task.getException());
             }
         });
     }
+    private void mostrarPopupDesvincular(String correo, String edificio, int position) {
+
+        // Crear el segundo pop-up (Dialog)
+        Dialog popup = new Dialog(this);
+        popup.setContentView(R.layout.popup_eliminar_usuario);  // Asegúrate de que este layout existe
+        popup.setCanceledOnTouchOutside(true);
+        Button cancelar = popup.findViewById(R.id.btn_cancelar);
+        Button confimar = popup.findViewById(R.id.btn_confirmar);
+
+        // Hacer el fondo del segundo pop-up transparente
+        popup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        confimar.setOnClickListener(view -> {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            db.collection("usuarios")
+                    .document(correo)
+                    .collection("edificios")
+                    .document(edificio)
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("desvincular","Edificio eliminado de la subcolección del usuario.");
+
+                        db.collection("edificios")
+                                .document(edificio)
+                                .collection("administradores")
+                                .document(correo)
+                                .delete()
+                                .addOnSuccessListener(aVoid1 -> {
+                                    Log.d("desvincular","Usuario eliminado de la subcolección del edificio.");
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.d("desvincular","Error al eliminar el usuario de la subcolección del edificio: " + e.getMessage());
+                                });
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("desvincular","Error al eliminar el edificio de la subcolección del usuario: " + e.getMessage());
+                    });
+            administradoresAdapter.removeItem(position);
+            popup.dismiss();
+            Toast toast = Toast.makeText(this, "Administrador eliminado", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        });
+        cancelar.setOnClickListener(view -> {
+            popup.dismiss();
+        });
+
+        // Mostrar el segundo pop-up
+        popup.show();
+    }
+
 }

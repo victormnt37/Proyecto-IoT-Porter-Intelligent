@@ -20,13 +20,19 @@ import java.util.List;
 
 public class MiembrosHogarAdapter extends RecyclerView.Adapter<MiembrosHogarAdapter.VecinoViewHolder> {
 
+    public interface OnItemClickListener {
+        void onEliminarClick(Vecino vecino, int position);
+    }
+
     private List<Vecino> vecinos;
     private ImageLoader lectorImagenes;
+    private OnItemClickListener listener;
 
     // Constructor que recibe la lista de vecinos y el lector de imágenes
-    public MiembrosHogarAdapter(List<Vecino> vecinos) {
+    public MiembrosHogarAdapter(List<Vecino> vecinos, OnItemClickListener listener) {
         this.vecinos = vecinos;
         this.lectorImagenes = lectorImagenes;
+        this.listener = listener;
     }
 
     @NonNull
@@ -55,29 +61,21 @@ public class MiembrosHogarAdapter extends RecyclerView.Adapter<MiembrosHogarAdap
         // Evento de clic para el menú de opciones
         holder.menuOpciones.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(holder.itemView.getContext(), holder.menuOpciones);
-            popupMenu.inflate(R.menu.menu_opciones_vecino); // Inflar el menú XML
+            popupMenu.inflate(R.menu.menu_opciones_miembros_hogar); // tu menú XML
 
             // Configurar las acciones de cada opción del menú
             popupMenu.setOnMenuItemClickListener(item -> {
-                if (item.getItemId() == R.id.opcion_editar) {
-                    Toast.makeText(holder.itemView.getContext(),
-                            "Editar: " + vecino.getPiso(), Toast.LENGTH_SHORT).show();
+                if (item.getItemId() == R.id.opcion_eliminar){
+                    listener.onEliminarClick(vecino, position);
                     return true;
-                } else if (item.getItemId() == R.id.opcion_eliminar) {
-                    Toast.makeText(holder.itemView.getContext(),
-                            "Eliminar: " + vecino.getPiso(), Toast.LENGTH_SHORT).show();
-                    return true;
-                } else if (item.getItemId() == R.id.opcion_info) {
-                    Toast.makeText(holder.itemView.getContext(),
-                            "Información de: " + vecino.getPiso(), Toast.LENGTH_SHORT).show();
-                    return true;
+                }else{
+                    return false;
                 }
-                return false;
             });
             popupMenu.show(); // Mostrar el menú
         });
-    }
 
+    }
 
     @Override
     public int getItemCount() {
@@ -100,5 +98,16 @@ public class MiembrosHogarAdapter extends RecyclerView.Adapter<MiembrosHogarAdap
             menuOpciones = itemView.findViewById(R.id.menuOpciones);
         }
     }
+
+    public void addItem(Vecino vecino, int position) {
+        vecinos.add(position, vecino);
+        notifyItemInserted(position);
+    }
+
+    public void removeItem(int position) {
+        vecinos.remove(position);
+        notifyItemRemoved(position);
+    }
+
 }
 

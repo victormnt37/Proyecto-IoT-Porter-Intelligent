@@ -3,5 +3,17 @@
     <style name="Base.Theme.PruebasRecycler" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="android:fontFamily">@font/poppinsregular</item>
+    </style>
+    <declare-styleable name="CustomToolbar">
+        <attr name="colorToolbar" format="color"/>
+        <attr name="colorTextWhite" format="color"/>
+    </declare-styleable>
+    <style name="Theme.PruebasRecycler" parent="Base.Theme.PruebasRecycler">
+        <item name="android:colorBackground">@color/color_backgroundDark</item>
+        <item name="colorPrimary">@color/blue_CLARITO</item>
+        <item name="colorSecondary">@color/blue</item>
+        <item name="colorToolbar">@color/color_ToolbarDark</item>
+        <item name="colorTextWhite">@color/white</item>
     </style>
 </resources>

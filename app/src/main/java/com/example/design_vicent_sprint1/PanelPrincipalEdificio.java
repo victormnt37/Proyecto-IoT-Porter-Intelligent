@@ -63,12 +63,13 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
     private String userId;
     private PanelAdapter adapter;
     Handler uiHandler = new Handler(Looper.getMainLooper());
+    private Map<String, Object> registroDatos = new HashMap<>();
 
     // MQTT
     private static final String topic = "VicentPI/edificio1";
     private static final int qos = 1;
     private static final boolean retain = false;
-    private static final String broker = "tcp://test.mosquitto.org:1883";
+    private static final String broker = "tcp://broker.hivemq.com:1883";
     private static final String clientId = "vecino";
     private MqttClient client;
     private SensorData datosSensor;
@@ -85,6 +86,23 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
             rol = getArguments().getString("rol");
             userId = getArguments().getString("userId");
         }
+
+        // Peticion registro Firestore
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("edificios/" + edificioSeleccionado + "/sensores/")
+                .limit(7) // recibe los datos de la ultima semana
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        registroDatos.put(document.getId(), document.getData());
+                        Log.d("Firestore", "Documento ID: " + document.getId() + " -> Datos: " + registroDatos);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("Firestore", "Error al obtener documentos", e);
+                });
 
         try {
             client = new MqttClient(broker, clientId, new MemoryPersistence()); // Conexión con el bróker
@@ -246,7 +264,7 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
                     }
                 });
 
-        Button btnAdd = popupVecinos.findViewById(R.id.btnAddVecino3);
+        Button btnAdd = popupVecinos.findViewById(R.id.btn_confirmar);
         btnAdd.setOnClickListener(view -> {
             String correo_i = correo.getText().toString();
             String puerta_i = puerta.getSelectedItem().toString();
@@ -316,13 +334,12 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
             String correo_i = correo.getText().toString();
             String nombre_i = nombre.getText().toString();
             String telefono_i = telefono.getText().toString();
-
-            if(!verificarCorreo(correo_i)){
+            if (nombre_i.isEmpty()) {
+                tilNombre.setError("Introduce un nombre");
+            } else if(!verificarCorreo(correo_i)){
                 tilCorreo.setError("Correo no válido");
             }else if(!verificarTelefono(telefono_i)){
                 tilTelefono.setError("Telefono no válido");
-            } else if (nombre_i.isEmpty()) {
-                tilNombre.setError("Introduce un nombre");
             }else{
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -451,10 +468,10 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
             String nombre_i = nombre.getText().toString();
             String telefono_i = telefono.getText().toString();
 
-            if(!verificarTelefono(telefono_i)){
-                tilTelefono.setError("Teléfono no válido");
-            }else if (nombre_i.isEmpty()) {
+            if (nombre_i.isEmpty()) {
                 tilNombre.setError("Introduce un nombre");
+            }else if(!verificarTelefono(telefono_i)){
+                tilTelefono.setError("Teléfono no válido");
             }else{
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -495,8 +512,9 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
     private void cargarPaneles(SensorData datosSensor) {
         List<Panel> paneles = repositorioPaneles.getPanelesPorEdificio(edificioSeleccionado);
 
+        // TODO: pasar datos de registro
         if (adapter == null) {
-            adapter = new PanelAdapter(paneles, edificioSeleccionado, datosSensor, getContext());
+            adapter = new PanelAdapter(paneles, edificioSeleccionado, datosSensor, getContext(), registroDatos);
             recyclerView.setAdapter(adapter);
         } else {
             adapter.llenarDatosMQTT(datosSensor, recyclerView);

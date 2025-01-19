@@ -50,38 +50,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tlNombre" />
 
+
         <Button
             android:id="@+id/cambiarPerfil"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="32dp"
-            android:backgroundTint="#C0D7E9"
+            android:backgroundTint="#3B5D75"
             android:fontFamily="@font/poppinsbold"
             android:text="Cambiar"
-            android:textColor="#255A7B"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/cancelarCambiar"
-            app:layout_constraintTop_toBottomOf="@+id/tlCorreo"
-            app:strokeColor="#255A7B"
-            app:strokeWidth="3dp" />
+            app:layout_constraintTop_toBottomOf="@+id/tlCorreo" />
+
 
         <Button
             android:id="@+id/cancelarCambiar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#C0D7E9"
+            android:backgroundTint="#3B5D75"
             android:fontFamily="@font/poppinsbold"
             android:text="Cancelar"
-            android:textColor="@color/blue"
+            android:textColor="#FFFFFF"
             app:layout_constraintEnd_toStartOf="@+id/cambiarPerfil"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/cambiarPerfil"
-            app:strokeColor="@color/blue"
-            app:strokeWidth="3dp" />
+            />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tlNombre"

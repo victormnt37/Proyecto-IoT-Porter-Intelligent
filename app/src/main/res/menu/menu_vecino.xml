@@ -10,6 +10,9 @@
         android:id="@+id/menu_anuncios"
         android:title="Anuncios" />
     <item
+        android:id="@+id/menu_administradores"
+        android:title="Administradores" />
+    <item
         android:id="@+id/menu_contactos"
         android:title="Contactos" />
 </menu>

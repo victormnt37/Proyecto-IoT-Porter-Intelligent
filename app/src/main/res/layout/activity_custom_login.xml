@@ -8,8 +8,10 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="15dp">
-
+        android:layout_margin="15dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardElevation="0dp"
+        app:cardCornerRadius="0dp">
         <!-- Logo -->
 
 
@@ -113,6 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:backgroundTint="#255A7B"
+                android:textColor="?attr/colorTextWhite"
                 android:fontFamily="@font/poppinsmedium"
                 android:onClick="inicioSesiónCorreo"
                 android:text="Iniciar Sesión"
@@ -156,6 +159,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:backgroundTint="#255A7B"
+                android:textColor="?attr/colorTextWhite"
                 android:fontFamily="@font/poppinsmedium"
                 android:onClick="registroCorreo"
                 android:text="Registro"
@@ -185,6 +189,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:backgroundTint="#FFFFFF"
+                android:background="@android:color/transparent"
                 android:src="@drawable/icon_twitter"
                 android:text="X"
                 android:textSize="16sp"
@@ -201,6 +206,7 @@
                 android:layout_marginTop="16dp"
                 android:backgroundTint="#FFFFFF"
                 android:onClick="autentificarGoogle"
+                android:background="@android:color/transparent"
                 android:src="@drawable/icon_google"
                 android:text="Google"
                 android:textSize="16sp"

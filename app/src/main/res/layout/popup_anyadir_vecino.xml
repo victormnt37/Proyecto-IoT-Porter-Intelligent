@@ -37,7 +37,7 @@
             android:id="@+id/tvCorreo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="15dp"
             android:fontFamily="@font/poppinsmedium"
             android:text="Correo"
             app:layout_constraintStart_toStartOf="parent"
@@ -105,7 +105,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvPuerta" />
 
         <Button
-            android:id="@+id/btnAddVecino3"
+            android:id="@+id/btn_confirmar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -114,9 +114,6 @@
             android:fontFamily="@font/poppinsbold"
             android:text="Enviar"
             android:textColor="@color/white"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            app:cornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="@+id/spinnerPuerta"
             app:layout_constraintTop_toBottomOf="@+id/spinnerPuerta"
             tools:layout_conversion_absoluteHeight="48dp"

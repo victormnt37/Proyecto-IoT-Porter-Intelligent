@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -13,10 +14,18 @@ import java.util.List;
 
 public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.AnuncioViewHolder> {
 
-    private List<Anuncio> anuncios;
+    public interface OnItemClickListener {
+        void onEliminarClick(Anuncio anuncio, int position);
+        void onEditarClick(Anuncio anuncio);
+        void onCompartirClick(Anuncio anuncio);
+    }
 
-    public AnunciosAdapter(List<Anuncio> anuncios) {
+    private List<Anuncio> anuncios;
+    private OnItemClickListener listener;
+
+    public AnunciosAdapter(List<Anuncio> anuncios, OnItemClickListener listener) {
         this.anuncios = anuncios;
+        this.listener = listener;
     }
 
     @NonNull
@@ -35,7 +44,24 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
         holder.descripcion.setText(anuncio.getTexto());
 
         holder.menuOpciones.setOnClickListener(v -> {
-            Toast.makeText(holder.itemView.getContext(), "Opciones del anuncio: " + anuncio.getAsunto(), Toast.LENGTH_SHORT).show();
+            PopupMenu popupMenu = new PopupMenu(holder.itemView.getContext(), holder.menuOpciones);
+            popupMenu.inflate(R.menu.menu_opciones_admin); // Inflar el menú XML específico para administradores
+
+            // Configurar las acciones de cada opción del menú
+            popupMenu.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == R.id.opcion_editar) {
+                    listener.onEditarClick(anuncio);
+                    return true;
+                } else if (item.getItemId() == R.id.opcion_eliminar) {
+                    listener.onEliminarClick(anuncio, position);
+                    return true;
+                }else if (item.getItemId() == R.id.opcion_compartir) {
+                    listener.onCompartirClick(anuncio);
+                    return true;
+                }
+                return false;
+            });
+            popupMenu.show(); // Mostrar el menú
         });
     }
 
@@ -57,5 +83,10 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
             descripcion = itemView.findViewById(R.id.descripcionAnuncio);
             menuOpciones = itemView.findViewById(R.id.menuOpciones);
         }
+    }
+
+    public void removeItem(int position) {
+        anuncios.remove(position);
+        notifyItemRemoved(position);
     }
 }

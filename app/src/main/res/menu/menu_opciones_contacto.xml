@@ -6,7 +6,4 @@
     <item
         android:id="@+id/opcion_eliminar"
         android:title="Eliminar" />
-    <item
-        android:id="@+id/opcion_info"
-        android:title="Ver información" />
 </menu>
