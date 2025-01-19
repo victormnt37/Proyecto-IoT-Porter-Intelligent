@@ -250,6 +250,9 @@ public class MainActivity extends AppCompatActivity {
                 } else if (item.getItemId() == R.id.menu_anuncios) {
                     lanzarActividad(AnunciosActivity.class);
                     return true;
+                } else if (item.getItemId() == R.id.menu_administradores) {
+                    lanzarActividad(AdministradoresActivity.class);
+                    return true;
                 } else if (item.getItemId() == R.id.menu_contactos) {
                     lanzarActividad(ContactosActivity.class);
                     return true;

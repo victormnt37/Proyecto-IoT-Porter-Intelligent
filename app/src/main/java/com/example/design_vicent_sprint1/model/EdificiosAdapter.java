@@ -72,5 +72,10 @@
             }
         }
 
+        public void removeItem(int position) {
+            edificios.remove(position);
+            notifyItemRemoved(position);
+        }
+
 
     }

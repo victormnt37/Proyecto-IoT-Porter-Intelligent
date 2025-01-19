@@ -339,7 +339,7 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
         hayRuido.setPadding(8, 8, 8, 8);
 
         ImageView iconoRuido = new ImageView(holder.itemView.getContext());
-        configurarIcono(iconoRuido, R.drawable.icon_alerta);
+        configurarIcono(iconoRuido, R.drawable.icon_sonido);
 
         if (datosSensor != null) {
             Boolean ruido = datosSensor.getRuido();
