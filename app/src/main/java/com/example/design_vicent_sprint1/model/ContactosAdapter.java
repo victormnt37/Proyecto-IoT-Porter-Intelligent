@@ -25,14 +25,21 @@ import java.util.List;
 
 public class ContactosAdapter extends RecyclerView.Adapter<ContactosAdapter.ContactoViewHolder> {
 
+    public interface OnItemClickListener {
+        void onEliminarClick(Contacto contacto, int position);
+        void onEditarClick(Contacto contacto);
+    }
+
     private final List<Contacto> contactos;
     private final Activity actividad;
     public static final int REQUEST_CALL_PERMISSION = 100;
     private String rol;
+    private OnItemClickListener listener;
 
-    public ContactosAdapter(List<Contacto> contactos, Activity actividad, String rol) {
+    public ContactosAdapter(List<Contacto> contactos, Activity actividad, String rol, OnItemClickListener listener) {
         this.contactos = contactos;
         this.actividad = actividad;
+        this.listener = listener;
         this.rol = rol;
     }
 
@@ -61,34 +68,27 @@ public class ContactosAdapter extends RecyclerView.Adapter<ContactosAdapter.Cont
             }
         });
         if(rol.equals("vecino")){
-            holder.imageView.setVisibility(View.GONE);
+            holder.menuOpciones.setVisibility(View.GONE);
         }else{
-            holder.imageView.setOnClickListener(view -> {
+            holder.menuOpciones.setOnClickListener(v -> {
+                PopupMenu popupMenu = new PopupMenu(holder.itemView.getContext(), holder.menuOpciones);
+                popupMenu.inflate(R.menu.menu_opciones_contacto); // Inflar el menú XML
 
+                // Configurar las acciones de cada opción del menú
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    if (item.getItemId() == R.id.opcion_editar) {
+                        listener.onEditarClick(contacto);
+                        return true;
+                    } else if (item.getItemId() == R.id.opcion_eliminar) {
+                        listener.onEliminarClick(contacto, position);
+                        return true;
+                    }
+                    return false;
+                });
+                popupMenu.show(); // Mostrar el menú
             });
         }
 
-        // Evento de clic para el menú de opciones
-        holder.menuOpciones.setOnClickListener(v -> {
-            PopupMenu popupMenu = new PopupMenu(holder.itemView.getContext(), holder.menuOpciones);
-            popupMenu.inflate(R.menu.menu_opciones_contacto); // Inflar el menú XML
-
-            // Configurar las acciones de cada opción del menú
-            popupMenu.setOnMenuItemClickListener(item -> {
-                if (item.getItemId() == R.id.opcion_editar) {
-
-                    return true;
-                } else if (item.getItemId() == R.id.opcion_eliminar) {
-
-                    return true;
-                } else if (item.getItemId() == R.id.opcion_info) {
-
-                    return true;
-                }
-                return false;
-            });
-            popupMenu.show(); // Mostrar el menú
-        });
     }
 
     @Override
@@ -124,15 +124,18 @@ public class ContactosAdapter extends RecyclerView.Adapter<ContactosAdapter.Cont
     static class ContactoViewHolder extends RecyclerView.ViewHolder {
         TextView txtNombre;
         TextView txtTelefono;
-        ImageView imageView;
         ImageView menuOpciones;
 
         public ContactoViewHolder(@NonNull View itemView) {
             super(itemView);
             txtNombre = itemView.findViewById(R.id.contactName);
             txtTelefono = itemView.findViewById(R.id.contactPhone);
-            imageView = itemView.findViewById(R.id.menuOpciones);
             menuOpciones = itemView.findViewById(R.id.menuOpciones);
         }
+    }
+
+    public void removeItem(int position) {
+        contactos.remove(position);
+        notifyItemRemoved(position);
     }
 }

@@ -11,14 +11,7 @@ public class Anuncio {
     private String texto;
     private String autor;
     private Calendar fecha;
-
-    public Anuncio(Edificio edificio, String asunto, String texto, String autor) {
-        this.edificio = edificio;
-        this.asunto = asunto;
-        this.texto = texto;
-        this.autor = autor;
-        this.fecha = Calendar.getInstance();
-    }
+    private String id;
 
     public  Anuncio(){}
 
@@ -29,7 +22,16 @@ public class Anuncio {
         this.fecha = Calendar.getInstance();
     }
 
-    public Anuncio(String asunto, String texto, String autor, String fecha) {
+    public Anuncio(String id, String asunto, String texto, String autor) {
+        this.id = id;
+        this.asunto = asunto;
+        this.texto = texto;
+        this.autor = autor;
+        this.fecha = Calendar.getInstance();
+    }
+
+    public Anuncio(String id,String asunto, String texto, String autor, String fecha) {
+        this.id = id;
         this.edificio = edificio;
         this.asunto = asunto;
         this.texto = texto;
@@ -64,6 +66,14 @@ public class Anuncio {
     public String getFecha() {
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         return formato.format(fecha.getTime());
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
 

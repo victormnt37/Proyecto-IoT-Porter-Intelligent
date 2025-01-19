@@ -21,6 +21,10 @@ import com.example.design_vicent_sprint1.R;
 import com.example.design_vicent_sprint1.data.RepositorioWeather;
 import com.example.design_vicent_sprint1.presentacion.MainActivity;
 import com.example.design_vicent_sprint1.presentacion.RegistroDatosSensorActivity;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -113,6 +117,7 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
     public void actualizarDatos(Panel panel, PanelViewHolder holder) {
         switch (panel.getTipo()) {
             case "Actividad Reciente":
+                mostrarActividadReciente(holder);
                 break;
             case "Temperatura":
                 mostrarTemperatura(holder);
@@ -154,6 +159,75 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
         } else {
             elTiempo.setText("No se pudo obtener el clima.");
         }
+    }
+
+    public void mostrarActividadReciente(PanelViewHolder holder) {
+        // peticion de los datos
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        TextView actividadReciente = new TextView(holder.itemView.getContext());
+
+        db.collection("edificios/" + edificioSeleccionado + "/actividad-reciente")
+                .orderBy("fecha", Query.Direction.DESCENDING)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        // Obtener el último documento
+                        DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
+
+                        // Extraer los datos del documento
+                        Map<String, Object> data = document.getData();
+
+                        if (data != null) {
+                            StringBuilder builder = new StringBuilder();
+                            if (data.get("distancia") == "true") {
+                                builder.append("Movimiento detectado").append("\n");
+                            }
+
+                            String gas = (String) data.get("gas");
+                            String gasSinPorcentaje = gas.replace("%", "");
+                            double porcentajeGas = Double.parseDouble(gasSinPorcentaje);
+
+                            if (porcentajeGas >= 1.00) {
+                                builder.append("Gas detectado").append("\n");
+                            }
+
+                            String luz = (String) data.get("luz");
+                            String numeroSinPorcentaje = luz.replace("%", "");
+                            double porcentajeLuz = Double.parseDouble(numeroSinPorcentaje);
+
+                            if (porcentajeLuz <= 30.00) {
+                                builder.append("Poca luz").append("\n");
+                            } else if (porcentajeLuz <= 70.00) {
+                                builder.append("Sombra").append("\n");
+                            } else if (porcentajeLuz > 70.00) {
+                                builder.append("Luz alta").append("\n");
+                            }
+
+                            if (data.get("ruido") == "true") {
+                                builder.append("Ruido detectado").append("\n");
+                            }
+
+//                            builder.append("Temperatura: ").append(data.get("temperatura")).append("\n");
+
+                            // Mostrar los datos en el TextView
+                            actividadReciente.setText(builder.toString());
+                        } else {
+                            actividadReciente.setText("El documento no contiene datos.");
+                        }
+                    } else {
+                        actividadReciente.setText("No se encontraron documentos.");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Manejar errores
+                    actividadReciente.setText("Error al cargar datos: " + e.getMessage());
+                });
+
+        // mostrar
+        holder.panelVacio.removeAllViews();
+        holder.panelVacio.setOrientation(LinearLayout.HORIZONTAL);
+        holder.panelVacio.addView(actividadReciente);
     }
 
     public void mostrarTemperatura(PanelViewHolder holder) {
@@ -209,6 +283,7 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
     // Método para mostrar accesos
     public void mostrarAccesos(PanelViewHolder holder) {
         // Crear un TextView para los accesos
+        // TODO: poner datos firestore aqui
         TextView accesos = new TextView(holder.itemView.getContext());
         accesos.setTextSize(16);
         accesos.setPadding(8, 8, 8, 8);
@@ -226,8 +301,8 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
                 datos.add(dato);
             }
 
-            Log.d("Registro", registroDatos.toString());
-            Log.d("Accesos", datos.toString());
+//            Log.d("Registro", registroDatos.toString());
+//            Log.d("Accesos", datos.toString());
 //            accesos.setText(datos.get(6));
         }
 
