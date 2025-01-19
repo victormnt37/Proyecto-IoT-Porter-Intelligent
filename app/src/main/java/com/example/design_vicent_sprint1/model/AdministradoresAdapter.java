@@ -35,16 +35,18 @@ public class AdministradoresAdapter extends RecyclerView.Adapter<Administradores
     private ImageLoader lectorImagenes;
     private OnItemClickListener listener;
     private String rol;
+    private String userId;
     private final Activity actividad;
     public static final int REQUEST_CALL_PERMISSION = 100;
 
     // Constructor que recibe la lista de administradores y el lector de imágenes
-    public AdministradoresAdapter(Activity activity, List<Administrador> administradores, ImageLoader lectorImagenes, OnItemClickListener listener, String rol) {
+    public AdministradoresAdapter(Activity activity, List<Administrador> administradores, ImageLoader lectorImagenes, OnItemClickListener listener, String rol, String user_id) {
         this.actividad = activity;
         this.administradores = administradores;
         this.lectorImagenes = lectorImagenes;
         this.listener = listener;
         this.rol = rol;
+        this.userId = user_id;
     }
 
     @NonNull
@@ -87,21 +89,35 @@ public class AdministradoresAdapter extends RecyclerView.Adapter<Administradores
         if(rol.equals("vecino")){
             holder.menuOpciones.setVisibility(View.GONE);
         }else{
+
             holder.menuOpciones.setOnClickListener(v -> {
                 PopupMenu popupMenu = new PopupMenu(holder.itemView.getContext(), holder.menuOpciones);
-                popupMenu.inflate(R.menu.menu_opciones_admin); // Inflar el menú XML específico para administradores
 
-                // Configurar las acciones de cada opción del menú
-                popupMenu.setOnMenuItemClickListener(item -> {
-                    if (item.getItemId() == R.id.opcion_editar) {
-                        listener.onEditarClick(administrador);
-                        return true;
-                    } else if (item.getItemId() == R.id.opcion_eliminar) {
-                        listener.onEliminarClick(administrador, position);
-                        return true;
-                    }
-                    return false;
-                });
+                if(administrador.getCorreo().equals(userId)){
+                    popupMenu.inflate(R.menu.menu_opciones_editar); // Inflar el menú XML específico para administradores
+                    popupMenu.setOnMenuItemClickListener(item -> {
+                        if (item.getItemId() == R.id.opcion_editar) {
+                            listener.onEditarClick(administrador);
+                            return true;
+                        }
+                        return false;
+                    });
+                }else{
+                    popupMenu.inflate(R.menu.menu_opciones_admin); // Inflar el menú XML específico para administradores
+                    popupMenu.setOnMenuItemClickListener(item -> {
+                        if (item.getItemId() == R.id.opcion_editar) {
+                            listener.onEditarClick(administrador);
+                            return true;
+                        } else if (item.getItemId() == R.id.opcion_eliminar) {
+                            listener.onEliminarClick(administrador, position);
+                            return true;
+                        }
+                        return false;
+                    });
+                }
+
+
+
                 popupMenu.show(); // Mostrar el menú
             });
         }
