@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="24dp">
+
+        <!-- Título centrado en la parte superior -->
+        <TextView
+            android:id="@+id/textTituloPopup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Acerque su dispositivo a la cerradura"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Imagen debajo del texto -->
+        <ImageView
+            android:id="@+id/icon_acceso"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:background="@drawable/icon_background"
+            android:src="@drawable/icon_nfc"
+            app:tint="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/textTituloPopup"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
