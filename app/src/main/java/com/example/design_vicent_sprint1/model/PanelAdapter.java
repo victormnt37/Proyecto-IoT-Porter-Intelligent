@@ -22,6 +22,7 @@ import com.example.design_vicent_sprint1.data.RepositorioWeather;
 import com.example.design_vicent_sprint1.presentacion.MainActivity;
 import com.example.design_vicent_sprint1.presentacion.RegistroDatosSensorActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -292,6 +293,30 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
         ImageView iconoAccesos = new ImageView(holder.itemView.getContext());
         configurarIcono(iconoAccesos, R.drawable.icon_puerta); // Reemplaza con el recurso adecuado
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("edificios/" + edificioSeleccionado + "/sensores/")
+                .orderBy(FieldPath.documentId())
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                            if (!queryDocumentSnapshots.isEmpty()) {
+                                // Obtener el último documento
+                                DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
+
+                                // Extraer los datos del documento
+                                Map<String, Object> data = document.getData();
+
+                                if (data != null) {
+                                    accesos.setText("" + data.get("Accesos"));
+                                }
+                            }
+                        })
+                .addOnFailureListener(e -> {
+                    // Manejar errores
+                    accesos.setText("Error al cargar datos: " + e.getMessage());
+                });
+
         // Configurar el texto
         if (registroDatos != null) {
             List<String> datos = new ArrayList<>();
@@ -418,12 +443,12 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
 
     private void lanzarActividad(Panel panel) {
         Intent intent = new Intent(context, RegistroDatosSensorActivity.class);
-        if (datosSensor != null) {
+        if (datosSensor != null && panel.getTipo() != "Actividad Reciente") {
             // TODO: pasar datos de registro
             intent.putExtra("tipo-sensor", panel.getTipo());
             intent.putExtra("edificio", edificioSeleccionado);
             intent.putExtra("registro-datos", registroDatos);
+            context.startActivity(intent);
         }
-        context.startActivity(intent);
     }
 }
