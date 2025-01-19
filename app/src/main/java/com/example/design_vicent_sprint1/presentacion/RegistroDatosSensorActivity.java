@@ -22,6 +22,7 @@ import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -50,7 +51,6 @@ public class RegistroDatosSensorActivity extends AppCompatActivity {
         // Inicializar el gráfico
         if (sensoresConGrafico.contains(tipoSensor)) {
 
-            // TODO: luz
             graphView = findViewById(R.id.idGraphView);
             infoBubble = findViewById(R.id.infoBubble);
 
@@ -61,20 +61,28 @@ public class RegistroDatosSensorActivity extends AppCompatActivity {
             Set<String> clavesSet = registroDatos.keySet();
             List<String> dias = new ArrayList<>(clavesSet);
 
-            for (Object datosDia : registroDatos.values()) {
+            Map<String, Object> registroOrdenado = new HashMap<>();
+
+            for (String key : dias) {
+                registroOrdenado.put(key, registroDatos.get(key));
+            }
+
+            for (Object datosDia : registroOrdenado.values()) {
                 String dato = (String) ((HashMap<String, ?>) datosDia).get(tipoSensor);
                 datos.add(dato);
             }
 
+//            Collections.sort(dias);
+
             // Crear y configurar la serie de datos
             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
-                    new DataPoint(0, Integer.parseInt(datos.get(0))), // Lunes
-                    new DataPoint(1, Integer.parseInt(datos.get(1))), // Martes
-                    new DataPoint(2, Integer.parseInt(datos.get(2))), // Miércoles
-                    new DataPoint(3, Integer.parseInt(datos.get(3))), // Jueves
-                    new DataPoint(4, Integer.parseInt(datos.get(4))), // Viernes
-                    new DataPoint(5, Integer.parseInt(datos.get(5))), // Sábado
-                    new DataPoint(6, Integer.parseInt(datos.get(6)))  // Domingo
+                    new DataPoint(0, Integer.parseInt(datos.get(0))),
+                    new DataPoint(1, Integer.parseInt(datos.get(1))),
+                    new DataPoint(2, Integer.parseInt(datos.get(2))),
+                    new DataPoint(3, Integer.parseInt(datos.get(3))),
+                    new DataPoint(4, Integer.parseInt(datos.get(4))),
+                    new DataPoint(5, Integer.parseInt(datos.get(5))),
+                    new DataPoint(6, Integer.parseInt(datos.get(6)))
             });
 
             // Configuración del gráfico
@@ -88,6 +96,7 @@ public class RegistroDatosSensorActivity extends AppCompatActivity {
                     dias.get(0), dias.get(1), dias.get(2), dias.get(3), dias.get(4), dias.get(5), dias.get(6)
             });
             graphView.getGridLabelRenderer().setLabelFormatter(labelsFormatter);
+            graphView.getGridLabelRenderer().setHorizontalLabelsAngle(110);
 
             // Configurar el título del eje X
             //graphView.getGridLabelRenderer().setHorizontalAxisTitle("Días de la semana");
