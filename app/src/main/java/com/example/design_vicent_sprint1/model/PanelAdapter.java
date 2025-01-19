@@ -5,9 +5,12 @@ import static androidx.core.content.ContextCompat.startActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -154,18 +157,54 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
     }
 
     public void mostrarTemperatura(PanelViewHolder holder) {
+        // Crear un TextView para el texto
         TextView temperaturaActual = new TextView(holder.itemView.getContext());
+        temperaturaActual.setTextSize(16);
+        temperaturaActual.setPadding(8, 8, 8, 8);
+
+        // Crear un ImageView para la imagen
+        ImageView iconoTemperatura = new ImageView(holder.itemView.getContext());
+
+        // Convertir dp a píxeles para tamaños adaptativos
+        int tamañoEnDp = 75; // Tamaño deseado en dp
+        int tamañoEnPx = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                tamañoEnDp,
+                holder.itemView.getResources().getDisplayMetrics()
+        );
+
+        // Configurar las dimensiones del ícono
+        LinearLayout.LayoutParams layoutParamsIcono = new LinearLayout.LayoutParams(
+                tamañoEnPx, // Ancho en píxeles
+                tamañoEnPx  // Alto en píxeles
+        );
+        layoutParamsIcono.setMargins(0, 0, 16, 0); // Margen derecho para separar del texto
+        iconoTemperatura.setLayoutParams(layoutParamsIcono);
+        iconoTemperatura.setImageResource(R.drawable.icon_alerta); // Reemplaza con tu recurso de imagen
+
+        // Configurar el texto
         if (datosSensor != null) {
-            if (datosSensor.getTemperatura() == 100000000.0) {
-                temperaturaActual.setText(noData);
+            double temperatura = datosSensor.getTemperatura();
+            if (temperatura == 100000000.0) {
+                temperaturaActual.setText("Esperando datos de temperatura...");
             } else {
-                temperaturaActual.setText("Temperatura actual: " + datosSensor.getTemperatura());
+                temperaturaActual.setText("Temperatura actual: " + temperatura + "°C");
             }
         } else {
-            temperaturaActual.setText(noData); // poner un icono de cargando o algo asi
+            temperaturaActual.setText("No hay datos disponibles.");
         }
-        holder.panelVacio.addView(temperaturaActual);
+
+        // Limpiar el contenedor y agregar las vistas
+        holder.panelVacio.removeAllViews();
+
+        // Cambiar orientación del contenedor para alinearlos horizontalmente
+        holder.panelVacio.setOrientation(LinearLayout.HORIZONTAL);
+
+        holder.panelVacio.addView(iconoTemperatura); // Agregar el icono primero
+        holder.panelVacio.addView(temperaturaActual); // Agregar el texto después
     }
+
+
 
     public void mostrarAccesos(PanelViewHolder holder) {
         TextView accesos = new TextView(holder.itemView.getContext());
