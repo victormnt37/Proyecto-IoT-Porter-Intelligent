@@ -4,4 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#255B7A</color>
     <color name="blue_CLARITO">#6BA8CA</color>
+    <color name="color_backgroundLight">#DBEAF8</color>
+    <color name="color_backgroundDark">#1B2D40</color>
+    <color name="color_ToolbarDark">#09112E</color>
 </resources>
