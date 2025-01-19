@@ -32,7 +32,7 @@ public class RegistroDatosSensorActivity extends AppCompatActivity {
     private TextView registroSensor;
     private GraphView graphView;
     private TextView infoBubble;
-    private final Set<String> sensoresConGrafico = new HashSet<>(Arrays.asList("Temperatura", "Movimiento", "Ruido", "Luz", "Humo y Gas"));
+    private final Set<String> sensoresConGrafico = new HashSet<>(Arrays.asList("Temperatura", "Accesos", "Movimiento", "Ruido", "Luz", "Humo y Gas"));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,7 @@ public class RegistroDatosSensorActivity extends AppCompatActivity {
         // Inicializar el gráfico
         if (sensoresConGrafico.contains(tipoSensor)) {
 
+            // TODO: luz
             graphView = findViewById(R.id.idGraphView);
             infoBubble = findViewById(R.id.infoBubble);
 

@@ -19,9 +19,11 @@ import com.example.design_vicent_sprint1.data.RepositorioWeather;
 import com.example.design_vicent_sprint1.presentacion.MainActivity;
 import com.example.design_vicent_sprint1.presentacion.RegistroDatosSensorActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHolder> {
 
@@ -112,9 +114,8 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
             case "Temperatura":
                 mostrarTemperatura(holder);
                 break;
-            case "Acceso":
-                break;
-            case "Estado de Puertas":
+            case "Accesos":
+                mostrarAccesos(holder);
                 break;
             case "Movimiento":
                 mostrarMovimiento(holder);
@@ -164,6 +165,22 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
             temperaturaActual.setText(noData); // poner un icono de cargando o algo asi
         }
         holder.panelVacio.addView(temperaturaActual);
+    }
+
+    public void mostrarAccesos(PanelViewHolder holder) {
+        TextView accesos = new TextView(holder.itemView.getContext());
+        if (registroDatos != null) {
+            List<String> datos = new ArrayList<>();
+
+            for (Object datosDia : registroDatos.values()) {
+                String dato = (String) ((HashMap<String, ?>) datosDia).get("Accesos");
+                datos.add(dato);
+            }
+
+            Log.d("Registro", registroDatos.toString());
+            Log.d("Accesos", datos.toString());
+//            accesos.setText(datos.get(6));
+        }
     }
 
     public void mostrarMovimiento(PanelViewHolder holder) {
