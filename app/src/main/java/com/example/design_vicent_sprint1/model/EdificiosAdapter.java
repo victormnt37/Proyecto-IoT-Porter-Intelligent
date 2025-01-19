@@ -21,7 +21,7 @@
         // Interfaz para manejar clics en elementos
         public interface OnItemClickListener {
             void onItemClick(Edificio edificio); // Clic en el item
-            void onDeleteClick(int position);   // Clic en el botón de eliminar
+            void onDeleteClick(int position, Edificio edificio);   // Clic en el botón de eliminar
         }
 
         public EdificiosAdapter(List<Edificio> edificios, OnItemClickListener listener) {
@@ -51,7 +51,7 @@
             holder.itemView.setOnClickListener(v -> listener.onItemClick(edificio));
 
             // Manejar clic en el botón de eliminar
-            holder.iconoEliminar.setOnClickListener(v -> listener.onDeleteClick(position));
+            holder.iconoEliminar.setOnClickListener(v -> listener.onDeleteClick(position, edificio));
         }
 
         @Override

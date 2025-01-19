@@ -1,7 +1,5 @@
 package com.example.design_vicent_sprint1.presentacion;
 
-import static java.security.AccessController.getContext;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -11,14 +9,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,19 +21,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.design_vicent_sprint1.R;
 import com.example.design_vicent_sprint1.model.MiembrosHogarAdapter;
 import com.example.design_vicent_sprint1.model.Vecino;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MiembrosHogarActivity extends AppCompatActivity {
 
@@ -84,7 +74,7 @@ public class MiembrosHogarActivity extends AppCompatActivity {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        Button btnAdd = popupVecinos.findViewById(R.id.btnAddVecino3);
+        Button btnAdd = popupVecinos.findViewById(R.id.btn_confirmar);
         btnAdd.setOnClickListener(view -> {
             String correo_i = correo.getText().toString();
 
@@ -119,6 +109,7 @@ public class MiembrosHogarActivity extends AppCompatActivity {
                                     put("puerta", puerta_hogar);
                                 }});
                     });
+                    adapter.addItem(new Vecino(piso_hogar,puerta_hogar, correo_i), adapter.getItemCount());
                     popupVecinos.dismiss();
                     Toast toast = Toast.makeText(this, "Compañero añadido", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0, 0);
@@ -183,7 +174,12 @@ public class MiembrosHogarActivity extends AppCompatActivity {
                                             vecinos.add(vecinoItem);
                                         }
                                         recyclerViewVecinos.setLayoutManager(new LinearLayoutManager(this));
-                                        adapter = new MiembrosHogarAdapter(vecinos);
+                                        adapter = new MiembrosHogarAdapter(vecinos, new MiembrosHogarAdapter.OnItemClickListener() {
+                                            @Override
+                                            public void onEliminarClick(Vecino vecino, int position) {
+                                                mostrarPopupDesvincular(vecino, vecino.getCorreo(), edificioSeleccionado, position);
+                                            }
+                                        });
                                         recyclerViewVecinos.setAdapter(adapter);
                                     }
                                 } else {
@@ -195,6 +191,58 @@ public class MiembrosHogarActivity extends AppCompatActivity {
                 Log.e("FirestoreError", "Error al obtener el vecino", task.getException());
             }
         });
+    }
+
+    private void mostrarPopupDesvincular(Vecino vecino, String correo, String edificio, int position) {
+
+        // Crear el segundo pop-up (Dialog)
+        Dialog popup = new Dialog(this);
+        popup.setContentView(R.layout.popup_eliminar_usuario);  // Asegúrate de que este layout existe
+        popup.setCanceledOnTouchOutside(true);
+        Button cancelar = popup.findViewById(R.id.btn_cancelar);
+        Button confimar = popup.findViewById(R.id.btn_confirmar);
+
+        // Hacer el fondo del segundo pop-up transparente
+        popup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        confimar.setOnClickListener(view -> {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            db.collection("usuarios")
+                    .document(correo)
+                    .collection("edificios")
+                    .document(edificio)
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("desvincular","Edificio eliminado de la subcolección del usuario.");
+
+                        db.collection("edificios")
+                                .document(edificio)
+                                .collection("vecinos")
+                                .document(correo)
+                                .delete()
+                                .addOnSuccessListener(aVoid1 -> {
+                                    Log.d("desvincular","Usuario eliminado de la subcolección del edificio.");
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.d("desvincular","Error al eliminar el usuario de la subcolección del edificio: " + e.getMessage());
+                                });
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("desvincular","Error al eliminar el edificio de la subcolección del usuario: " + e.getMessage());
+                    });
+            adapter.removeItem(position);
+            popup.dismiss();
+            Toast toast = Toast.makeText(this, "Vecino eliminado", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        });
+        cancelar.setOnClickListener(view -> {
+            popup.dismiss();
+        });
+
+        // Mostrar el segundo pop-up
+        popup.show();
     }
 
 
