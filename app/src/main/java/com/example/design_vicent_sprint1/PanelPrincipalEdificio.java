@@ -264,7 +264,7 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
                     }
                 });
 
-        Button btnAdd = popupVecinos.findViewById(R.id.btnAddVecino3);
+        Button btnAdd = popupVecinos.findViewById(R.id.btn_confirmar);
         btnAdd.setOnClickListener(view -> {
             String correo_i = correo.getText().toString();
             String puerta_i = puerta.getSelectedItem().toString();

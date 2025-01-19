@@ -18,104 +18,90 @@
         android:padding="20dp">
 
         <!-- Título -->
+
+        <!-- Campo Nombre -->
         <TextView
-            android:id="@+id/tvTitle"
+            android:id="@+id/textView13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppinsbold"
             android:gravity="center"
-            android:text="Introduce los datos del nuevo vecino"
+            android:text="Actualiza los datos del contacto"
             android:textColor="@color/blue"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Label Correo -->
         <TextView
-            android:id="@+id/tvCorreo"
+            android:id="@+id/textView14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/poppinsmedium"
-            android:text="Correo"
+            android:text="Nombre"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
-        <!-- Input Correo -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tlCorreo"
+            android:id="@+id/tlNombre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvCorreo">
+            app:layout_constraintTop_toBottomOf="@+id/textView14">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etCorreo"
+                android:id="@+id/editText6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Introduce el correo" />
+                android:hint="Nombre" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Piso Label -->
-        <TextView
-            android:id="@+id/tvPiso"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/poppinsmedium"
-            android:text="Piso"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tlCorreo" />
+        <!-- Campo Correo -->
 
-        <!-- Puerta Label -->
-
-        <!-- Spinner Piso -->
-        <TextView
-            android:id="@+id/tvPuerta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/poppinsmedium"
-            android:text="Puerta"
-            app:layout_constraintStart_toEndOf="@id/spinnerPiso"
-            app:layout_constraintTop_toBottomOf="@+id/tlCorreo" />
-
-        <!-- Spinner Puerta -->
+        <!-- Campo Teléfono -->
 
         <!-- Botón Añadir -->
-        <Spinner
-            android:id="@+id/spinnerPiso"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            app:layout_constraintEnd_toStartOf="@id/spinnerPuerta"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvPiso" />
 
-        <Spinner
-            android:id="@+id/spinnerPuerta"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/spinnerPiso"
-            app:layout_constraintTop_toBottomOf="@+id/tvPuerta" />
-
-        <Button
-            android:id="@+id/btn_confirmar"
+        <TextView
+            android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:fontFamily="@font/poppinsmedium"
+            android:text="Telefono"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tlNombre" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlTelefono"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView9">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editText7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Telefono" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnAddVecino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:backgroundTint="#255A7B"
 
             android:fontFamily="@font/poppinsbold"
-            android:text="Enviar"
+            android:text="Actualizar"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@+id/spinnerPuerta"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerPuerta"
+            app:layout_constraintEnd_toEndOf="@+id/textView13"
+            app:layout_constraintTop_toBottomOf="@+id/tlTelefono"
             tools:layout_conversion_absoluteHeight="48dp"
             tools:layout_conversion_absoluteWidth="150dp" />
 

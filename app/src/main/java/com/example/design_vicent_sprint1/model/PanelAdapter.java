@@ -180,7 +180,7 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
         );
         layoutParamsIcono.setMargins(0, 0, 16, 0); // Margen derecho para separar del texto
         iconoTemperatura.setLayoutParams(layoutParamsIcono);
-        iconoTemperatura.setImageResource(R.drawable.icon_alerta); // Reemplaza con tu recurso de imagen
+        iconoTemperatura.setImageResource(R.drawable.icon_termometro); // Reemplaza con tu recurso de imagen
 
         // Configurar el texto
         if (datosSensor != null) {
@@ -206,8 +206,18 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
 
 
 
+    // Método para mostrar accesos
     public void mostrarAccesos(PanelViewHolder holder) {
+        // Crear un TextView para los accesos
         TextView accesos = new TextView(holder.itemView.getContext());
+        accesos.setTextSize(16);
+        accesos.setPadding(8, 8, 8, 8);
+
+        // Crear un ImageView para el ícono
+        ImageView iconoAccesos = new ImageView(holder.itemView.getContext());
+        configurarIcono(iconoAccesos, R.drawable.icon_puerta); // Reemplaza con el recurso adecuado
+
+        // Configurar el texto
         if (registroDatos != null) {
             List<String> datos = new ArrayList<>();
 
@@ -220,76 +230,117 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
             Log.d("Accesos", datos.toString());
 //            accesos.setText(datos.get(6));
         }
+
+        configurarPanel(holder, iconoAccesos, accesos);
     }
 
+    // Método para mostrar movimiento
     public void mostrarMovimiento(PanelViewHolder holder) {
         TextView hayMovimiento = new TextView(holder.itemView.getContext());
+        hayMovimiento.setTextSize(16);
+        hayMovimiento.setPadding(8, 8, 8, 8);
+
+        ImageView iconoMovimiento = new ImageView(holder.itemView.getContext());
+        configurarIcono(iconoMovimiento, R.drawable.icon_movimiento);
+
         if (datosSensor != null) {
             Boolean distancia = datosSensor.getDistancia();
             if (distancia != null) {
-                if (distancia) {
-                    hayMovimiento.setText("Hay movimiento. ¿Será el cartero?");
-                } else {
-                    hayMovimiento.setText("No hay movimiento. Todo tranquilo por aquí.");
-                }
+                hayMovimiento.setText(distancia ? "Hay movimiento. ¿Será el cartero?" : "No hay movimiento. Todo tranquilo por aquí.");
             } else {
-                hayMovimiento.setText(noData);
+                hayMovimiento.setText("Esperando datos de movimiento...");
             }
         } else {
-            hayMovimiento.setText(noData);
+            hayMovimiento.setText("No hay datos disponibles.");
         }
-        holder.panelVacio.addView(hayMovimiento);
+
+        configurarPanel(holder, iconoMovimiento, hayMovimiento);
     }
 
+    // Método para mostrar ruido
     public void mostrarRuido(PanelViewHolder holder) {
         TextView hayRuido = new TextView(holder.itemView.getContext());
+        hayRuido.setTextSize(16);
+        hayRuido.setPadding(8, 8, 8, 8);
+
+        ImageView iconoRuido = new ImageView(holder.itemView.getContext());
+        configurarIcono(iconoRuido, R.drawable.icon_alerta);
+
         if (datosSensor != null) {
             Boolean ruido = datosSensor.getRuido();
             if (ruido != null) {
-                if (ruido) {
-                    hayRuido.setText("Hay ruido. Será un coche, o la vecina de Fédor.");
-                } else {
-                    hayRuido.setText("No hay ruido. La calle está tranquila.");
-                }
+                hayRuido.setText(ruido ? "Hay ruido. Será un coche, o la vecina de Fédor." : "No hay ruido. La calle está tranquila.");
             } else {
-                hayRuido.setText(noData);
+                hayRuido.setText("Esperando datos de ruido...");
             }
         } else {
-            hayRuido.setText(noData);
+            hayRuido.setText("No hay datos disponibles.");
         }
-        holder.panelVacio.addView(hayRuido);
+
+        configurarPanel(holder, iconoRuido, hayRuido);
     }
 
-
+    // Método para mostrar luz
     public void mostrarLuz(PanelViewHolder holder) {
         TextView nivelDeLuz = new TextView(holder.itemView.getContext());
+        nivelDeLuz.setTextSize(16);
+        nivelDeLuz.setPadding(8, 8, 8, 8);
+
+        ImageView iconoLuz = new ImageView(holder.itemView.getContext());
+        configurarIcono(iconoLuz, R.drawable.icon_sol);
+
         if (datosSensor != null) {
-            String luz = datosSensor.getLuz(); // Asegúrate del tipo retornado (Integer, Double, etc.)
-            if (luz != null) {
-                nivelDeLuz.setText("Nivel de luz actual: " + luz);
-            } else {
-                nivelDeLuz.setText(noData);
-            }
+            String luz = datosSensor.getLuz();
+            nivelDeLuz.setText(luz != null ? "Nivel de luz actual: " + luz : "Esperando datos de luz...");
         } else {
-            nivelDeLuz.setText(noData);
+            nivelDeLuz.setText("No hay datos disponibles.");
         }
-        holder.panelVacio.addView(nivelDeLuz);
+
+        configurarPanel(holder, iconoLuz, nivelDeLuz);
     }
 
+    // Método para mostrar gas
     public void mostrarGas(PanelViewHolder holder) {
         TextView nivelDeGas = new TextView(holder.itemView.getContext());
+        nivelDeGas.setTextSize(16);
+        nivelDeGas.setPadding(8, 8, 8, 8);
+
+        ImageView iconoGas = new ImageView(holder.itemView.getContext());
+        configurarIcono(iconoGas, R.drawable.icon_fuego);
+
         if (datosSensor != null) {
-            String gas = datosSensor.getGas(); // Asegúrate del tipo retornado (Integer, Double, etc.)
-            if (gas != null) {
-                nivelDeGas.setText("Nivel de gas actual: " + gas);
-            } else {
-                nivelDeGas.setText(noData);
-            }
+            String gas = datosSensor.getGas();
+            nivelDeGas.setText(gas != null ? "Nivel de gas actual: " + gas : "Esperando datos de gas...");
         } else {
-            nivelDeGas.setText(noData);
+            nivelDeGas.setText("No hay datos disponibles.");
         }
-        holder.panelVacio.addView(nivelDeGas);
+
+        configurarPanel(holder, iconoGas, nivelDeGas);
     }
+
+    // Método auxiliar para configurar los íconos
+    private void configurarIcono(ImageView icono, int recurso) {
+        int tamañoEnDp = 75; // Tamaño deseado en dp
+        int tamañoEnPx = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                tamañoEnDp,
+                icono.getContext().getResources().getDisplayMetrics()
+        );
+
+        LinearLayout.LayoutParams layoutParamsIcono = new LinearLayout.LayoutParams(tamañoEnPx, tamañoEnPx);
+        layoutParamsIcono.setMargins(0, 0, 16, 0); // Margen derecho para separar del texto
+        icono.setLayoutParams(layoutParamsIcono);
+        icono.setImageResource(recurso);
+    }
+
+    // Método auxiliar para configurar el panel
+    private void configurarPanel(PanelViewHolder holder, ImageView icono, TextView texto) {
+        holder.panelVacio.removeAllViews();
+        holder.panelVacio.setOrientation(LinearLayout.HORIZONTAL);
+        holder.panelVacio.addView(icono);
+        holder.panelVacio.addView(texto);
+    }
+
     private void lanzarActividad(Panel panel) {
         Intent intent = new Intent(context, RegistroDatosSensorActivity.class);
         if (datosSensor != null) {

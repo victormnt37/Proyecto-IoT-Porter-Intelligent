@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppinsbold"
             android:gravity="center"
-            android:text="Introduce el correo de tu nuevo compañero"
+            android:text="¿Quieres desvincular está cuenta del edificio?"
             android:textColor="@color/blue"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -32,49 +32,43 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Label Correo -->
-        <TextView
-            android:id="@+id/tvCorreo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:fontFamily="@font/poppinsmedium"
-            android:text="Correo"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
-
-        <!-- Input Correo -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tlCorreo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvCorreo">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etCorreo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Introduce el correo" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Botón Añadir -->
-
         <Button
             android:id="@+id/btn_confirmar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
 
+            android:layout_marginTop="15dp"
             android:backgroundTint="#255A7B"
             android:fontFamily="@font/poppinsbold"
-            android:text="Enviar"
+            android:text="Confimar"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@+id/tlCorreo"
-            app:layout_constraintTop_toBottomOf="@+id/tlCorreo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_cancelar"
+            app:layout_constraintTop_toBottomOf="@+id/textView11"
             tools:layout_conversion_absoluteHeight="48dp"
             tools:layout_conversion_absoluteWidth="150dp" />
+
+        <Button
+            android:id="@+id/btn_cancelar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#255A7B"
+            android:fontFamily="@font/poppinsbold"
+            android:text="Cancelar"
+            app:layout_constraintEnd_toStartOf="@+id/btn_confirmar"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btn_confirmar" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="El usuario dejará de tener acceso al edificio."
+            app:layout_constraintEnd_toEndOf="@+id/tvTitle"
+            app:layout_constraintStart_toStartOf="@+id/tvTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
