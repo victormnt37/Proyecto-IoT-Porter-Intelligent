@@ -17,27 +17,24 @@ public class RepositorioPaneles {
         paneles = new ArrayList<>();
 
         paneles.add(new Panel(edificios.get(0), "Actividad Reciente"));
-        paneles.add(new Panel(edificios.get(0), "Tiempo"));
-        paneles.add(new Panel(edificios.get(0), "Acceso"));
-        paneles.add(new Panel(edificios.get(0), "Estado de Puertas"));
+        paneles.add(new Panel(edificios.get(0), "Temperatura"));
+        paneles.add(new Panel(edificios.get(0), "Accesos"));
         paneles.add(new Panel(edificios.get(0), "Movimiento"));
         paneles.add(new Panel(edificios.get(0), "Ruido"));
         paneles.add(new Panel(edificios.get(0), "Luz"));
         paneles.add(new Panel(edificios.get(0), "Humo y Gas"));
 
         paneles.add(new Panel(edificios.get(1), "Actividad Reciente"));
-        paneles.add(new Panel(edificios.get(1), "Tiempo"));
-        paneles.add(new Panel(edificios.get(1), "Acceso"));
-        paneles.add(new Panel(edificios.get(1), "Estado de Puertas"));
+        paneles.add(new Panel(edificios.get(1), "Temperatura"));
+        paneles.add(new Panel(edificios.get(1), "Accesos"));
         paneles.add(new Panel(edificios.get(1), "Movimiento"));
         paneles.add(new Panel(edificios.get(1), "Ruido"));
         paneles.add(new Panel(edificios.get(1), "Luz"));
         paneles.add(new Panel(edificios.get(1), "Humo y Gas"));
 
         paneles.add(new Panel(edificios.get(2), "Actividad Reciente"));
-        paneles.add(new Panel(edificios.get(2), "Tiempo"));
-        paneles.add(new Panel(edificios.get(2), "Acceso"));
-        paneles.add(new Panel(edificios.get(2), "Estado de Puertas"));
+        paneles.add(new Panel(edificios.get(2), "Temperatura"));
+        paneles.add(new Panel(edificios.get(2), "Accesos"));
         paneles.add(new Panel(edificios.get(2), "Movimiento"));
         paneles.add(new Panel(edificios.get(2), "Ruido"));
         paneles.add(new Panel(edificios.get(2), "Luz"));
