@@ -25,10 +25,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.design_vicent_sprint1.data.RepositorioPaneles;
 import com.example.design_vicent_sprint1.model.Anuncio;
+import com.example.design_vicent_sprint1.model.Notificacion;
 import com.example.design_vicent_sprint1.model.Panel;
 import com.example.design_vicent_sprint1.model.PanelAdapter;
 import com.example.design_vicent_sprint1.model.SensorData;
@@ -153,17 +155,92 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
 //        View popupView = LayoutInflater.from(getContext()).inflate(R.layout.popup_alerta, null);
 //        PopupWindow popupWindowAdd = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
 
-        Button btnAdd = popupViewAlert.findViewById(R.id.btnAdd);
-
-        btnAdd.setOnClickListener(v -> {
-
-            //********************* PROCESO AÑADIR EDIFICIO
-
+        Button robo = popupViewAlert.findViewById(R.id.btnRobo);
+        Button fuego = popupViewAlert.findViewById(R.id.btnFuego);
+        Button sos = popupViewAlert.findViewById(R.id.btnSOS);
+        robo.setOnClickListener(v -> {
             popupViewAlert.dismiss();
+            mostrarPopupConfimar("robo");
+        });
+        fuego.setOnClickListener(v -> {
+            popupViewAlert.dismiss();
+            mostrarPopupConfimar("incendio");
+        });
+        sos.setOnClickListener(v -> {
+            popupViewAlert.dismiss();
+            mostrarPopupConfimar("emergencia");
         });
         popupViewAlert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupViewAlert.show();
+    }
 
+    private void mostrarPopupConfimar(String alerta) {
+        // Crear el segundo pop-up (Dialog)
+        Dialog popup = new Dialog(getContext());
+        popup.setContentView(R.layout.popup_confimar_alerta);  // Asegúrate de que este layout existe
+        popup.setCanceledOnTouchOutside(true);
+        TextView detalles = popup.findViewById(R.id.detalles);
+        detalles.setText("Se enviará una alerta de " + alerta + " a todos los vecinos del edificio.");
+        Button cancelar = popup.findViewById(R.id.btn_cancelar);
+        Button confimar = popup.findViewById(R.id.btn_confirmar);
+
+        // Hacer el fondo del segundo pop-up transparente
+        popup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        confimar.setOnClickListener(view -> {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            db.collection("edificios")
+                    .document(edificioSeleccionado)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null) {
+
+                            String nombreEdificio = task.getResult().getString("nombre");
+
+                            String texto = "Alerta de " + alerta + " en el edificio " + nombreEdificio + ".";
+                            String tipo = alerta;
+
+                            Notificacion notificacion = new Notificacion(texto, tipo);
+
+                            db.collection("edificios")
+                                    .document(edificioSeleccionado)
+                                    .collection("notificaciones") .document()
+                                    .set(new HashMap<String, Object>() {{
+                                        put("mensaje", notificacion.getTexto());
+                                        put("tipo", notificacion.getTipo());
+                                        put("fecha", notificacion.getFecha());
+                                    }})
+                                    .addOnSuccessListener(documentReference -> {
+                                        Log.d("Alerta", "Notificación agregada con éxito.");
+                                        popup.dismiss();
+                                        // Mostrar un mensaje de éxito al usuario
+                                        Toast toast = Toast.makeText(getContext(), "Alerta enviada a todos los vecinos del edificio.", Toast.LENGTH_SHORT);
+                                        toast.setGravity(Gravity.CENTER, 0, 0);
+                                        toast.show();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Log.e("Alerta", "Error al agregar la notificación: " + e.getMessage());
+                                        popup.dismiss();
+                                        // Mostrar un mensaje de error al usuario
+                                        Toast toast = Toast.makeText(getContext(), "Error al enviar la notificación.", Toast.LENGTH_SHORT);
+                                        toast.setGravity(Gravity.CENTER, 0, 0);
+                                        toast.show();
+                                    });
+                        } else {
+                            popup.dismiss();
+                            Toast toast = Toast.makeText(getContext(), "Error. Envia la alerta de nuevo.", Toast.LENGTH_SHORT);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                        }
+                    });
+        });
+        cancelar.setOnClickListener(view -> {
+            popup.dismiss();
+        });
+
+        // Mostrar el segundo pop-up
+        popup.show();
     }
 
     private void mostrarPopupAdd(View view) {

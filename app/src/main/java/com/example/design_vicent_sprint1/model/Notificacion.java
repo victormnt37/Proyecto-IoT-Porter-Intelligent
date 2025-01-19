@@ -23,6 +23,12 @@ public class Notificacion {
         this.fecha = Calendar.getInstance();
     }
 
+    public Notificacion(String texto, String tipo) {
+        this.tipo = tipo;
+        this.texto = texto;
+        this.fecha = Calendar.getInstance();
+    }
+
     public Edificio getEdificio() {
         return edificio;
     }
@@ -36,7 +42,7 @@ public class Notificacion {
     }
 
     public String getFecha() {
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         return formato.format(fecha.getTime());
     }
 }
