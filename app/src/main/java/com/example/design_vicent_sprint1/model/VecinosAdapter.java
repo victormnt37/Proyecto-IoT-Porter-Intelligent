@@ -24,6 +24,7 @@ public class VecinosAdapter extends RecyclerView.Adapter<VecinosAdapter.VecinoVi
 
     public interface OnItemClickListener {
         void onEliminarClick(Vecino vecino, int position);
+        void onContactarClick(Vecino vecino);
     }
 
     private List<Vecino> vecinos;
@@ -69,6 +70,9 @@ public class VecinosAdapter extends RecyclerView.Adapter<VecinosAdapter.VecinoVi
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == R.id.opcion_eliminar){
                     listener.onEliminarClick(vecino, position);
+                    return true;
+                }else if (item.getItemId() == R.id.opcion_contactar){
+                    listener.onContactarClick(vecino);
                     return true;
                 }else{
                     return false;

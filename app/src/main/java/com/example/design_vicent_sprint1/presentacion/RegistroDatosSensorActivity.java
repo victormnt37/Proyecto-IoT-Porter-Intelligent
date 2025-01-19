@@ -92,7 +92,7 @@ public class RegistroDatosSensorActivity extends AppCompatActivity {
             graphView.addSeries(series);
 
             // Configuración del gráfico
-            graphView.setTitle(tipoSensor + " en " + edificio);
+            //graphView.setTitle(tipoSensor + " en " + edificio);
             graphView.setTitleColor(R.color.blue);
             graphView.setTitleTextSize(16);
 
@@ -109,7 +109,7 @@ public class RegistroDatosSensorActivity extends AppCompatActivity {
 
             // Evento al tocar un punto del gráfico
             series.setOnDataPointTapListener((series1, dataPoint) -> {
-                String info = "X=" + dataPoint.getX() + ", Y=" + dataPoint.getY();
+                String info ="Dato=" + dataPoint.getY();
                 infoBubble.setText(info);
 
                 infoBubble.post(() -> {

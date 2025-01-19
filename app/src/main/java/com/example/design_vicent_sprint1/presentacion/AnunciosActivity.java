@@ -1,6 +1,7 @@
 package com.example.design_vicent_sprint1.presentacion;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -77,6 +78,18 @@ public class AnunciosActivity extends AppCompatActivity {
                     @Override
                     public void onEditarClick(Anuncio anuncio) {
 
+                    }
+
+                    @Override
+                    public void onCompartirClick(Anuncio anuncio) {
+                        String mensaje = "Nuevo anuncio de la comunidad de vecinos: \n"
+                                + "Fecha: " + anuncio.getFecha() + "\n" +
+                                anuncio.getAsunto() + "\n" + anuncio.getTexto();
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("text/plain");
+                        intent.setPackage("com.whatsapp");
+                        intent.putExtra(Intent.EXTRA_TEXT, mensaje);
+                        startActivity(intent);
                     }
                 });
                 recyclerViewAnuncios.setAdapter(adapter);

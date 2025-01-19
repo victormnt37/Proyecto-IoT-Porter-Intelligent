@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -74,6 +75,16 @@ public class VecinosActivity extends AppCompatActivity {
                     public void onEliminarClick(Vecino vecino, int position) {
                         mostrarPopupDesvincular(vecino.getCorreo(), edificioSeleccionado, position);
                     }
+                    @Override
+                    public void onContactarClick(Vecino vecino) {
+                        String email = vecino.getCorreo();
+
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("message/rfc822"); // Filtra solo las apps de correo
+                        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
+                        startActivity(Intent.createChooser(intent, "Enviar correo con"));
+                    }
+
                 });
                 recyclerViewVecinos.setAdapter(adapter);
                 configurarSpinner();
@@ -184,6 +195,15 @@ public class VecinosActivity extends AppCompatActivity {
                     public void onEliminarClick(Vecino vecino, int position) {
                         mostrarPopupDesvincular(vecino.getCorreo(), edificioSeleccionado, position);
                     }
+                    @Override
+                    public void onContactarClick(Vecino vecino) {
+                        String email = vecino.getCorreo();
+
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("message/rfc822"); // Filtra solo las apps de correo
+                        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
+                        startActivity(Intent.createChooser(intent, "Enviar correo con"));
+                        }
                 });
         recyclerViewVecinos.setAdapter(adapter);
     }
