@@ -49,6 +49,7 @@ public class EdificiosActivity extends AppCompatActivity {
     private List<Edificio> listaEdificios = new ArrayList<>();
     private Set<String> listaIds;
     private Map<String,String> lista_edificios_y_roles;
+    private EdificiosAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +99,7 @@ public class EdificiosActivity extends AppCompatActivity {
                 Tasks.whenAllComplete(tasks).addOnCompleteListener(task2 -> {
                     recyclerViewEdificios.setLayoutManager(new GridLayoutManager(this, 1));
 
-                    EdificiosAdapter adapter = new EdificiosAdapter(listaEdificios, new EdificiosAdapter.OnItemClickListener() {
+                    adapter = new EdificiosAdapter(listaEdificios, new EdificiosAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(Edificio edificio) {
                             String id = edificio.getId();
@@ -109,7 +110,7 @@ public class EdificiosActivity extends AppCompatActivity {
                         public void onDeleteClick(int position, Edificio edificio) {
                             String id = edificio.getId();
                             String rol = lista_edificios_y_roles.get(id);
-                            mostrarPopupDesvincular(userId, id, rol);
+                            mostrarPopupDesvincular(userId, id, rol, position);
                         }
                     });
                     recyclerViewEdificios.setAdapter(adapter);
@@ -118,7 +119,7 @@ public class EdificiosActivity extends AppCompatActivity {
         });
     }
 
-    private void mostrarPopupDesvincular(String correo, String edificio, String rol) {
+    private void mostrarPopupDesvincular(String correo, String edificio, String rol, int position) {
 
         // Crear el segundo pop-up (Dialog)
         Dialog popup = new Dialog(this);
@@ -157,6 +158,17 @@ public class EdificiosActivity extends AppCompatActivity {
                     .addOnFailureListener(e -> {
                         Log.e("desvincular","Error al eliminar el edificio de la subcolección del usuario: " + e.getMessage());
                     });
+                adapter.removeItem(position);
+                if (edificio.equals(id_edificioSeleccionado) || adapter.getItemCount() == 0){
+                    //manda a main activity
+                    Intent i = new Intent(this, MainActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            | Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    i.putExtra("userId", correo);
+                    startActivity(i);
+                    finish();
+                }
                 popup.dismiss();
                 Toast toast = Toast.makeText(this, "Edificio desvinculado", Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0, 0);
