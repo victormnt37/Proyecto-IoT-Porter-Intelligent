@@ -43,7 +43,7 @@
             android:id="@+id/menuOpciones"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/icon_archivar"
+            android:src="@drawable/icon_menudot"
             android:contentDescription="Opciones"
             android:padding="8dp"
             app:tint="@color/blue"/>
