@@ -69,7 +69,7 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
     private static final String topic = "VicentPI/edificio1";
     private static final int qos = 1;
     private static final boolean retain = false;
-    private static final String broker = "tcp://test.mosquitto.org:1883";
+    private static final String broker = "tcp://broker.hivemq.com:1883";
     private static final String clientId = "vecino";
     private MqttClient client;
     private SensorData datosSensor;
