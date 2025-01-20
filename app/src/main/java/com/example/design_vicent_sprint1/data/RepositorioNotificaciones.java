@@ -17,7 +17,7 @@ public class RepositorioNotificaciones {
 
         notificaciones = new ArrayList<>();
 
-        notificaciones.add(new Notificacion(edificios.get(0), "Sensor de gas activado en el área de cocina común", "Sensor"));
+       /* notificaciones.add(new Notificacion(edificios.get(0), "Sensor de gas activado en el área de cocina común", "Sensor"));
         notificaciones.add(new Notificacion(edificios.get(0), "Anuncio: Reunión de propietarios este lunes a las 8 PM", "Anuncio"));
         notificaciones.add(new Notificacion(edificios.get(0), "Alerta de emergencia: fuga de agua detectada en el estacionamiento", "Alerta"));
 
@@ -34,7 +34,7 @@ public class RepositorioNotificaciones {
         notificaciones.add(new Notificacion(edificios.get(2), "Estado de puertas: puerta del garaje abierta", "Sensor"));
         notificaciones.add(new Notificacion(edificios.get(2), "Anuncio: Junta de vecinos programada para este viernes", "Anuncio"));
         notificaciones.add(new Notificacion(edificios.get(2), "Movimiento detectado en la terraza", "Sensor"));
-        notificaciones.add(new Notificacion(edificios.get(2), "Alerta de robo: intento de acceso forzado en el piso 1", "Alerta"));
+        notificaciones.add(new Notificacion(edificios.get(2), "Alerta de robo: intento de acceso forzado en el piso 1", "Alerta"));*/
     }
 
     public List<Notificacion> getNotificacionesPorEdificio(String id_edificio) {

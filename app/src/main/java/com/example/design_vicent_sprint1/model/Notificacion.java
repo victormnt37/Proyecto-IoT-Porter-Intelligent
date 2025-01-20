@@ -6,6 +6,7 @@ import java.util.Calendar;
 public class Notificacion {
     private Edificio edificio;
     private Calendar fecha;
+    private String fecha_s;
     private String texto;
     private String tipo; // Alerta, Anuncio, Sensor
 
@@ -16,11 +17,10 @@ public class Notificacion {
         this.fecha = fecha;
     }
 
-    public Notificacion(Edificio edificio, String texto, String tipo) {
-        this.edificio = edificio;
+    public Notificacion(String texto, String tipo, String fecha) {
         this.tipo = tipo;
         this.texto = texto;
-        this.fecha = Calendar.getInstance();
+        this.fecha_s = fecha;
     }
 
     public Notificacion(String texto, String tipo) {
@@ -39,6 +39,10 @@ public class Notificacion {
 
     public String getTipo() {
         return tipo;
+    }
+
+    public String getFechaS(){
+        return fecha_s;
     }
 
     public String getFecha() {

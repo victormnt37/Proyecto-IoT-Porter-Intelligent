@@ -31,10 +31,16 @@ public class NotificacionesAdapter extends RecyclerView.Adapter<NotificacionesAd
             Notificacion notificacion = notificaciones.get(position);
 
             switch (notificacion.getTipo()) {
-                case "Alerta":
+                case "incendio":
                     holder.iconoNotificacion.setImageResource(R.drawable.icon_alerta);
                     break;
-                case "Anuncio":
+                case "emergencia":
+                    holder.iconoNotificacion.setImageResource(R.drawable.icon_alerta);
+                    break;
+                case "robo":
+                    holder.iconoNotificacion.setImageResource(R.drawable.icon_alerta);
+                    break;
+                case "anuncios":
                     holder.iconoNotificacion.setImageResource(R.drawable.icon_anuncio);
                     break;
                 case "Sensor":
@@ -46,7 +52,7 @@ public class NotificacionesAdapter extends RecyclerView.Adapter<NotificacionesAd
             }
 
             holder.textoNotificacion.setText(notificacion.getTexto());
-            holder.fechaNotificacion.setText(notificacion.getFecha());
+            holder.fechaNotificacion.setText(notificacion.getFechaS());
         } catch (Exception e) {
             e.printStackTrace();
         }

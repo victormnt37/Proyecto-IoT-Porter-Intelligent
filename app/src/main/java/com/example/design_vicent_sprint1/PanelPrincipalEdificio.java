@@ -64,6 +64,7 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
     private String rol;
     private String userId;
     private PanelAdapter adapter;
+    private  FirebaseFirestore db;
     Handler uiHandler = new Handler(Looper.getMainLooper());
     private Map<String, Object> registroDatos = new HashMap<>();
 
@@ -91,7 +92,7 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
 
         // Peticion registro Firestore
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         db.collection("edificios/" + edificioSeleccionado + "/sensores/")
                 .limit(7) // recibe los datos de la ultima semana
@@ -188,7 +189,6 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
         popup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         confimar.setOnClickListener(view -> {
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
 
             db.collection("edificios")
                     .document(edificioSeleccionado)
@@ -242,6 +242,43 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
         // Mostrar el segundo pop-up
         popup.show();
     }
+
+    private void agregarNotificacion(String mensaje, String tipo) {
+
+        // Obtener el nombre del edificio
+        db.collection("edificios")
+                .document(edificioSeleccionado)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        String nombreEdificio = task.getResult().getString("nombre");
+
+                        String texto = mensaje + " en el edificio " + nombreEdificio + ".";
+
+                        Notificacion notificacion = new Notificacion(texto, tipo);
+
+                        // Agregar la notificación a la base de datos
+                        db.collection("edificios")
+                                .document(edificioSeleccionado)
+                                .collection("notificaciones")
+                                .document()
+                                .set(new HashMap<String, Object>() {{
+                                    put("mensaje", texto);
+                                    put("tipo", tipo);
+                                    put("fecha", notificacion.getFecha());
+                                }})
+                                .addOnCompleteListener(documentReference -> {
+                                    Log.d("Alerta", "Notificación agregada con éxito.");
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.e("Alerta", "Error al agregar la notificación: " + e.getMessage());
+                                });
+                    } else {
+                        Log.e("Alerta", "Error al agregar la notificación ");
+                    }
+                });
+    }
+
 
     private void mostrarPopupAdd(View view) {
         Dialog popupViewAdd = new Dialog(getContext());
@@ -297,7 +334,6 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
         Spinner puerta = popupVecinos.findViewById(R.id.spinnerPuerta);
         List<String> pisosList = new ArrayList<>();
         Map<String, List<String>> puertasMap = new HashMap<>();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("edificios").document(edificioSeleccionado).collection("pisos")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -418,8 +454,6 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
             }else if(!verificarTelefono(telefono_i)){
                 tilTelefono.setError("Telefono no válido");
             }else{
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-
                 DocumentReference usuarioRef = db.collection("usuarios").document(correo_i);
 
                 usuarioRef.get().addOnSuccessListener(documentSnapshot -> {
@@ -448,6 +482,7 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
                                     put("telefono", telefono_i);
                                 }});
                     });
+                    agregarNotificacion("Nuevo administrador", "administradores");
                     popupAdmin.dismiss();
                     Toast toast = Toast.makeText(getContext(), "Administrador añadido", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0, 0);
@@ -483,8 +518,6 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
             }else if(texto_i.isEmpty()){
                 tilTexto.setError("Escribe una descripción");
             }else{
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-
                 db.collection("edificios").document(edificioSeleccionado) // Documento del edificio
                         .collection("administradores").document(userId) // Documento del administrador
                         .get().addOnSuccessListener(documentSnapshot -> {
@@ -502,6 +535,7 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
                                                     put("fecha", fecha);
                                                     put("autor", autor);
                                                 }});
+                                        agregarNotificacion("Nuevo anuncio", "anuncios");
                                         popupAnuncios.dismiss();
                                         Toast toast = Toast.makeText(getContext(), "Anuncio añadido", Toast.LENGTH_SHORT);
                                         toast.setGravity(Gravity.CENTER, 0, 0);
@@ -559,6 +593,7 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
                                 put("nombre", nombre_i);
                                 put("telefono", telefono_i);
                             }});
+                    agregarNotificacion("Nuevo contacto", "contactos");
                     popupContacto.dismiss();
                     Toast toast = Toast.makeText(getContext(), "Contacto añadido", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0, 0);

@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +20,11 @@ import com.example.design_vicent_sprint1.model.NotificacionesAdapter;
 import com.example.design_vicent_sprint1.presentacion.AjustesNotificacionesActivity;
 import com.example.design_vicent_sprint1.presentacion.CambiarPerfilActivity;
 import com.example.design_vicent_sprint1.presentacion.MainActivity;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Notificaciones extends Fragment {
@@ -56,22 +62,56 @@ public class Notificaciones extends Fragment {
             }
         });
 
-        repositorioNotificaciones = new RepositorioNotificaciones();
+        //repositorioNotificaciones = new RepositorioNotificaciones();
         cargarNotificaciones();
 
         return view;
     }
 
     private void cargarNotificaciones() {
-        List<Notificacion> notificaciones = repositorioNotificaciones.getNotificacionesPorEdificio(edificioSeleccionado);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference notificacionesRef = db.collection("edificios")
+                .document(edificioSeleccionado)
+                .collection("notificaciones");
 
-        // Verificar si hay notificaciones antes de cargar el adaptador
-        if (notificaciones != null && !notificaciones.isEmpty()) {
-            NotificacionesAdapter adapter = new NotificacionesAdapter(notificaciones);
-            recyclerView.setAdapter(adapter);
-        } else {
-            // Puedes agregar lógica para mostrar un mensaje vacío si lo deseas
-            System.out.println("No hay notificaciones para este edificio.");
-        }
+        notificacionesRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                List<Notificacion> notificaciones = new ArrayList<>();
+                for (QueryDocumentSnapshot doc : task.getResult()) {
+                    String mensaje = doc.getString("mensaje");
+                    String tipo = doc.getString("tipo");
+                    String fechaString = doc.getString("fecha");
+
+                    notificaciones.add(new Notificacion(mensaje, tipo, fechaString));
+                }
+
+                notificaciones.sort((n1, n2) -> {
+                    if (n1.getFechaS() == null || n2.getFechaS() == null) {
+                        return 0;
+                    }
+                    return n2.getFechaS().compareTo(n1.getFechaS());
+                });
+
+                if (!notificaciones.isEmpty()) {
+                    NotificacionesAdapter adapter = new NotificacionesAdapter(notificaciones);
+                    recyclerView.setAdapter(adapter);
+                } else {
+                    Log.d("Notificaciones", "No hay notificaciones para mostrar.");
+                }
+            } else {
+                Log.e("Notificaciones", "Error al cargar notificaciones: ", task.getException());
+            }
+        });
+//        List<Notificacion> notificaciones = repositorioNotificaciones.getNotificacionesPorEdificio(edificioSeleccionado);
+//
+//        // Verificar si hay notificaciones antes de cargar el adaptador
+//        if (notificaciones != null && !notificaciones.isEmpty()) {
+//            NotificacionesAdapter adapter = new NotificacionesAdapter(notificaciones);
+//            recyclerView.setAdapter(adapter);
+//        } else {
+//            // Puedes agregar lógica para mostrar un mensaje vacío si lo deseas
+//            System.out.println("No hay notificaciones para este edificio.");
+//        }
+
     }
 }
