@@ -624,7 +624,6 @@ public class PanelPrincipalEdificio extends Fragment implements MqttCallback {
     private void cargarPaneles(SensorData datosSensor) {
         List<Panel> paneles = repositorioPaneles.getPanelesPorEdificio(edificioSeleccionado);
 
-        // TODO: pasar datos de registro
         if (adapter == null) {
             adapter = new PanelAdapter(paneles, edificioSeleccionado, datosSensor, getContext(), registroDatos);
             recyclerView.setAdapter(adapter);
