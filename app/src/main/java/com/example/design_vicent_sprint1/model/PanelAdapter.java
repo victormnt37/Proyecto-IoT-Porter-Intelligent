@@ -284,7 +284,6 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
     // Método para mostrar accesos
     public void mostrarAccesos(PanelViewHolder holder) {
         // Crear un TextView para los accesos
-        // TODO: poner datos firestore aqui
         TextView accesos = new TextView(holder.itemView.getContext());
         accesos.setTextSize(16);
         accesos.setPadding(8, 8, 8, 8);
@@ -444,7 +443,6 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
     private void lanzarActividad(Panel panel) {
         Intent intent = new Intent(context, RegistroDatosSensorActivity.class);
         if (datosSensor != null && panel.getTipo() != "Actividad Reciente") {
-            // TODO: pasar datos de registro
             intent.putExtra("tipo-sensor", panel.getTipo());
             intent.putExtra("edificio", edificioSeleccionado);
             intent.putExtra("registro-datos", registroDatos);

@@ -36,12 +36,5 @@
             android:text="Fecha"
             android:textSize="14sp"
             android:textColor="#757575" />
-        <TextView
-            android:id="@+id/textoNotificacion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Movimiento detectado en la entrada"
-            android:textColor="#3B5D75"
-            android:textSize="16sp" />
     </LinearLayout>
 </LinearLayout>
