@@ -3,6 +3,7 @@ package com.example.design_vicent_sprint1.model;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -13,9 +14,15 @@ import java.util.List;
 public class NotificacionesAdapter extends RecyclerView.Adapter<NotificacionesAdapter.NotificacionViewHolder> {
 
     private List<Notificacion> notificaciones;
+    private OnItemClickListener listener;
 
-    public NotificacionesAdapter(List<Notificacion> notificaciones) {
+    public interface OnItemClickListener {
+        void onItemClick(Notificacion notificacion);
+    }
+
+    public NotificacionesAdapter(List<Notificacion> notificaciones, OnItemClickListener listener) {
         this.notificaciones = notificaciones;
+        this.listener = listener;
     }
 
     @NonNull
@@ -50,7 +57,7 @@ public class NotificacionesAdapter extends RecyclerView.Adapter<NotificacionesAd
                     holder.iconoNotificacion.setImageResource(R.drawable.icon_notificaciones);
                     break;
             }
-
+            holder.itemView.setOnClickListener(v -> listener.onItemClick(notificacion));
             holder.textoNotificacion.setText(notificacion.getTexto());
             holder.fechaNotificacion.setText(notificacion.getFechaS());
         } catch (Exception e) {

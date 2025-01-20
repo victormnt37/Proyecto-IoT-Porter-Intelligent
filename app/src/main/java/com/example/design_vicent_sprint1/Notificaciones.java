@@ -1,6 +1,7 @@
 package com.example.design_vicent_sprint1;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -93,7 +94,36 @@ public class Notificaciones extends Fragment {
                 });
 
                 if (!notificaciones.isEmpty()) {
-                    NotificacionesAdapter adapter = new NotificacionesAdapter(notificaciones);
+                    NotificacionesAdapter adapter = new NotificacionesAdapter(notificaciones, new NotificacionesAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(Notificacion notificacion) {
+                            String tipo = notificacion.getTipo();
+                            switch (tipo) {
+                                case "incendio":
+                                case "emergencia":
+                                case "robo":
+                                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                                    intent.setData(Uri.parse("tel:911"));
+                                    startActivity(intent);
+                                    break;
+                                case "anuncios":
+
+                                    break;
+                                case "administradores":
+
+                                    break;
+                                case "contactos":
+
+                                    break;
+                                case "Sensor":
+
+                                    break;
+                                default:
+
+                                    break;
+                            }
+                        }
+                    });
                     recyclerView.setAdapter(adapter);
                 } else {
                     Log.d("Notificaciones", "No hay notificaciones para mostrar.");
