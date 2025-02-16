@@ -34,6 +34,7 @@ public class AdministradoresActivity extends AppCompatActivity {
     private String edificioSeleccionado;
     private ImageLoader lectorImagenes;
     private String rol;
+    private String userId;
 
 
     @Override
@@ -44,6 +45,7 @@ public class AdministradoresActivity extends AppCompatActivity {
         recyclerViewAdministradores = findViewById(R.id.recyclerViewAdministradores);
         edificioSeleccionado = getIntent().getStringExtra("edificio");
         rol = getIntent().getStringExtra("rol");
+        userId = getIntent().getStringExtra("userId");
         // Configuración del RecyclerView
         recyclerViewAdministradores.setLayoutManager(new LinearLayoutManager(this));
 
@@ -88,7 +90,7 @@ public class AdministradoresActivity extends AppCompatActivity {
                             public void onEditarClick(Administrador administrador) {
 
                             }
-                        },rol);
+                        },rol, userId);
                 recyclerViewAdministradores.setAdapter(administradoresAdapter);
             } else {
                 Log.e("FirestoreError", "Error al obtener contactos", task.getException());

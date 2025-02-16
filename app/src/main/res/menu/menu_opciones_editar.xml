@@ -4,11 +4,5 @@
     <item
         android:id="@+id/opcion_editar"
         android:title="Actualizar teléfono" />
-    <item
-        android:id="@+id/opcion_eliminar"
-        android:title="Eliminar" />
-    <item
-        android:id="@+id/opcion_compartir"
-        android:title="Compartir por Whatsapp" />
 
 </menu>

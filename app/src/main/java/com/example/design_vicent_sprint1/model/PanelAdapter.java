@@ -22,6 +22,7 @@ import com.example.design_vicent_sprint1.data.RepositorioWeather;
 import com.example.design_vicent_sprint1.presentacion.MainActivity;
 import com.example.design_vicent_sprint1.presentacion.RegistroDatosSensorActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -283,7 +284,6 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
     // Método para mostrar accesos
     public void mostrarAccesos(PanelViewHolder holder) {
         // Crear un TextView para los accesos
-        // TODO: poner datos firestore aqui
         TextView accesos = new TextView(holder.itemView.getContext());
         accesos.setTextSize(16);
         accesos.setPadding(8, 8, 8, 8);
@@ -291,6 +291,30 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
         // Crear un ImageView para el ícono
         ImageView iconoAccesos = new ImageView(holder.itemView.getContext());
         configurarIcono(iconoAccesos, R.drawable.icon_puerta); // Reemplaza con el recurso adecuado
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("edificios/" + edificioSeleccionado + "/sensores/")
+                .orderBy(FieldPath.documentId())
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                            if (!queryDocumentSnapshots.isEmpty()) {
+                                // Obtener el último documento
+                                DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
+
+                                // Extraer los datos del documento
+                                Map<String, Object> data = document.getData();
+
+                                if (data != null) {
+                                    accesos.setText("Accesos en el dia de hoy: " + data.get("Accesos"));
+                                }
+                            }
+                        })
+                .addOnFailureListener(e -> {
+                    // Manejar errores
+                    accesos.setText("Error al cargar datos: " + e.getMessage());
+                });
 
         // Configurar el texto
         if (registroDatos != null) {
@@ -418,12 +442,11 @@ public class PanelAdapter extends RecyclerView.Adapter<PanelAdapter.PanelViewHol
 
     private void lanzarActividad(Panel panel) {
         Intent intent = new Intent(context, RegistroDatosSensorActivity.class);
-        if (datosSensor != null) {
-            // TODO: pasar datos de registro
+        if (datosSensor != null && panel.getTipo() != "Actividad Reciente") {
             intent.putExtra("tipo-sensor", panel.getTipo());
             intent.putExtra("edificio", edificioSeleccionado);
             intent.putExtra("registro-datos", registroDatos);
+            context.startActivity(intent);
         }
-        context.startActivity(intent);
     }
 }

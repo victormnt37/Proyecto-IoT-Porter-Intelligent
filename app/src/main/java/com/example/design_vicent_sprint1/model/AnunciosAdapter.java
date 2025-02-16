@@ -17,6 +17,7 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
     public interface OnItemClickListener {
         void onEliminarClick(Anuncio anuncio, int position);
         void onEditarClick(Anuncio anuncio);
+        void onCompartirClick(Anuncio anuncio);
     }
 
     private List<Anuncio> anuncios;
@@ -53,6 +54,9 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
                     return true;
                 } else if (item.getItemId() == R.id.opcion_eliminar) {
                     listener.onEliminarClick(anuncio, position);
+                    return true;
+                }else if (item.getItemId() == R.id.opcion_compartir) {
+                    listener.onCompartirClick(anuncio);
                     return true;
                 }
                 return false;

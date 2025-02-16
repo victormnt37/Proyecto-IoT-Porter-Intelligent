@@ -4,5 +4,8 @@
     <item
         android:id="@+id/opcion_eliminar"
         android:title="Eliminar" />
+    <item
+        android:id="@+id/opcion_contactar"
+        android:title="Enviar correo" />
 
 </menu>

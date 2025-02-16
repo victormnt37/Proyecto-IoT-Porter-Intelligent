@@ -42,6 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="5dp"
             android:backgroundTint="#000000"
             android:fontFamily="@font/poppinsbold"
             android:text="Robo"
@@ -79,12 +80,15 @@
             android:id="@+id/btnSOS"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="20dp"
             android:backgroundTint="#FF0000"
             android:fontFamily="@font/poppinsbold"
             android:text="SOS"
             android:textColor="@color/white"
             android:textSize="20sp"
             app:cornerRadius="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btnFuego"
@@ -93,23 +97,6 @@
             tools:layout_conversion_absoluteWidth="100dp" />
 
         <!-- Botón Enviar -->
-        <Button
-            android:id="@+id/btnAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="#255A7B"
-            android:fontFamily="@font/poppinsbold"
-            android:text="Enviar"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            app:cornerRadius="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/btnSOS"
-            app:layout_constraintTop_toBottomOf="@+id/btnFuego"
-            tools:layout_conversion_absoluteHeight="48dp"
-            tools:layout_conversion_absoluteWidth="150dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
