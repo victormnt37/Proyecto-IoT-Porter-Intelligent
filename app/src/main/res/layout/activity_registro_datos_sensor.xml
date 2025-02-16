@@ -59,69 +59,70 @@
         android:layout_margin="16dp" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
         android:gravity="center"
-        android:layout_marginTop="16dp">
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
             android:background="@drawable/rounded_background"
-            android:padding="16dp"
+            android:elevation="4dp"
             android:gravity="center"
-            android:elevation="4dp">
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Media de semana: "
                 android:fontFamily="@font/poppinsbold"
-                android:textColor="#333333"
-                android:textSize="18sp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10"
-                android:fontFamily="@font/poppinsbold"
-                android:textColor="#333333"
-                android:textSize="25sp"
                 android:gravity="center"
-                android:layout_marginTop="8dp" />
+                android:text="Media de semana: "
+                android:textColor="#333333"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/poppinsbold"
+                android:gravity="center"
+                android:text="10"
+                android:textColor="#333333"
+                android:textSize="25sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_weight="1"
-            android:orientation="vertical"
             android:background="@drawable/rounded_background"
-            android:padding="16dp"
-            android:gravity="center"
             android:elevation="4dp"
-            android:layout_marginStart="16dp">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/poppinsbold"
                 android:text="Media del mes:"
-                android:fontFamily="@font/poppinsbold"
                 android:textColor="#333333"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/poppinsbold"
-                android:textColor="#333333"
-                android:textSize="25sp"
                 android:gravity="center"
-                android:layout_marginTop="33dp" />
+                android:text="5"
+                android:textColor="#333333"
+                android:textSize="25sp" />
         </LinearLayout>
 
     </LinearLayout>
