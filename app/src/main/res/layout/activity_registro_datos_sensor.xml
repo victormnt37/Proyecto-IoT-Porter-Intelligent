@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F3F4F6"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:orientation="vertical">
 
     <!-- Contenedor para el título con un fondo decorado -->
     <LinearLayout
@@ -39,24 +40,76 @@
         android:id="@+id/idGraphView"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-    android:layout_gravity="center"
-    android:elevation="4dp"
-    android:layout_marginBottom="16dp"
-    android:padding="16dp" />
+        android:layout_gravity="center"
+        android:elevation="4dp"
+        android:layout_marginBottom="16dp"
+        android:padding="16dp" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="16dp">
 
-    <TextView
-        android:id="@+id/infoBubble"
-        android:layout_width="105dp"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bubble_background"
-    android:padding="12dp"
-    android:textColor="@android:color/white"
-    android:textSize="14sp"
-    android:elevation="6dp"
-    android:visibility="gone"
-    android:gravity="center"
-    android:layout_margin="16dp" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_background"
+            android:padding="16dp"
+            android:gravity="center"
+            android:elevation="4dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Media de semana: "
+                android:fontFamily="@font/poppinsbold"
+                android:textColor="#333333"
+                android:textSize="18sp"/>
 
-</FrameLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10"
+                android:fontFamily="@font/poppinsbold"
+                android:textColor="#333333"
+                android:textSize="25sp"
+                android:gravity="center"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_background"
+            android:padding="16dp"
+            android:gravity="center"
+            android:elevation="4dp"
+            android:layout_marginStart="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Media del mes:"
+                android:fontFamily="@font/poppinsbold"
+                android:textColor="#333333"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5"
+                android:fontFamily="@font/poppinsbold"
+                android:textColor="#333333"
+                android:textSize="25sp"
+                android:gravity="center"
+                android:layout_marginTop="33dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
